@@ -17,6 +17,9 @@
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
   --breakpoint-2xl: 1536px;
+
+  --font-sans: 'Manrope', sans-serif;
+  --font-serif: 'Manrope', sans-serif;
 }
 
 /* ─── Base Styles ─── */

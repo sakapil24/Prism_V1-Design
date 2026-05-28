@@ -67,7 +67,7 @@ const PaginationButton = React.forwardRef<HTMLButtonElement, PaginationButtonPro
         'focus-visible:outline-none focus-visible:shadow-[var(--shadow-focus-ring)]',
         'disabled:cursor-not-allowed disabled:opacity-50',
         isActive
-          ? 'bg-[var(--accent-primary)] text-white'
+          ? 'bg-[var(--color-gray-900)] text-white'
           : 'text-[var(--text-secondary)] hover:bg-[var(--surface-hover)] hover:text-[var(--text-primary)]',
         className
       )}

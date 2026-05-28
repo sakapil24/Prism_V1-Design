@@ -33,7 +33,7 @@ function ToolbarButton({ onClick, isActive, disabled, title, children }: Toolbar
         'text-[var(--icon-default)] transition-colors duration-[var(--duration-fast)]',
         'hover:bg-[var(--surface-hover)]',
         'disabled:opacity-40 disabled:pointer-events-none',
-        isActive && 'bg-[var(--surface-selected)] text-[var(--accent-primary)]'
+        isActive && 'bg-[var(--surface-selected)] text-[var(--text-primary)]'
       )}
     >
       {children}
@@ -188,7 +188,7 @@ function RichTextEditor({
       className={cn(
         'rounded-[var(--radius-xl)] border border-[var(--border-default)] bg-[var(--surface-page)] overflow-hidden',
         'transition-[border-color,box-shadow] duration-[var(--duration-moderate)]',
-        'focus-within:border-[var(--border-accent)] focus-within:shadow-[var(--shadow-focus-ring)]',
+        'focus-within:border-[var(--border-focus)] focus-within:shadow-[var(--shadow-focus-ring)]',
         !editable && 'border-transparent',
         className
       )}

@@ -9,142 +9,7 @@ import * as React from 'react';
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 import { cn } from '../utils/cn';
 
-/* ─── Helpers ─────────────────────────────────────────────────────────── */
-
-function getDaysInMonth(year: number, month: number): number {
-  return new Date(year, month + 1, 0).getDate();
-}
-
-function getFirstDayOfMonth(year: number, month: number): number {
-  return new Date(year, month, 1).getDay();
-}
-
-const MONTH_NAMES = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
-] as const;
-
-const DAY_LABELS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'] as const;
-
-/* ─── Calendar Grid ───────────────────────────────────────────────────── */
-
-interface CalendarProps {
-  value?: Date | null;
-  onChange?: (date: Date) => void;
-  className?: string;
-}
-
-function Calendar({ value, onChange, className }: CalendarProps) {
-  const today = new Date();
-  const [viewYear, setViewYear] = React.useState(value?.getFullYear() ?? today.getFullYear());
-  const [viewMonth, setViewMonth] = React.useState(value?.getMonth() ?? today.getMonth());
-
-  const daysInMonth = getDaysInMonth(viewYear, viewMonth);
-  const firstDay = getFirstDayOfMonth(viewYear, viewMonth);
-
-  const prevMonth = () => {
-    if (viewMonth === 0) {
-      setViewMonth(11);
-      setViewYear(viewYear - 1);
-    } else {
-      setViewMonth(viewMonth - 1);
-    }
-  };
-
-  const nextMonth = () => {
-    if (viewMonth === 11) {
-      setViewMonth(0);
-      setViewYear(viewYear + 1);
-    } else {
-      setViewMonth(viewMonth + 1);
-    }
-  };
-
-  const isSelected = (day: number) =>
-    value &&
-    value.getFullYear() === viewYear &&
-    value.getMonth() === viewMonth &&
-    value.getDate() === day;
-
-  const isToday = (day: number) =>
-    today.getFullYear() === viewYear &&
-    today.getMonth() === viewMonth &&
-    today.getDate() === day;
-
-  const days: (number | null)[] = [];
-  for (let i = 0; i < firstDay; i++) days.push(null);
-  for (let d = 1; d <= daysInMonth; d++) days.push(d);
-
-  return (
-    <div className={cn('w-[252px] p-3', className)}>
-      {/* Header */}
-      <div className="flex items-center justify-between mb-2">
-        <button
-          type="button"
-          onClick={prevMonth}
-          className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--text-secondary)] hover:bg-[var(--surface-hover)] transition-colors duration-[var(--duration-fast)]"
-        >
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M8.5 3.5L5 7L8.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
-        <span className="text-[var(--text-sm)] font-[var(--font-semibold)] text-[var(--text-primary)]">
-          {MONTH_NAMES[viewMonth]} {viewYear}
-        </span>
-        <button
-          type="button"
-          onClick={nextMonth}
-          className="inline-flex h-7 w-7 items-center justify-center rounded-[var(--radius-md)] text-[var(--text-secondary)] hover:bg-[var(--surface-hover)] transition-colors duration-[var(--duration-fast)]"
-        >
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M5.5 3.5L9 7L5.5 10.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
-      </div>
-
-      {/* Day labels */}
-      <div className="grid grid-cols-7 mb-1">
-        {DAY_LABELS.map((label) => (
-          <div
-            key={label}
-            className="flex h-8 items-center justify-center text-[var(--text-xs)] font-[var(--font-medium)] text-[var(--text-muted)]"
-          >
-            {label}
-          </div>
-        ))}
-      </div>
-
-      {/* Day cells */}
-      <div className="grid grid-cols-7">
-        {days.map((day, i) => (
-          <div key={i} className="flex items-center justify-center">
-            {day !== null ? (
-              <button
-                type="button"
-                onClick={() => onChange?.(new Date(viewYear, viewMonth, day))}
-                className={cn(
-                  'inline-flex h-8 w-8 items-center justify-center rounded-full',
-                  'text-[var(--text-sm)] font-[var(--font-medium)]',
-                  'transition-colors duration-[var(--duration-fast)]',
-                  'focus-visible:outline-none focus-visible:shadow-[var(--shadow-focus-ring)]',
-                  isSelected(day)
-                    ? 'bg-[var(--accent-primary)] text-white'
-                    : isToday(day)
-                      ? 'bg-[var(--surface-subtle)] text-[var(--text-primary)] hover:bg-[var(--accent-primary)] hover:text-white'
-                      : 'text-[var(--text-primary)] hover:bg-[var(--surface-hover)]'
-                )}
-              >
-                {day}
-              </button>
-            ) : (
-              <span className="h-8 w-8" />
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+import { Calendar } from './Calendar';
 
 /* ─── DatePicker ──────────────────────────────────────────────────────── */
 
@@ -181,7 +46,7 @@ function DatePicker({
           'border border-[var(--border-default)] bg-white',
           'transition-[border-color,box-shadow] duration-[var(--duration-moderate)] ease-[var(--ease-default)]',
           'hover:border-[var(--border-strong)]',
-          'focus-visible:outline-none focus-visible:border-[var(--border-accent)] focus-visible:shadow-[var(--shadow-focus-ring)]',
+          'focus-visible:outline-none focus-visible:border-[var(--border-focus)] focus-visible:shadow-[var(--shadow-focus-ring)]',
           'disabled:cursor-not-allowed disabled:opacity-50',
           hasError && 'border-[var(--border-error)]',
           className

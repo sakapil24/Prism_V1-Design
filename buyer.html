@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Startup Buyer Portal | Prism Indian VCs Marketplace</title>
+    
+    <!-- Meta Descriptions for SEO -->
+    <meta name="description" content="Access VC-curated SaaS credit deals, trusted vendors, and manage your portfolio redemptions in one high-fidelity portal." />
+
+    <!-- Google Font: Manrope -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+    <!-- Link to tokens explicitly (in case of page loads prior to bundler mount) -->
+    <link rel="stylesheet" href="./src/design-system/tokens/tokens.css" />
+
+    <!-- Detect file:// protocol block and display user-friendly helper warning -->
+    <script>
+      if (window.location.protocol === 'file:') {
+        document.addEventListener('DOMContentLoaded', () => {
+          const warning = document.createElement('div');
+          warning.style.cssText = 'background:#FEF2F2; border:1.5px solid #DC2626; padding:20px; margin:32px; border-radius:12px; font-family:"Manrope", sans-serif; color:#991B1B; line-height:1.6; max-width:600px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);';
+          warning.innerHTML = '<h3 style="margin-top:0; font-size:15px; font-weight:700;">Local File Protocol Detected (CORS block)</h3>' +
+            '<p style="font-size:13px; margin-bottom:12px;">Because React components and Tailwind CSS v4 compile on-the-fly, browsers block them from executing when loaded directly from the filesystem (<code>file:///...</code>).</p>' +
+            '<p style="font-size:13px; margin-bottom:0;">Please access the fully compiled application through the active Vite server at: <br/>' +
+            '<a href="http://localhost:5173/buyer.html" style="font-weight:bold; color:#DC2626; text-decoration:underline; font-size:14px;">http://localhost:5173/buyer.html</a></p>';
+          document.body.insertBefore(warning, document.body.firstChild);
+        });
+      }
+    </script>
+  </head>
+  <body class="bg-[var(--surface-page)] text-[var(--text-primary)] antialiased font-sans">
+    <div id="root" class="h-screen w-screen overflow-hidden"></div>
+    <script type="module" src="./src/buyer/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,1935 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prism × Airbnb — Essence</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  /* ───────────────────────────── Tokens ─────────────────────────────
+     Airbnb's structural language (Manrope, near-true-gray, generous radii,
+     barely-there shadows) carrying Prism's color palette. */
+  :root {
+    /* Prism brand — sourced from design.md §2.1 */
+    --p-red:        #D21905;  /* brand.red — primary CTA, Rausch role */
+    --p-clay-dark:  #810100;  /* brand.clayDark — CTA hover / pressed */
+    --p-clay-light: #AB342B;  /* brand.clayLight — soft accent, links */
+    --p-charcoal:   #191816;  /* brand.charcoal — Prism's true text */
+    --p-cocoa:      #301008;  /* brand.cocoa — premium dark */
+    --p-pearl:      #F8F8EE;  /* brand.pearl — marketing canvas */
+
+    /* Airbnb-aligned near-true-gray neutrals. Cooler than Prism's slate
+       ramp but truer to Airbnb's feel. */
+    --n-0:   #FFFFFF;
+    --n-50:  #FAFAFA;
+    --n-100: #F7F7F7;
+    --n-150: #F2F2F2;
+    --n-200: #EBEBEB;
+    --n-300: #DDDDDD;
+    --n-400: #C2C2C2;
+    --n-500: #717171;
+    --n-600: #6A6A6A;
+    --n-700: #484848;
+    --n-800: #2D2D2D;
+    --n-900: #222222;
+
+    /* Surfaces */
+    --bg-canvas:  #FFFFFF;
+    --bg-surface: #FFFFFF;
+    --bg-subtle:  #F7F7F7;
+    --bg-muted:   #FAFAFA;
+
+    /* Text */
+    --text-primary:   var(--n-900);
+    --text-secondary: var(--n-700);
+    --text-muted:     var(--n-500);
+    --text-faint:     var(--n-400);
+
+    /* Borders / dividers */
+    --border-subtle:  var(--n-200);
+    --border-default: var(--n-300);
+    --border-strong:  var(--n-900);
+    --divider:        var(--n-200);
+
+    /* CTAs — Prism red plays Rausch's role */
+    --cta-primary-bg:       var(--p-red);
+    --cta-primary-bg-hover: var(--p-clay-dark);
+    --cta-primary-fg:       #FFFFFF;
+    --cta-gradient:         linear-gradient(to right, #D21905 0%, #AB342B 50%, #810100 100%);
+
+    /* The Link motif & focus */
+    --link-bar:   var(--p-red);
+    --focus-ring: var(--p-red);
+
+    /* Radii — Airbnb generous ramp */
+    --r-sm: 4px; --r-md: 8px; --r-lg: 12px; --r-xl: 16px; --r-2xl: 24px; --r-pill: 9999px;
+
+    /* Shadows — Airbnb-soft (max 0.12 alpha) */
+    --elev-0: 0 0 0 1px rgba(0,0,0,0.04);
+    --elev-1: 0 0 0 1px rgba(0,0,0,0.02), 0 2px 4px rgba(0,0,0,0.04);
+    --elev-2: 0 0 0 1px rgba(0,0,0,0.02), 0 2px 6px rgba(0,0,0,0.04), 0 4px 8px rgba(0,0,0,0.10);
+    --elev-3: 0 0 0 1px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.06), 0 8px 28px rgba(0,0,0,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg-canvas);
+    color: var(--text-primary);
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px; line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    padding: 32px 24px 96px;
+  }
+  ::selection { background: rgba(210, 25, 5, 0.16); }
+  a { color: var(--p-clay-light); text-decoration: underline; }
+  a:hover { color: var(--p-clay-dark); }
+  code { font-family: "SF Mono", Menlo, monospace; font-size: 0.88em; padding: 1px 6px; background: var(--bg-subtle); border-radius: 4px; }
+
+  .container { max-width: 1280px; margin: 0 auto; }
+
+  /* ───── Page nav (sibling pages) ───── */
+  .pagenav {
+    position: sticky; top: 12px; z-index: 50;
+    display: inline-flex; gap: 4px;
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: saturate(140%) blur(10px);
+    -webkit-backdrop-filter: saturate(140%) blur(10px);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-pill);
+    padding: 4px;
+    margin-bottom: 28px;
+    box-shadow: 0 8px 20px -10px rgba(0,0,0,0.16), 0 2px 6px -2px rgba(0,0,0,0.06);
+    flex-wrap: wrap;
+  }
+  .pagenav a {
+    text-decoration: none;
+    padding: 8px 16px;
+    font-size: 13px; font-weight: 500;
+    color: var(--text-secondary);
+    border-radius: var(--r-pill);
+    transition: background 150ms, color 150ms;
+  }
+  .pagenav a:hover { color: var(--text-primary); }
+  .pagenav a.is-active { background: var(--p-charcoal); color: #FFFFFF; }
+  .pagenav .lk { display: inline-block; width: 12px; height: 2px; background: var(--n-400); margin-right: 6px; vertical-align: middle; }
+  .pagenav a.is-active .lk { background: var(--p-red); }
+
+  /* ───── Hero ───── */
+  header.hero { margin-bottom: 36px; }
+  .anchor-bar { width: 48px; height: 3px; background: var(--link-bar); margin-bottom: 18px; border-radius: 1px; }
+  h1 {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800; font-size: 42px; line-height: 1.08;
+    letter-spacing: -0.028em; margin: 0 0 12px;
+  }
+  .subtitle { color: var(--text-secondary); font-size: 16px; margin: 0; max-width: 780px; line-height: 1.55; }
+
+  /* ───── Section ───── */
+  section { margin-top: 56px; }
+  .sec-eye {
+    text-transform: uppercase; letter-spacing: 0.10em;
+    font-size: 11px; font-weight: 700; color: var(--text-muted);
+    margin-bottom: 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sec-eye::before { content: ""; width: 16px; height: 2px; background: var(--link-bar); }
+  .sec-title {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700; font-size: 26px;
+    letter-spacing: -0.02em; line-height: 1.2;
+    margin: 0;
+  }
+  .sec-note { color: var(--text-muted); font-size: 14px; margin: 8px 0 24px; max-width: 820px; line-height: 1.55; }
+
+  /* ───── Palette comparison ───── */
+  .pal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 24px;
+  }
+  .pal-col h3 {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700; font-size: 18px; letter-spacing: -0.01em;
+    margin: 0 0 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .pal-col h3 .who {
+    font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-muted);
+    padding: 3px 9px; border-radius: var(--r-pill);
+    background: var(--bg-subtle);
+  }
+  .pal-col .pal-list { display: flex; flex-direction: column; gap: 8px; }
+  .pal-swatch {
+    display: grid;
+    grid-template-columns: 56px 1fr auto;
+    gap: 16px; align-items: center;
+    padding: 10px 14px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-md);
+  }
+  .pal-swatch .chip {
+    width: 56px; height: 40px;
+    border-radius: var(--r-sm);
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
+  }
+  .pal-swatch .name { font-size: 14px; font-weight: 600; line-height: 1.3; }
+  .pal-swatch .role { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .pal-swatch .hex {
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 12px; color: var(--text-muted);
+    background: var(--bg-subtle);
+    padding: 4px 8px; border-radius: var(--r-sm);
+  }
+  .pal-col.airbnb h3 .who  { background: #FFE4E5; color: #D2424A; }
+  .pal-col.prism h3 .who   { background: #FBE5E1; color: var(--p-red); }
+  .pal-col.refined h3 .who { background: #F0E5DC; color: #7D3D2F; }
+
+  /* Refined-rationale callout — uses the proposed palette itself */
+  .refined-note {
+    margin-top: 24px;
+    padding: 18px 20px;
+    background: #FAF4E8;
+    border: 1px solid #E8C5B8;
+    border-left: 3px solid #B85A4A;
+    border-radius: var(--r-md);
+    font-size: 13.5px; line-height: 1.65;
+    color: #3D332C;
+    max-width: 980px;
+  }
+  .refined-note strong { font-weight: 700; }
+  .refined-note .h {
+    display: block;
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: #B85A4A;
+    margin-bottom: 6px;
+  }
+
+  /* ───── Palette options (three picks) ───── */
+  .options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 20px;
+  }
+  .option-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-lg);
+    padding: 22px;
+    display: flex; flex-direction: column;
+    gap: 16px;
+  }
+  .option-card .opt-header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .option-card h3 {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700; font-size: 20px;
+    letter-spacing: -0.015em;
+    margin: 0;
+  }
+  .option-card .opt-badge {
+    font-size: 10.5px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.10em;
+    color: var(--text-muted);
+    padding: 4px 9px;
+    background: var(--bg-subtle);
+    border-radius: var(--r-pill);
+    white-space: nowrap;
+  }
+  .option-card .vibe {
+    font-size: 13.5px; color: var(--text-muted);
+    margin: 0; line-height: 1.5;
+  }
+
+  /* Live preview tile — uses the option's own palette via CSS vars */
+  .opt-preview {
+    border-radius: var(--r-md);
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+    background: var(--opt-cream);
+    padding: 20px;
+    color: var(--opt-dark);
+    position: relative;
+  }
+  .opt-preview .ph {
+    height: 88px;
+    border-radius: var(--r-md);
+    background: linear-gradient(135deg, var(--opt-pastel), var(--opt-accent));
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .opt-preview .ph .heart {
+    position: absolute; top: 10px; right: 10px;
+    font-size: 22px;
+    color: var(--opt-primary);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.18);
+  }
+  .opt-preview .ttl {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700; font-size: 16px;
+    letter-spacing: -0.005em;
+    color: var(--opt-dark);
+    margin: 0 0 4px;
+  }
+  .opt-preview .desc {
+    font-size: 13px; line-height: 1.5;
+    color: var(--opt-dark);
+    opacity: 0.72;
+    margin: 0 0 14px;
+  }
+  .opt-preview .row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .opt-preview .btn-x {
+    height: 36px; padding: 0 16px;
+    background: var(--opt-primary);
+    color: #FFFFFF;
+    border: 0; border-radius: 8px;
+    font: inherit; font-weight: 600; font-size: 14px;
+    cursor: pointer;
+  }
+  .opt-preview .tag-x {
+    display: inline-flex; align-items: center;
+    padding: 4px 11px;
+    background: var(--opt-pastel);
+    color: var(--opt-primary);
+    border-radius: 999px;
+    font-size: 12px; font-weight: 600;
+  }
+  .opt-preview .cool-dot {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 500;
+    color: var(--opt-cool);
+  }
+  .opt-preview .cool-dot::before {
+    content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--opt-cool);
+  }
+
+  /* Compact swatch list */
+  .opt-swatches { display: flex; flex-direction: column; gap: 4px; }
+  .opt-swatch {
+    display: grid;
+    grid-template-columns: 28px 1fr auto;
+    gap: 12px;
+    align-items: center;
+    font-size: 13px;
+    padding: 4px 0;
+  }
+  .opt-swatch .sw {
+    width: 28px; height: 22px;
+    border-radius: 4px;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
+  }
+  .opt-swatch .nm { font-weight: 500; color: var(--text-primary); }
+  .opt-swatch .rl { font-size: 11.5px; color: var(--text-muted); font-weight: 400; }
+  .opt-swatch .hex {
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* ── Per-option palettes ── */
+  .option-card[data-opt="coral"] {
+    --opt-primary: #E0594E;
+    --opt-accent:  #FFA98A;
+    --opt-pastel:  #FFE5D6;
+    --opt-cool:    #1FA39C;
+    --opt-dark:    #2D2520;
+    --opt-cream:   #FFFFFF;
+  }
+  .option-card[data-opt="brick"] {
+    --opt-primary: #BC4538;
+    --opt-accent:  #DD7464;
+    --opt-pastel:  #F4E5D5;
+    --opt-cool:    #C99B47;
+    --opt-dark:    #2A2520;
+    --opt-cream:   #FFFFFF;
+  }
+  .option-card[data-opt="crimson"] {
+    --opt-primary: #C84743;
+    --opt-accent:  #F08272;
+    --opt-pastel:  #FAD4CB;
+    --opt-cool:    #3D5A80;
+    --opt-dark:    #2E2522;
+    --opt-cream:   #FFFFFF;
+  }
+
+  /* ───── Role mapping table ───── */
+  .mapping {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+  }
+  .mapping table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .mapping th, .mapping td { padding: 12px 18px; text-align: left; vertical-align: middle; }
+  .mapping th {
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-muted);
+    background: var(--bg-subtle);
+    border-bottom: 1px solid var(--divider);
+  }
+  .mapping tr + tr td { border-top: 1px solid var(--divider); }
+  .mapping td .swatch-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 4px 10px 4px 4px;
+    background: var(--bg-muted);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-pill);
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 12px;
+  }
+  .mapping td .swatch-pill .sw { width: 20px; height: 20px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(0,0,0,0.10); }
+  .mapping td .role { font-weight: 600; }
+  .mapping td .arrow { color: var(--text-faint); padding: 0 4px; }
+
+  /* ───── Aesthetic takeaways ───── */
+  .takeaways {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+  }
+  @media (max-width: 880px) { .takeaways { grid-template-columns: 1fr; } }
+  .takeaway {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-md);
+    padding: 16px 18px;
+  }
+  .takeaway .k {
+    font-size: 11px; font-weight: 700; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+  .takeaway .v { font-size: 14px; line-height: 1.55; color: var(--text-primary); }
+  .takeaway .v code { font-size: 0.85em; }
+
+  /* ───── Specimen frame ───── */
+  .specimen {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-lg);
+    padding: 28px;
+    margin-top: 12px;
+  }
+  .specimen.flush { padding: 0; overflow: hidden; }
+  .spec-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+  .spec-grid { display: grid; gap: 14px; }
+  .spec-label {
+    font-size: 11px; font-weight: 700; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+
+  /* ───── Buttons (canonical Airbnb · sentence-case · Prism colors) ───── */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 8px;
+    padding: 0 18px; height: 44px;
+    font-family: inherit; font-weight: 600;
+    font-size: 15px; line-height: 1;
+    border: 0; cursor: pointer;
+    border-radius: var(--r-md);
+    transition: background 150ms, color 150ms, border-color 150ms, transform 80ms;
+    white-space: nowrap; user-select: none;
+    text-decoration: none;
+  }
+  .btn:active { transform: scale(0.985); }
+  .btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+  .btn.primary {
+    background: var(--cta-primary-bg);
+    color: var(--cta-primary-fg);
+  }
+  .btn.primary:hover { background: var(--cta-primary-bg-hover); }
+  .btn.gradient {
+    background: var(--cta-gradient);
+    color: #FFFFFF;
+  }
+  .btn.gradient:hover { filter: brightness(0.95); }
+  .btn.secondary {
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    border: 1px solid var(--border-strong);
+  }
+  .btn.secondary:hover { background: var(--bg-subtle); }
+  .btn.ghost {
+    background: transparent;
+    color: var(--text-primary);
+    text-decoration: underline;
+    padding: 0 12px;
+  }
+  .btn.ghost:hover { background: var(--bg-subtle); }
+  .btn.destructive {
+    background: var(--p-red); color: #FFFFFF;
+  }
+  .btn.destructive:hover { background: var(--p-clay-dark); }
+  .btn.sm { height: 36px; padding: 0 14px; font-size: 14px; }
+  .btn.lg { height: 52px; padding: 0 24px; font-size: 16px; }
+  .btn .ic { width: 16px; height: 16px; }
+  .btn.lg .ic { width: 18px; height: 18px; }
+  .btn:disabled, .btn.is-disabled { opacity: 0.45; cursor: not-allowed; }
+  .btn.icon-only { width: 44px; padding: 0; border-radius: 50%; }
+  .btn.icon-only.sm { width: 36px; }
+  .btn.icon-only.lg { width: 52px; }
+  .btn-circle {
+    width: 56px; height: 56px;
+    border-radius: 50%; border: 0;
+    background: var(--cta-gradient);
+    color: #FFFFFF; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    box-shadow: var(--elev-2);
+    transition: filter 150ms, transform 80ms;
+  }
+  .btn-circle:hover { filter: brightness(0.95); }
+  .btn-circle:active { transform: scale(0.96); }
+  .btn-circle .ic { width: 20px; height: 20px; }
+
+  /* ───── Floating-label inputs (Airbnb hallmark) ───── */
+  .float-field {
+    position: relative;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    border-radius: var(--r-md);
+    height: 56px;
+    transition: border-color 150ms;
+  }
+  .float-field input,
+  .float-field select {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    padding: 22px 14px 8px;
+    background: transparent;
+    border: 0; outline: 0;
+    font: inherit; font-size: 15px;
+    color: var(--text-primary);
+    border-radius: inherit;
+  }
+  .float-field label {
+    position: absolute;
+    top: 50%; left: 14px;
+    transform: translateY(-50%);
+    font-size: 15px; color: var(--text-muted);
+    pointer-events: none;
+    transition: transform 150ms, font-size 150ms, color 150ms;
+    background: transparent;
+  }
+  .float-field.filled label,
+  .float-field:focus-within label {
+    transform: translateY(-150%);
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+  .float-field:focus-within {
+    border-color: var(--text-primary);
+    border-width: 2px;
+  }
+  .float-field.error { border-color: var(--p-red); }
+  .float-field.error label { color: var(--p-red); }
+  .float-field .hint { position: absolute; top: 100%; left: 4px; margin-top: 6px; font-size: 12px; color: var(--text-muted); }
+
+  /* Stacked input pair (e.g., login / signup) */
+  .float-stack { display: flex; flex-direction: column; }
+  .float-stack .float-field { border-radius: 0; }
+  .float-stack .float-field:first-child { border-top-left-radius: var(--r-md); border-top-right-radius: var(--r-md); }
+  .float-stack .float-field:last-child { border-top: 0; border-bottom-left-radius: var(--r-md); border-bottom-right-radius: var(--r-md); }
+
+  /* ───── Stepper / numeric selector ───── */
+  .stepper-list { display: flex; flex-direction: column; gap: 0; }
+  .stepper {
+    display: flex; align-items: center;
+    padding: 18px 0;
+    border-top: 1px solid var(--divider);
+  }
+  .stepper:first-child { border-top: 0; }
+  .stepper .info { flex: 1; }
+  .stepper .info .l { font-size: 16px; font-weight: 600; }
+  .stepper .info .d { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+  .stepper .ctrl { display: inline-flex; align-items: center; gap: 14px; }
+  .stepper .ctrl button {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--border-default);
+    background: transparent;
+    color: var(--text-primary);
+    cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: border-color 150ms, color 150ms;
+  }
+  .stepper .ctrl button:hover { border-color: var(--text-primary); }
+  .stepper .ctrl button:disabled { opacity: 0.35; cursor: not-allowed; }
+  .stepper .ctrl button:disabled:hover { border-color: var(--border-default); }
+  .stepper .ctrl button .ic { width: 12px; height: 12px; }
+  .stepper .ctrl .v { font-size: 16px; min-width: 16px; text-align: center; font-variant-numeric: tabular-nums; }
+
+  /* ───── Range date picker (2 months) ───── */
+  .dp {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-lg);
+    padding: 28px 24px 20px;
+    box-shadow: var(--elev-3);
+    max-width: 720px;
+  }
+  .dp-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .dp-head .dp-nav { display: inline-flex; gap: 8px; }
+  .dp-head .dp-nav button {
+    width: 36px; height: 36px; border-radius: 50%;
+    border: 0; background: transparent;
+    cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--text-primary);
+  }
+  .dp-head .dp-nav button:hover { background: var(--bg-subtle); }
+  .dp-head .dp-nav button .ic { width: 14px; height: 14px; }
+  .dp-months { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+  @media (max-width: 720px) { .dp-months { grid-template-columns: 1fr; gap: 24px; } }
+  .dp-month .mname { text-align: center; font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+  .dp-grid {
+    display: grid; grid-template-columns: repeat(7, 1fr);
+    gap: 2px; font-size: 14px; text-align: center;
+  }
+  .dp-dow {
+    color: var(--text-muted); padding: 6px 0;
+    font-weight: 600; font-size: 10.5px;
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .dp-day {
+    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; cursor: pointer; font-variant-numeric: tabular-nums;
+    color: var(--text-primary);
+    border: 0; background: transparent;
+    font: inherit;
+  }
+  .dp-day:hover { box-shadow: inset 0 0 0 1px var(--text-primary); }
+  .dp-day.muted { color: var(--text-faint); cursor: default; }
+  .dp-day.muted:hover { box-shadow: none; }
+  .dp-day.sel { background: var(--p-charcoal); color: #FFFFFF; }
+  .dp-day.in-range {
+    background: var(--bg-subtle);
+    color: var(--text-primary);
+    border-radius: 0;
+  }
+  .dp-day.range-start { background: var(--p-charcoal); color: #FFFFFF; border-radius: 50% 0 0 50%; }
+  .dp-day.range-end   { background: var(--p-charcoal); color: #FFFFFF; border-radius: 0 50% 50% 0; }
+  .dp-foot {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--divider);
+    font-size: 13px;
+  }
+  .dp-foot .clear { color: var(--text-primary); text-decoration: underline; background: transparent; border: 0; padding: 0; cursor: pointer; font: inherit; }
+  .dp-foot .range-out { color: var(--text-muted); }
+  .dp-foot .range-out strong { color: var(--text-primary); font-weight: 600; }
+
+  /* ───── Visual card grid (1:1 image · heart · rating · price) ───── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 28px 18px;
+  }
+  .card-item { display: flex; flex-direction: column; gap: 12px; cursor: pointer; }
+  .card-item:hover .ci-img { transform: scale(1.02); }
+  .ci-img {
+    aspect-ratio: 1 / 1;
+    border-radius: var(--r-lg);
+    position: relative;
+    overflow: hidden;
+    transition: transform 220ms cubic-bezier(0.2, 0, 0, 1);
+  }
+  .ci-img.g-1 { background: linear-gradient(135deg, #FFE5DC, #FFC0AD); }
+  .ci-img.g-2 { background: linear-gradient(135deg, #E8F4F4, #B0DDE0); }
+  .ci-img.g-3 { background: linear-gradient(135deg, #F2EAD8, #E0CFB0); }
+  .ci-img.g-4 { background: linear-gradient(135deg, #EFE4F0, #C9B5CD); }
+  .ci-tag {
+    position: absolute; top: 12px; left: 12px;
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    font-size: 12px; font-weight: 600;
+    padding: 5px 10px;
+    border-radius: var(--r-md);
+    box-shadow: var(--elev-1);
+  }
+  .ci-heart {
+    position: absolute; top: 12px; right: 12px;
+    width: 32px; height: 32px;
+    background: transparent; border: 0;
+    color: rgba(255,255,255,1);
+    -webkit-text-stroke: 1.4px rgba(0,0,0,0.55);
+    font-size: 24px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.18);
+    transition: transform 100ms;
+  }
+  .ci-heart:hover { transform: scale(1.08); }
+  .ci-heart.saved { color: var(--p-red); -webkit-text-stroke: 1.4px var(--p-red); }
+  .ci-dots {
+    position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+    display: inline-flex; gap: 4px;
+  }
+  .ci-dots span { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.6); }
+  .ci-dots span.on { background: #FFFFFF; }
+  .ci-meta { display: flex; flex-direction: column; gap: 2px; padding: 0 2px; }
+  .ci-row { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .ci-ttl { font-size: 15px; font-weight: 600; letter-spacing: -0.005em; }
+  .ci-rate { display: inline-flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 500; }
+  .ci-rate .star { color: var(--text-primary); }
+  .ci-sub { font-size: 14px; color: var(--text-muted); }
+  .ci-price { font-size: 14px; color: var(--text-primary); margin-top: 4px; }
+  .ci-price strong { font-weight: 600; }
+
+  /* ───── Photo grid hero (1 big + 4 small) ───── */
+  .pgrid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: repeat(2, 1fr);
+    gap: 8px;
+    height: 420px;
+    border-radius: var(--r-xl);
+    overflow: hidden;
+    position: relative;
+  }
+  .pgrid .ph { background-size: cover; background-position: center; cursor: pointer; }
+  .pgrid .ph.main { grid-row: 1 / 3; grid-column: 1; }
+  .pgrid .ph.g-1 { background: linear-gradient(135deg, #FFD3C2, #FF8E73); }
+  .pgrid .ph.g-2 { background: linear-gradient(135deg, #C8E0E2, #7FB1B4); }
+  .pgrid .ph.g-3 { background: linear-gradient(135deg, #E8DAB7, #B89E68); }
+  .pgrid .ph.g-4 { background: linear-gradient(135deg, #D9C7DD, #9B7CA1); }
+  .pgrid .ph.g-5 { background: linear-gradient(135deg, #FFE0E8, #FF9DB4); }
+  .pgrid .show-all {
+    position: absolute; bottom: 18px; right: 18px;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 14px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--r-md);
+    font: inherit; font-size: 13px; font-weight: 600;
+    color: var(--text-primary);
+    cursor: pointer;
+    box-shadow: var(--elev-2);
+  }
+  .pgrid .show-all .ic { width: 14px; height: 14px; }
+
+  /* ───── Two-column detail (sticky right card) ───── */
+  .detail-cols {
+    display: grid; grid-template-columns: 1fr 380px;
+    gap: 56px; align-items: start;
+  }
+  @media (max-width: 980px) { .detail-cols { grid-template-columns: 1fr; gap: 32px; } }
+  .detail-h2 {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700; font-size: 22px;
+    letter-spacing: -0.015em; margin: 0 0 14px;
+  }
+  .detail-text { font-size: 15px; line-height: 1.6; color: var(--text-primary); margin: 0; }
+  .detail-bar { padding: 24px 0; border-top: 1px solid var(--divider); }
+  .detail-bar:first-of-type { border-top: 0; padding-top: 0; }
+  .detail-bar:last-of-type { border-bottom: 1px solid var(--divider); }
+
+  .booking-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-lg);
+    padding: 22px;
+    box-shadow: var(--elev-2);
+    position: sticky; top: 80px;
+  }
+  .booking-card .price-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 18px; }
+  .booking-card .price-row .price { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+  .booking-card .price-row .per { font-size: 15px; color: var(--text-muted); }
+  .booking-card .bc-fields {
+    display: grid; grid-template-columns: 1fr 1fr;
+    border: 1px solid var(--border-default);
+    border-radius: var(--r-md);
+    margin-bottom: 12px;
+  }
+  .booking-card .bc-field { padding: 10px 12px; cursor: pointer; }
+  .booking-card .bc-field + .bc-field { border-left: 1px solid var(--border-default); }
+  .booking-card .bc-field.full {
+    grid-column: 1 / -1; border-top: 1px solid var(--border-default); border-left: 0;
+  }
+  .booking-card .bc-field .l { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+  .booking-card .bc-field .v { font-size: 14px; color: var(--text-muted); margin-top: 2px; }
+  .booking-card .summary { padding: 18px 0; border-top: 1px solid var(--divider); margin-top: 18px; }
+  .booking-card .summary .row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; color: var(--text-secondary); }
+  .booking-card .summary .row.total {
+    margin-top: 8px; padding-top: 14px;
+    border-top: 1px solid var(--divider);
+    color: var(--text-primary); font-weight: 700; font-size: 15px;
+  }
+  .booking-card .reserve-line { font-size: 12px; color: var(--text-muted); text-align: center; }
+
+  /* ───── "What's included" list (Lucide icons) ───── */
+  .incl-list {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px 36px;
+  }
+  @media (max-width: 720px) { .incl-list { grid-template-columns: 1fr; } }
+  .incl-row { display: flex; align-items: center; gap: 14px; padding: 6px 0; }
+  .incl-row .ic { width: 22px; height: 22px; color: var(--text-primary); flex: none; }
+  .incl-row .lbl { font-size: 15px; color: var(--text-primary); }
+  .incl-row.unavailable .ic, .incl-row.unavailable .lbl {
+    color: var(--text-faint); text-decoration: line-through; text-decoration-thickness: 1px;
+  }
+
+  /* ───── Reviews ───── */
+  .rev-summary { display: grid; grid-template-columns: 200px 1fr; gap: 48px; align-items: flex-start; }
+  @media (max-width: 720px) { .rev-summary { grid-template-columns: 1fr; gap: 24px; } }
+  .rev-score { text-align: center; }
+  .rev-score .big {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800; font-size: 64px; line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .rev-score .star-row { display: inline-flex; gap: 2px; margin-top: 8px; color: var(--text-primary); font-size: 14px; }
+  .rev-score .small { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
+  .rev-bars { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 32px; }
+  .rev-bar-row { display: grid; grid-template-columns: 1fr 100px 28px; gap: 12px; align-items: center; font-size: 13px; }
+  .rev-bar { height: 4px; background: var(--bg-subtle); border-radius: var(--r-pill); overflow: hidden; }
+  .rev-bar > i { display: block; height: 100%; background: var(--p-charcoal); border-radius: var(--r-pill); }
+  .rev-bar-row .v { text-align: right; color: var(--text-primary); font-variant-numeric: tabular-nums; }
+
+  .rev-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 32px; }
+  @media (max-width: 720px) { .rev-grid { grid-template-columns: 1fr; } }
+  .rev-card .who-row { display: flex; gap: 12px; align-items: center; margin-bottom: 10px; }
+  .rev-card .avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, #FFC0AD, #FF8E73);
+    color: #FFFFFF;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 16px;
+  }
+  .rev-card .avatar.b { background: linear-gradient(135deg, #B0DDE0, #7FB1B4); }
+  .rev-card .who { font-weight: 600; font-size: 15px; }
+  .rev-card .where { font-size: 13px; color: var(--text-muted); }
+  .rev-card .meta-row { display: inline-flex; gap: 6px; align-items: center; font-size: 13px; color: var(--text-muted); margin-bottom: 8px; }
+  .rev-card .meta-row .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--n-400); }
+  .rev-card .body { font-size: 14.5px; line-height: 1.55; color: var(--text-primary); }
+
+  /* ───── Profile card ───── */
+  .profile {
+    display: grid; grid-template-columns: 280px 1fr;
+    gap: 36px;
+  }
+  @media (max-width: 720px) { .profile { grid-template-columns: 1fr; gap: 20px; } }
+  .profile-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-xl);
+    padding: 22px;
+    box-shadow: var(--elev-1);
+    text-align: center;
+  }
+  .profile-card .av-lg {
+    width: 96px; height: 96px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #FFC0AD, #FF8E73);
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #FFFFFF; font-weight: 700; font-size: 36px;
+    position: relative;
+  }
+  .profile-card .av-lg .badge {
+    position: absolute; bottom: 0; right: 0;
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--p-red); color: #FFFFFF;
+    border: 3px solid var(--bg-surface);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .profile-card .av-lg .badge .ic { width: 14px; height: 14px; }
+  .profile-card .name { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+  .profile-card .role { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+  .profile-card .stats {
+    display: flex; justify-content: space-around;
+    border-top: 1px solid var(--divider);
+    margin-top: 18px; padding-top: 16px;
+  }
+  .profile-card .stat .v { font-weight: 700; font-size: 18px; letter-spacing: -0.005em; }
+  .profile-card .stat .k { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .profile-bio h4 { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 18px; margin: 0 0 12px; letter-spacing: -0.01em; }
+  .profile-bio p { font-size: 15px; line-height: 1.6; color: var(--text-primary); margin: 0 0 16px; }
+  .profile-bio .traits { display: flex; flex-wrap: wrap; gap: 6px; }
+  .profile-bio .trait {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 5px 11px;
+    background: var(--bg-subtle);
+    border-radius: var(--r-pill);
+    font-size: 12.5px; color: var(--text-primary);
+  }
+  .profile-bio .trait .ic { width: 12px; height: 12px; }
+
+  /* ───── Things to know (3-column) ───── */
+  .ttk-cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  @media (max-width: 720px) { .ttk-cols { grid-template-columns: 1fr; } }
+  .ttk h4 {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700; font-size: 17px;
+    letter-spacing: -0.01em;
+    margin: 0 0 12px;
+  }
+  .ttk ul { list-style: none; padding: 0; margin: 0; }
+  .ttk li { font-size: 14.5px; padding: 6px 0; color: var(--text-primary); line-height: 1.45; }
+  .ttk a { color: var(--text-primary); text-decoration: underline; }
+
+  /* ───── Auth modal (phone-first · social fallback) ───── */
+  .modal-wrap {
+    background: var(--bg-subtle);
+    border-radius: var(--r-xl);
+    padding: 28px;
+    display: inline-block;
+  }
+  .modal {
+    width: 440px; max-width: 100%;
+    background: var(--bg-surface);
+    border-radius: var(--r-xl);
+    box-shadow: var(--elev-3);
+    overflow: hidden;
+  }
+  .modal-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 24px;
+    border-bottom: 1px solid var(--divider);
+  }
+  .modal-head .t { font-weight: 700; font-size: 15px; }
+  .modal-head .x { width: 32px; height: 32px; border: 0; background: transparent; cursor: pointer; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: var(--text-primary); }
+  .modal-head .x:hover { background: var(--bg-subtle); }
+  .modal-head .x .ic { width: 14px; height: 14px; }
+  .modal-body { padding: 24px; }
+  .modal-body .welcome { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: -0.015em; margin: 0 0 18px; }
+  .or-row { display: flex; align-items: center; gap: 12px; margin: 22px 0; font-size: 12px; font-weight: 600; color: var(--text-muted); }
+  .or-row::before, .or-row::after { content: ""; flex: 1; height: 1px; background: var(--divider); }
+  .social-row { display: flex; flex-direction: column; gap: 10px; }
+  .social-btn {
+    display: flex; align-items: center;
+    width: 100%;
+    height: 50px; padding: 0 18px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--r-md);
+    cursor: pointer;
+    font: inherit; font-size: 15px; font-weight: 500;
+    color: var(--text-primary);
+    transition: background 150ms;
+    position: relative;
+  }
+  .social-btn:hover { background: var(--bg-subtle); }
+  .social-btn .ic { width: 18px; height: 18px; }
+  .social-btn .label { flex: 1; text-align: center; }
+  .fine-print { font-size: 12px; color: var(--text-muted); margin-top: 18px; line-height: 1.55; }
+  .fine-print a { color: var(--text-primary); text-decoration: underline; font-weight: 500; }
+
+  /* ───── Bottom sheet (mobile) ───── */
+  .phone-frame {
+    width: 360px; max-width: 100%;
+    height: 600px;
+    background: var(--bg-canvas);
+    border: 1px solid var(--border-default);
+    border-radius: 36px;
+    overflow: hidden;
+    position: relative;
+    margin: 0 auto;
+    box-shadow: var(--elev-3);
+  }
+  .phone-frame::before {
+    content: "";
+    position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+    width: 80px; height: 6px; background: var(--n-300);
+    border-radius: 999px;
+  }
+  .phone-content {
+    height: 100%;
+    background: var(--bg-subtle);
+    padding-top: 36px;
+    position: relative;
+  }
+  .bottom-sheet {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    background: var(--bg-surface);
+    border-top-left-radius: var(--r-xl);
+    border-top-right-radius: var(--r-xl);
+    box-shadow: 0 -8px 24px rgba(0,0,0,0.08);
+    padding: 14px 18px 22px;
+  }
+  .bottom-sheet .handle {
+    width: 40px; height: 4px;
+    background: var(--n-300);
+    border-radius: 999px;
+    margin: 0 auto 14px;
+  }
+  .bottom-sheet h5 { font-family: 'Manrope', sans-serif; font-weight: 700; font-size: 17px; letter-spacing: -0.005em; margin: 0 0 8px; }
+  .bottom-sheet .desc { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.5; }
+  .bottom-sheet .actions { display: flex; gap: 8px; }
+  .bottom-sheet .actions .btn { flex: 1; }
+
+  /* Sticky reserve bar */
+  .sticky-bar {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    background: var(--bg-surface);
+    border-top: 1px solid var(--divider);
+    padding: 12px 18px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .sticky-bar .price-bit { display: flex; flex-direction: column; }
+  .sticky-bar .price-bit .v { font-weight: 700; font-size: 16px; }
+  .sticky-bar .price-bit .dates { font-size: 11px; color: var(--text-muted); text-decoration: underline; }
+  .sticky-bar .btn { margin-left: auto; }
+
+  /* ───── Footer ───── */
+  .doc-foot {
+    margin-top: 64px;
+    padding: 20px 24px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--r-lg);
+    border-left: 3px solid var(--p-red);
+  }
+  .doc-foot h4 { margin: 0 0 6px; font-size: 14px; font-weight: 700; letter-spacing: -0.005em; }
+  .doc-foot p { margin: 0; color: var(--text-secondary); font-size: 13.5px; line-height: 1.55; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ───── Page nav ───── -->
+  <nav class="pagenav" aria-label="Design system pages">
+    <a href="system-v1.html"><span class="lk"></span>Prism v1</a>
+    <a href="components.html"><span class="lk"></span>Components</a>
+    <a href="prism-charcoal.html"><span class="lk"></span>Charcoal</a>
+    <a href="prism-airbnb.html"><span class="lk"></span>Airbnb</a>
+    <a href="prism-charcoal-airbnb.html"><span class="lk"></span>Charcoal × Airbnb</a>
+    <a href="prism-essence.html" class="is-active"><span class="lk"></span>Essence</a>
+    <a href="prism-foundations.html"><span class="lk"></span>Foundations</a>
+    <a href="prism-foundations-v2.html"><span class="lk"></span>Foundations v2</a>
+  </nav>
+
+  <!-- ───── Hero ───── -->
+  <header class="hero">
+    <div class="anchor-bar"></div>
+    <h1>Airbnb essence · Prism colors</h1>
+    <p class="subtitle">Airbnb's structural language — Manrope, generous radii, near-true-gray neutrals, sentence-case CTAs, barely-there shadows — carrying Prism's locked palette where Rausch and friends would go. This page compares the two systems, names which Prism token plays each Airbnb role, and demonstrates the synthesis in component form. The hero search pill and Airbnb-custom illustrations are intentionally absent; icons are line-style per design.md §6.1.</p>
+  </header>
+
+  <!-- ───── Palette comparison ───── -->
+  <section style="margin-top: 32px;">
+    <div class="sec-eye">Palette comparison</div>
+    <h2 class="sec-title">Two systems, side by side</h2>
+    <p class="sec-note">Airbnb's brand is anchored by Rausch (their signature red) with a small set of secondary accents — saturated but pleasant. Prism's palette is locked at six brand values, leaning dark and red-heavy. Three exploratory alternatives below trade the all-warm darkness for hue range while keeping the red lead.</p>
+
+    <div class="pal-grid">
+
+      <div class="pal-col airbnb">
+        <h3>Airbnb brand <span class="who">Source</span></h3>
+        <div class="pal-list">
+          <div class="pal-swatch">
+            <div class="chip" style="background: #FF5A5F"></div>
+            <div>
+              <div class="name">Rausch</div>
+              <div class="role">Primary brand · CTA · heart · Superhost</div>
+            </div>
+            <span class="hex">#FF5A5F</span>
+          </div>
+          <div class="pal-swatch">
+            <div class="chip" style="background: #FC642D"></div>
+            <div>
+              <div class="name">Arches</div>
+              <div class="role">Accent · Plus / Luxe</div>
+            </div>
+            <span class="hex">#FC642D</span>
+          </div>
+          <div class="pal-swatch">
+            <div class="chip" style="background: #00A699"></div>
+            <div>
+              <div class="name">Babu</div>
+              <div class="role">Secondary accent · info · experiences</div>
+            </div>
+            <span class="hex">#00A699</span>
+          </div>
+          <div class="pal-swatch">
+            <div class="chip" style="background: #484848"></div>
+            <div>
+              <div class="name">Hof</div>
+              <div class="role">Text primary</div>
+            </div>
+            <span class="hex">#484848</span>
+          </div>
+          <div class="pal-swatch">
+            <div class="chip" style="background: #767676"></div>
+            <div>
+              <div class="name">Foggy</div>
+              <div class="role">Text muted · captions</div>
+            </div>
+            <span class="hex">#767676</span>
+          </div>
+          <div class="pal-swatch">
+            <div class="chip" style="background: #FFFFFF; box-shadow: inset 0 0 0 1px var(--border-default);"></div>
+            <div>
+              <div class="name">White</div>
+              <div class="role">Canvas · cards</div>
+            </div>
+            <span class="hex">#FFFFFF</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pal-col prism">
+        <h3>Prism brand <span class="who">Locked</span></h3>
+        <div class="pal-list">
+          <div class="pal-swatch">
+            <div class="chip" style="background: #D21905"></div>
+            <div>
+              <div class="name">Indian VCs Red</div>
+              <div class="role">The Link · focus · errors · brand pause</div>
+            </div>
+            <span class="hex">#D21905</span>
+          </div>
+          <div class="pal-swatch">
+            <div class="chip" style="background: #AB342B"></div>
+            <div>
+              <div class="name">Clay Red Light</div>
+              <div class="role">Default product CTA · soft accent · links</div>
+            </div>
+            <span class="hex">#AB342B</span>
+          </div>
+          <div class="pal-swatch">
+            <div class="chip" style="background: #810100"></div>
+            <div>
+              <div class="name">Clay Red Dark</div>
+              <div class="role">CTA hover / pressed · deep accent</div>
+            </div>
+            <span class="hex">#810100</span>
+          </div>
+          <div class="pal-swatch">
+            <div class="chip" style="background: #191816"></div>
+            <div>
+              <div class="name">Charcoal</div>
+              <div class="role">Text primary · dark canvas · inverse</div>
+            </div>
+            <span class="hex">#191816</span>
+          </div>
+          <div class="pal-swatch">
+            <div class="chip" style="background: #301008"></div>
+            <div>
+              <div class="name">Cocoa</div>
+              <div class="role">Premium dark · hero / splash</div>
+            </div>
+            <span class="hex">#301008</span>
+          </div>
+          <div class="pal-swatch">
+            <div class="chip" style="background: #F8F8EE"></div>
+            <div>
+              <div class="name">Pearl Cream</div>
+              <div class="role">Marketing canvas only — not in product</div>
+            </div>
+            <span class="hex">#F8F8EE</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ───── Three palette options ───── -->
+  <section>
+    <div class="sec-eye">Color options</div>
+    <h2 class="sec-title">Three palettes that feel alive</h2>
+    <p class="sec-note">Each option keeps Prism's locked DNA — red leads, six values — but trades a third dark red for a cool counterweight, and softens the warm dark toward a deep but breathable text color. None are desaturated; pleasant ≠ dull. Each preview tile below uses only its own palette so you can read the feeling, not just the hex.</p>
+
+    <div class="options-grid">
+
+      <div class="option-card" data-opt="coral">
+        <div class="opt-header">
+          <h3>Coral &amp; Teal</h3>
+          <span class="opt-badge">Option 1</span>
+        </div>
+        <p class="vibe">Airbnb-adjacent. Friendliest of the three. Warm coral red balanced by a fresh teal. Reads contemporary, slightly playful.</p>
+
+        <div class="opt-preview">
+          <div class="ph"><span class="heart">♥</span></div>
+          <div class="ttl">Beachfront villa · Goa</div>
+          <p class="desc">Pleasant warmth, friendly red, cool relief — the eye relaxes.</p>
+          <div class="row">
+            <button class="btn-x">Reserve</button>
+            <span class="tag-x">Guest favorite</span>
+            <span class="cool-dot">Verified</span>
+          </div>
+        </div>
+
+        <div class="opt-swatches">
+          <div class="opt-swatch"><span class="sw" style="background: #E0594E"></span><span class="nm">Coral <span class="rl">· Primary CTA</span></span><span class="hex">#E0594E</span></div>
+          <div class="opt-swatch"><span class="sw" style="background: #FFA98A"></span><span class="nm">Peach <span class="rl">· Soft accent</span></span><span class="hex">#FFA98A</span></div>
+          <div class="opt-swatch"><span class="sw" style="background: #FFE5D6"></span><span class="nm">Apricot Cream <span class="rl">· Tag bg</span></span><span class="hex">#FFE5D6</span></div>
+          <div class="opt-swatch"><span class="sw" style="background: #1FA39C"></span><span class="nm">Teal <span class="rl">· Cool relief</span></span><span class="hex">#1FA39C</span></div>
+          <div class="opt-swatch"><span class="sw" style="background: #2D2520"></span><span class="nm">Espresso <span class="rl">· Text</span></span><span class="hex">#2D2520</span></div>
+          <div class="opt-swatch"><span class="sw" style="background: #FFFFFF; box-shadow: inset 0 0 0 1px var(--border-default);"></span><span class="nm">White <span class="rl">· Canvas</span></span><span class="hex">#FFFFFF</span></div>
+        </div>
+      </div>
+
+      <div class="option-card" data-opt="brick">
+        <div class="opt-header">
+          <h3>Brick &amp; Brass</h3>
+          <span class="opt-badge">Option 2</span>
+        </div>
+        <p class="vibe">Editorial. Deeper brick red sits next to brass yellow — the magazine-cover register. Confident, slightly elevated, less playful than Option 1.</p>
+
+        <div class="opt-preview">
+          <div class="ph"><span class="heart">♥</span></div>
+          <div class="ttl">Restored heritage stay · Udaipur</div>
+          <p class="desc">Warmer reds, brass touches, ivory base — feels considered.</p>
+          <div class="row">
+            <button class="btn-x">Reserve</button>
+            <span class="tag-x">Featured</span>
+            <span class="cool-dot">Editor's pick</span>
+          </div>
+        </div>
+
+        <div class="opt-swatches">
+          <div class="opt-swatch"><span class="sw" style="background: #BC4538"></span><span class="nm">Brick <span class="rl">· Primary CTA</span></span><span class="hex">#BC4538</span></div>
+          <div class="opt-swatch"><span class="sw" style="background: #DD7464"></span><span class="nm">Coral Light <span class="rl">· Soft accent</span></span><span class="hex">#DD7464</span></div>
+          <div class="opt-swatch"><span class="sw" style="background: #F4E5D5"></span><span class="nm">Linen <span class="rl">· Tag bg</span></span><span class="hex">#F4E5D5</span></div>
+          <div class="opt-swatch"><span class="sw" style="background: #C99B47"></span><span class="nm">Brass <span class="rl">· Warm accent</span></span><span class="hex">#C99B47</span></div>
+          <div class="opt-swatch"><span class="sw" style="background: #2A2520"></span><span class="nm">Warm Char <span class="rl">· Text</span></span><span class="hex">#2A2520</span></div>
+          <div class="opt-swatch"><span class="sw" style="background: #FFFFFF; box-shadow: inset 0 0 0 1px var(--border-default);"></span><span class="nm">White <span class="rl">· Canvas</span></span><span class="hex">#FFFFFF</span></div>
+        </div>
+      </div>
+
+      <div class="option-card" data-opt="crimson">
+        <div class="opt-header">
+          <h3>Crimson &amp; Indigo</h3>
+          <span class="opt-badge">Option 3</span>
+        </div>
+        <p class="vibe">Luxe. Rich crimson next to a deep indigo blue — the most premium register. Formal but not cold. Closest to Prism in red character.</p>
+
+        <div class="opt-preview">
+          <div class="ph"><span class="heart">♥</span></div>
+          <div class="ttl">Modernist apartment · Mumbai</div>
+          <p class="desc">Confident red, deep indigo for trust, blush for warmth.</p>
+          <div class="row">
+            <button class="btn-x">Reserve</button>
+            <span class="tag-x">Superhost</span>
+            <span class="cool-dot">Verified host</span>
+          </div>
+        </div>
+
+        <div class="opt-swatches">
+          <div class="opt-swatch"><span class="sw" style="background: #C84743"></span><span class="nm">Crimson <span class="rl">· Primary CTA</span></span><span class="hex">#C84743</span></div>
+          <div class="opt-swatch"><span class="sw" style="background: #F08272"></span><span class="nm">Rose <span class="rl">· Soft accent</span></span><span class="hex">#F08272</span></div>
+          <div class="opt-swatch"><span class="sw" style="background: #FAD4CB"></span><span class="nm">Blush <span class="rl">· Tag bg</span></span><span class="hex">#FAD4CB</span></div>
+          <div class="opt-swatch"><span class="sw" style="background: #3D5A80"></span><span class="nm">Indigo <span class="rl">· Cool relief</span></span><span class="hex">#3D5A80</span></div>
+          <div class="opt-swatch"><span class="sw" style="background: #2E2522"></span><span class="nm">Walnut <span class="rl">· Text</span></span><span class="hex">#2E2522</span></div>
+          <div class="opt-swatch"><span class="sw" style="background: #FFFFFF; box-shadow: inset 0 0 0 1px var(--border-default);"></span><span class="nm">White <span class="rl">· Canvas</span></span><span class="hex">#FFFFFF</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ───── Role mapping ───── -->
+  <section>
+    <div class="sec-eye">Role mapping</div>
+    <h2 class="sec-title">Which Prism token plays which Airbnb role</h2>
+    <p class="sec-note">The merge isn't 1:1. Airbnb leans on three brand accents (Rausch, Babu, Arches); Prism leans on two reds (brand red + clay). Babu has no direct Prism analog and is dropped in favor of Prism's status palette. Arches collapses into clay-dark for hover states.</p>
+
+    <div class="mapping">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 28%;">Role</th>
+            <th style="width: 30%;">Airbnb</th>
+            <th style="width: 30%;">Prism</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="role">Primary CTA · brand red</td>
+            <td><span class="swatch-pill"><span class="sw" style="background:#FF5A5F"></span>Rausch · #FF5A5F</span></td>
+            <td><span class="arrow">→</span><span class="swatch-pill"><span class="sw" style="background:#D21905"></span>Brand red · #D21905</span></td>
+            <td>Prism's red is deeper, less coral. Reads more deliberate.</td>
+          </tr>
+          <tr>
+            <td class="role">CTA hover / pressed</td>
+            <td><span class="swatch-pill"><span class="sw" style="background:#E0484D"></span>Rausch dim · #E0484D</span></td>
+            <td><span class="arrow">→</span><span class="swatch-pill"><span class="sw" style="background:#810100"></span>Clay dark · #810100</span></td>
+            <td>Drops one full step rather than a 5% dim. Stronger affordance.</td>
+          </tr>
+          <tr>
+            <td class="role">Hero gradient sweep</td>
+            <td><span class="swatch-pill"><span class="sw" style="background:linear-gradient(to right,#FF5A5F,#E0484D,#BD1E59)"></span>Pink-red sunset</span></td>
+            <td><span class="arrow">→</span><span class="swatch-pill"><span class="sw" style="background:linear-gradient(to right,#D21905,#AB342B,#810100)"></span>Prism sunset</span></td>
+            <td>Same arc, our hue. Used on round CTAs and reserve buttons.</td>
+          </tr>
+          <tr>
+            <td class="role">Soft accent · link</td>
+            <td><span class="swatch-pill"><span class="sw" style="background:#FC642D"></span>Arches · #FC642D</span></td>
+            <td><span class="arrow">→</span><span class="swatch-pill"><span class="sw" style="background:#AB342B"></span>Clay light · #AB342B</span></td>
+            <td>Arches' orange has no equivalent. Clay light absorbs the role.</td>
+          </tr>
+          <tr>
+            <td class="role">Info / experiences</td>
+            <td><span class="swatch-pill"><span class="sw" style="background:#00A699"></span>Babu · #00A699</span></td>
+            <td><span class="arrow">→</span><span class="swatch-pill"><span class="sw" style="background:#2D5DA0"></span>Info · #2D5DA0</span></td>
+            <td>Babu is dropped. Prism's semantic info plays "tip / banner" roles.</td>
+          </tr>
+          <tr>
+            <td class="role">Text primary</td>
+            <td><span class="swatch-pill"><span class="sw" style="background:#222222"></span>Airbnb #222</span></td>
+            <td><span class="arrow">→</span><span class="swatch-pill"><span class="sw" style="background:#191816"></span>Charcoal · #191816</span></td>
+            <td>Functionally identical at body sizes; Prism brand value preferred.</td>
+          </tr>
+          <tr>
+            <td class="role">Text muted</td>
+            <td><span class="swatch-pill"><span class="sw" style="background:#767676"></span>Foggy · #767676</span></td>
+            <td><span class="arrow">→</span><span class="swatch-pill"><span class="sw" style="background:#717171"></span>Neutral 500 · #717171</span></td>
+            <td>Airbnb-aligned neutral retained for screen feel.</td>
+          </tr>
+          <tr>
+            <td class="role">Border subtle</td>
+            <td><span class="swatch-pill"><span class="sw" style="background:#EBEBEB"></span>Airbnb #EBEBEB</span></td>
+            <td><span class="arrow">→</span><span class="swatch-pill"><span class="sw" style="background:#EBEBEB"></span>Same</span></td>
+            <td>Airbnb's true-gray border kept; warmer than Prism's slate.</td>
+          </tr>
+          <tr>
+            <td class="role">Canvas</td>
+            <td><span class="swatch-pill"><span class="sw" style="background:#FFFFFF; box-shadow: inset 0 0 0 1px #DDD;"></span>White</span></td>
+            <td><span class="arrow">→</span><span class="swatch-pill"><span class="sw" style="background:#FFFFFF; box-shadow: inset 0 0 0 1px #DDD;"></span>White</span></td>
+            <td>Pearl Cream stays out — marketing-only per Prism rules.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ───── Aesthetic takeaways ───── -->
+  <section>
+    <div class="sec-eye">Aesthetic takeaways</div>
+    <h2 class="sec-title">What carries over from Airbnb</h2>
+    <p class="sec-note">Type, geometry, weight. The Airbnb feel comes from the spacing between forms more than from any single token.</p>
+
+    <div class="takeaways">
+      <div class="takeaway">
+        <div class="k">Typeface</div>
+        <div class="v"><code>Manrope</code> — geometric, friendly, dense-friendly. 800-weight headlines tightly tracked at <code>-0.025em</code> are the signature.</div>
+      </div>
+      <div class="takeaway">
+        <div class="k">Headlines</div>
+        <div class="v">Centered, oversized (40–48px), sentence-case. They feel editorial without going serif.</div>
+      </div>
+      <div class="takeaway">
+        <div class="k">CTA voice</div>
+        <div class="v">Sentence-case (<code>Save</code>, <code>Reserve</code>) — <em>not</em> Prism's uppercase tracked CTAs. The Airbnb feel evaporates if you uppercase.</div>
+      </div>
+      <div class="takeaway">
+        <div class="k">Radii</div>
+        <div class="v"><code>8 / 12 / 16</code>px ramp. Buttons 8, cards 12, modals 16. Photo grid wraps at 16. No pill buttons except for filter chips.</div>
+      </div>
+      <div class="takeaway">
+        <div class="k">Shadows</div>
+        <div class="v">Three layers max, all under <code>0.12</code> alpha. Cards rest with no shadow — borders do the work.</div>
+      </div>
+      <div class="takeaway">
+        <div class="k">Neutrals</div>
+        <div class="v">Near-true-gray. <code>#EBEBEB</code> for borders, <code>#717171</code> for muted text. Warmer than Prism's slate ramp — kept to preserve the feel.</div>
+      </div>
+      <div class="takeaway">
+        <div class="k">Save icon</div>
+        <div class="v">Heart (outline → red fill), not bookmark. Outline carries a 1.2px black stroke at low alpha to read on any photo.</div>
+      </div>
+      <div class="takeaway">
+        <div class="k">Input pattern</div>
+        <div class="v">Floating-label, 56px tall, animated. Active border thickens to 2px in <code>charcoal</code>.</div>
+      </div>
+      <div class="takeaway">
+        <div class="k">What's out</div>
+        <div class="v">Hero search pill, property-type filter strip, all Airbnb-illustrated icons (Belo, balloon, cabin, fire, etc.). Lucide line icons substitute.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── Buttons ───── -->
+  <section>
+    <div class="sec-eye">Buttons</div>
+    <h2 class="sec-title">Canonical buttons — sentence-case, 8px radius</h2>
+    <p class="sec-note">Primary uses solid Prism red. The gradient variant is reserved for hero / reserve moments — Airbnb's "sunset" CTA in Prism hue. Secondary is white with a strong charcoal border (Airbnb hallmark). Ghost is plain underlined text.</p>
+
+    <div class="specimen">
+      <div class="spec-label">Variants · default size</div>
+      <div class="spec-row" style="margin-bottom: 24px;">
+        <button class="btn primary">Save</button>
+        <button class="btn gradient">Reserve</button>
+        <button class="btn secondary">Show more</button>
+        <button class="btn ghost">Cancel</button>
+        <button class="btn destructive">Remove listing</button>
+      </div>
+
+      <div class="spec-label">Sizes</div>
+      <div class="spec-row" style="margin-bottom: 24px;">
+        <button class="btn primary sm">Save</button>
+        <button class="btn primary">Save</button>
+        <button class="btn primary lg">Save</button>
+      </div>
+
+      <div class="spec-label">Circle CTA — used on the hero gradient</div>
+      <div class="spec-row" style="margin-bottom: 24px;">
+        <button class="btn-circle" aria-label="Search"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg></button>
+        <button class="btn-circle" aria-label="Next"><svg class="ic" aria-hidden="true"><use href="#i-arrow-right"/></svg></button>
+      </div>
+
+      <div class="spec-label">States</div>
+      <div class="spec-row">
+        <button class="btn primary">Default</button>
+        <button class="btn primary" style="background: var(--cta-primary-bg-hover);">Hover</button>
+        <button class="btn primary" disabled>Disabled</button>
+        <button class="btn secondary">Default</button>
+        <button class="btn secondary" style="background: var(--bg-subtle);">Hover</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── Floating-label inputs ───── -->
+  <section>
+    <div class="sec-eye">Form inputs</div>
+    <h2 class="sec-title">Floating-label inputs — Airbnb's hallmark</h2>
+    <p class="sec-note">56px tall. Label sits centered until the field gains focus or content, then snaps to the top-left as a 11px caption. Active border is 2px charcoal — focus ring is implied by the thicker border. Stacked groups (login email + password) share borders to read as one block.</p>
+
+    <div class="specimen">
+      <div class="spec-grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 18px;">
+        <div class="float-field filled">
+          <label>First name</label>
+          <input type="text" value="Kapil">
+        </div>
+        <div class="float-field">
+          <label>Last name</label>
+          <input type="text">
+        </div>
+        <div class="float-field filled" style="border-color: var(--text-primary); border-width: 2px;">
+          <label>Email</label>
+          <input type="email" value="kapil@indianvcs.in">
+        </div>
+        <div class="float-stack">
+          <div class="float-field"><label>Email</label><input type="email"></div>
+          <div class="float-field"><label>Password</label><input type="password"></div>
+        </div>
+        <div class="float-field error" style="grid-column: span 2;">
+          <label>Phone number</label>
+          <input type="tel" value="+91 ">
+          <div class="hint" style="color: var(--p-red);">Enter a valid phone number.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── Range date picker ───── -->
+  <section>
+    <div class="sec-eye">Calendar</div>
+    <h2 class="sec-title">Range picker — two months side by side</h2>
+    <p class="sec-note">Day cells are circular when selected at the endpoints, pill-shaped through the range. Cell colors use Prism charcoal for endpoints and a subtle gray fill for the interior — staying clear of red so the date range doesn't fight the CTA below it.</p>
+
+    <div class="specimen">
+      <div class="dp">
+        <div class="dp-head">
+          <button class="dp-nav-btn" aria-label="Previous" style="width: 36px; height: 36px; border-radius: 50%; border: 0; background: transparent; cursor: pointer; display:inline-flex; align-items:center; justify-content:center; color: var(--text-primary);">
+            <svg class="ic" width="14" height="14" aria-hidden="true"><use href="#i-chevron-left"/></svg>
+          </button>
+          <div></div>
+          <button class="dp-nav-btn" aria-label="Next" style="width: 36px; height: 36px; border-radius: 50%; border: 0; background: transparent; cursor: pointer; display:inline-flex; align-items:center; justify-content:center; color: var(--text-primary);">
+            <svg class="ic" width="14" height="14" aria-hidden="true"><use href="#i-chevron-right"/></svg>
+          </button>
+        </div>
+
+        <div class="dp-months">
+          <div class="dp-month">
+            <div class="mname">May 2026</div>
+            <div class="dp-grid">
+              <div class="dp-dow">M</div><div class="dp-dow">T</div><div class="dp-dow">W</div><div class="dp-dow">T</div><div class="dp-dow">F</div><div class="dp-dow">S</div><div class="dp-dow">S</div>
+              <button class="dp-day muted">28</button><button class="dp-day muted">29</button><button class="dp-day muted">30</button><button class="dp-day">1</button><button class="dp-day">2</button><button class="dp-day">3</button><button class="dp-day">4</button>
+              <button class="dp-day">5</button><button class="dp-day">6</button><button class="dp-day">7</button><button class="dp-day">8</button><button class="dp-day">9</button><button class="dp-day">10</button><button class="dp-day">11</button>
+              <button class="dp-day range-start">12</button><button class="dp-day in-range">13</button><button class="dp-day in-range">14</button><button class="dp-day in-range">15</button><button class="dp-day in-range">16</button><button class="dp-day range-end">17</button><button class="dp-day">18</button>
+              <button class="dp-day">19</button><button class="dp-day">20</button><button class="dp-day">21</button><button class="dp-day">22</button><button class="dp-day">23</button><button class="dp-day">24</button><button class="dp-day">25</button>
+              <button class="dp-day">26</button><button class="dp-day">27</button><button class="dp-day">28</button><button class="dp-day">29</button><button class="dp-day">30</button><button class="dp-day">31</button><button class="dp-day muted">1</button>
+            </div>
+          </div>
+          <div class="dp-month">
+            <div class="mname">June 2026</div>
+            <div class="dp-grid">
+              <div class="dp-dow">M</div><div class="dp-dow">T</div><div class="dp-dow">W</div><div class="dp-dow">T</div><div class="dp-dow">F</div><div class="dp-dow">S</div><div class="dp-dow">S</div>
+              <button class="dp-day">1</button><button class="dp-day">2</button><button class="dp-day">3</button><button class="dp-day">4</button><button class="dp-day">5</button><button class="dp-day">6</button><button class="dp-day">7</button>
+              <button class="dp-day">8</button><button class="dp-day">9</button><button class="dp-day">10</button><button class="dp-day">11</button><button class="dp-day">12</button><button class="dp-day">13</button><button class="dp-day">14</button>
+              <button class="dp-day">15</button><button class="dp-day">16</button><button class="dp-day">17</button><button class="dp-day">18</button><button class="dp-day">19</button><button class="dp-day">20</button><button class="dp-day">21</button>
+              <button class="dp-day">22</button><button class="dp-day">23</button><button class="dp-day">24</button><button class="dp-day">25</button><button class="dp-day">26</button><button class="dp-day">27</button><button class="dp-day">28</button>
+              <button class="dp-day">29</button><button class="dp-day">30</button><button class="dp-day muted">1</button><button class="dp-day muted">2</button><button class="dp-day muted">3</button><button class="dp-day muted">4</button><button class="dp-day muted">5</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="dp-foot">
+          <div class="range-out"><strong>May 12 – May 17</strong> · 5 nights</div>
+          <button class="clear">Clear dates</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── Stepper ───── -->
+  <section>
+    <div class="sec-eye">Stepper</div>
+    <h2 class="sec-title">Numeric selector — Airbnb's guest pattern, generalized</h2>
+    <p class="sec-note">Row-level pattern. Label + helper on the left, ±/value cluster on the right. The minus button disables at 0; outline thickens on hover. Useful for any "how many" question — guests, seats, line items.</p>
+
+    <div class="specimen" style="max-width: 560px;">
+      <div class="stepper-list">
+        <div class="stepper">
+          <div class="info">
+            <div class="l">Adults</div>
+            <div class="d">Ages 13 or above</div>
+          </div>
+          <div class="ctrl">
+            <button aria-label="Decrease"><svg class="ic" aria-hidden="true"><use href="#i-minus"/></svg></button>
+            <span class="v">2</span>
+            <button aria-label="Increase"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg></button>
+          </div>
+        </div>
+        <div class="stepper">
+          <div class="info">
+            <div class="l">Children</div>
+            <div class="d">Ages 2 – 12</div>
+          </div>
+          <div class="ctrl">
+            <button aria-label="Decrease" disabled><svg class="ic" aria-hidden="true"><use href="#i-minus"/></svg></button>
+            <span class="v">0</span>
+            <button aria-label="Increase"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg></button>
+          </div>
+        </div>
+        <div class="stepper">
+          <div class="info">
+            <div class="l">Infants</div>
+            <div class="d">Under 2</div>
+          </div>
+          <div class="ctrl">
+            <button aria-label="Decrease"><svg class="ic" aria-hidden="true"><use href="#i-minus"/></svg></button>
+            <span class="v">1</span>
+            <button aria-label="Increase"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg></button>
+          </div>
+        </div>
+        <div class="stepper">
+          <div class="info">
+            <div class="l">Pets</div>
+            <div class="d"><a href="#">Bringing a service animal?</a></div>
+          </div>
+          <div class="ctrl">
+            <button aria-label="Decrease" disabled><svg class="ic" aria-hidden="true"><use href="#i-minus"/></svg></button>
+            <span class="v">0</span>
+            <button aria-label="Increase"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── Visual card grid ───── -->
+  <section>
+    <div class="sec-eye">Cards</div>
+    <h2 class="sec-title">Visual card grid — 1:1 image, heart, rating, price</h2>
+    <p class="sec-note">Square image with rounded outer corners; "Guest favorite" tag top-left, save heart top-right (red fill when saved), photo dots centered along the bottom. Title and star rating share a row; sub-text and price stack below. Image scales subtly on hover.</p>
+
+    <div class="specimen">
+      <div class="cards">
+        <article class="card-item">
+          <div class="ci-img g-1">
+            <span class="ci-tag">Guest favorite</span>
+            <button class="ci-heart saved" aria-label="Saved">♥</button>
+            <span class="ci-dots"><span class="on"></span><span></span><span></span><span></span><span></span></span>
+          </div>
+          <div class="ci-meta">
+            <div class="ci-row"><div class="ci-ttl">Goa, India</div><div class="ci-rate"><span class="star">★</span> 4.94</div></div>
+            <div class="ci-sub">2,381 kilometers away</div>
+            <div class="ci-sub">May 12 – 17</div>
+            <div class="ci-price"><strong>₹6,420</strong> night</div>
+          </div>
+        </article>
+        <article class="card-item">
+          <div class="ci-img g-2">
+            <button class="ci-heart" aria-label="Save">♥</button>
+            <span class="ci-dots"><span></span><span class="on"></span><span></span><span></span></span>
+          </div>
+          <div class="ci-meta">
+            <div class="ci-row"><div class="ci-ttl">Coorg, India</div><div class="ci-rate"><span class="star">★</span> 4.87</div></div>
+            <div class="ci-sub">1,202 kilometers away</div>
+            <div class="ci-sub">May 18 – 23</div>
+            <div class="ci-price"><strong>₹4,800</strong> night</div>
+          </div>
+        </article>
+        <article class="card-item">
+          <div class="ci-img g-3">
+            <span class="ci-tag">Guest favorite</span>
+            <button class="ci-heart" aria-label="Save">♥</button>
+            <span class="ci-dots"><span class="on"></span><span></span><span></span></span>
+          </div>
+          <div class="ci-meta">
+            <div class="ci-row"><div class="ci-ttl">Udaipur, India</div><div class="ci-rate"><span class="star">★</span> 5.00</div></div>
+            <div class="ci-sub">1,850 kilometers away</div>
+            <div class="ci-sub">Jun 4 – 9</div>
+            <div class="ci-price"><strong>₹12,200</strong> night</div>
+          </div>
+        </article>
+        <article class="card-item">
+          <div class="ci-img g-4">
+            <button class="ci-heart" aria-label="Save">♥</button>
+            <span class="ci-dots"><span></span><span class="on"></span><span></span><span></span><span></span></span>
+          </div>
+          <div class="ci-meta">
+            <div class="ci-row"><div class="ci-ttl">Manali, India</div><div class="ci-rate"><span class="star">★</span> 4.76</div></div>
+            <div class="ci-sub">2,002 kilometers away</div>
+            <div class="ci-sub">Jul 20 – 25</div>
+            <div class="ci-price"><strong>₹3,950</strong> night</div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── Photo grid hero ───── -->
+  <section>
+    <div class="sec-eye">Photo hero</div>
+    <h2 class="sec-title">Photo grid — 1 big + 4 small with "Show all"</h2>
+    <p class="sec-note">2:1 grid baked into a single 16-radius rounded shell. Overlay button bottom-right uses the secondary button treatment (white surface, charcoal border) so it reads on any photo background.</p>
+
+    <div class="specimen flush" style="padding: 24px;">
+      <div class="pgrid">
+        <div class="ph main g-1"></div>
+        <div class="ph g-2"></div>
+        <div class="ph g-3"></div>
+        <div class="ph g-4"></div>
+        <div class="ph g-5"></div>
+        <button class="show-all"><svg class="ic" aria-hidden="true"><use href="#i-grid"/></svg> Show all photos</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── Two-column detail w/ sticky booking card ───── -->
+  <section>
+    <div class="sec-eye">Detail layout</div>
+    <h2 class="sec-title">Two-column — content left, sticky booking right</h2>
+    <p class="sec-note">Body wraps in the wide column; reserve card pins on the right at <code>top: 80px</code>. The card holds a 2×2 field grid for dates and guests, a summary block, and the gradient reserve CTA.</p>
+
+    <div class="specimen">
+      <div class="detail-cols">
+        <div>
+          <div class="detail-bar">
+            <h3 class="detail-h2">Entire villa hosted by Meera</h3>
+            <p class="detail-text">6 guests · 3 bedrooms · 4 beds · 2.5 baths</p>
+          </div>
+          <div class="detail-bar">
+            <h3 class="detail-h2">About this place</h3>
+            <p class="detail-text">A modernist beachfront villa five minutes from Anjuna's quieter north stretch. Floor-to-ceiling glass on the main level opens to a covered terrace and an infinity pool that meets the horizon at sunset. The architecture is restrained — concrete, teak, lime — and the materials wear in. There's a small library, a record player, and a covered outdoor shower behind the master.</p>
+          </div>
+          <div class="detail-bar">
+            <h3 class="detail-h2">Sleeping arrangements</h3>
+            <p class="detail-text">3 bedrooms — one king, one queen, two twin beds in the third. All bedrooms have blackout curtains and individual ACs.</p>
+          </div>
+        </div>
+
+        <aside class="booking-card">
+          <div class="price-row">
+            <span class="price">₹12,200</span><span class="per">night</span>
+          </div>
+          <div class="bc-fields">
+            <div class="bc-field"><div class="l">Check-in</div><div class="v">May 12, 2026</div></div>
+            <div class="bc-field"><div class="l">Checkout</div><div class="v">May 17, 2026</div></div>
+            <div class="bc-field full"><div class="l">Guests</div><div class="v">2 adults · 1 infant</div></div>
+          </div>
+          <button class="btn gradient lg" style="width: 100%;">Reserve</button>
+          <div class="reserve-line" style="margin-top: 10px;">You won't be charged yet</div>
+          <div class="summary">
+            <div class="row"><span>₹12,200 × 5 nights</span><span>₹61,000</span></div>
+            <div class="row"><span>Cleaning fee</span><span>₹2,400</span></div>
+            <div class="row"><span>Service fee</span><span>₹3,180</span></div>
+            <div class="row total"><span>Total</span><span>₹66,580</span></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── What's included list ───── -->
+  <section>
+    <div class="sec-eye">Inclusions list</div>
+    <h2 class="sec-title">"What's included" — line icon + label rows</h2>
+    <p class="sec-note">Two-column grid. Icons are Lucide outline at 22px. Unavailable items strike through both icon and label at 40% opacity — Airbnb's deliberate "what you don't get" pattern.</p>
+
+    <div class="specimen">
+      <div class="incl-list">
+        <div class="incl-row"><svg class="ic" aria-hidden="true"><use href="#i-wifi"/></svg><span class="lbl">Wifi · 200 Mbps fiber</span></div>
+        <div class="incl-row"><svg class="ic" aria-hidden="true"><use href="#i-key"/></svg><span class="lbl">Self check-in · keypad</span></div>
+        <div class="incl-row"><svg class="ic" aria-hidden="true"><use href="#i-tv"/></svg><span class="lbl">55" TV · Netflix / Prime</span></div>
+        <div class="incl-row"><svg class="ic" aria-hidden="true"><use href="#i-droplets"/></svg><span class="lbl">Pool · infinity edge</span></div>
+        <div class="incl-row"><svg class="ic" aria-hidden="true"><use href="#i-coffee"/></svg><span class="lbl">Espresso machine · pour-over kit</span></div>
+        <div class="incl-row"><svg class="ic" aria-hidden="true"><use href="#i-parking"/></svg><span class="lbl">Free parking on premises</span></div>
+        <div class="incl-row unavailable"><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg><span class="lbl">Carbon monoxide alarm</span></div>
+        <div class="incl-row unavailable"><svg class="ic" aria-hidden="true"><use href="#i-fire"/></svg><span class="lbl">Fireplace</span></div>
+      </div>
+      <div style="margin-top: 18px;">
+        <button class="btn secondary">Show all 28 amenities</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── Reviews ───── -->
+  <section>
+    <div class="sec-eye">Reviews</div>
+    <h2 class="sec-title">Rating breakdown · review cards</h2>
+    <p class="sec-note">Big star score on the left, six category bars in a 2-column grid on the right. Review cards are simple avatar + name + meta + body — no review-card chrome (no border, no background).</p>
+
+    <div class="specimen">
+      <div class="rev-summary">
+        <div class="rev-score">
+          <div class="big">4.94</div>
+          <div class="star-row">★★★★★</div>
+          <div class="small">281 reviews</div>
+        </div>
+        <div class="rev-bars">
+          <div class="rev-bar-row"><span>Cleanliness</span><span class="rev-bar"><i style="width: 98%"></i></span><span class="v">4.9</span></div>
+          <div class="rev-bar-row"><span>Communication</span><span class="rev-bar"><i style="width: 100%"></i></span><span class="v">5.0</span></div>
+          <div class="rev-bar-row"><span>Check-in</span><span class="rev-bar"><i style="width: 96%"></i></span><span class="v">4.8</span></div>
+          <div class="rev-bar-row"><span>Accuracy</span><span class="rev-bar"><i style="width: 96%"></i></span><span class="v">4.8</span></div>
+          <div class="rev-bar-row"><span>Location</span><span class="rev-bar"><i style="width: 94%"></i></span><span class="v">4.7</span></div>
+          <div class="rev-bar-row"><span>Value</span><span class="rev-bar"><i style="width: 92%"></i></span><span class="v">4.6</span></div>
+        </div>
+      </div>
+
+      <div class="rev-grid">
+        <div class="rev-card">
+          <div class="who-row">
+            <div class="avatar">A</div>
+            <div>
+              <div class="who">Anjali</div>
+              <div class="where">Bengaluru, India</div>
+            </div>
+          </div>
+          <div class="meta-row"><span>3 years on Prism</span><span class="dot"></span><span>April 2026</span><span class="dot"></span><span>Stayed with family</span></div>
+          <p class="body">Quiet, considered, and the kind of place you don't want to leave. Meera left a note with three things she'd do nearby; we did all three. The pool is the real thing — we counted four egrets at sunset.</p>
+        </div>
+        <div class="rev-card">
+          <div class="who-row">
+            <div class="avatar b">R</div>
+            <div>
+              <div class="who">Rohan</div>
+              <div class="where">Mumbai, India</div>
+            </div>
+          </div>
+          <div class="meta-row"><span>1 year on Prism</span><span class="dot"></span><span>March 2026</span><span class="dot"></span><span>Stayed with partner</span></div>
+          <p class="body">The architecture pulls everything together. We were a four-night, two-night-extension kind of trip. Hosts were warm without hovering, which is rare.</p>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <button class="btn secondary">Show all 281 reviews</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── Profile card ───── -->
+  <section>
+    <div class="sec-eye">Profile</div>
+    <h2 class="sec-title">Profile card — avatar, bio, stats, verified badge</h2>
+    <p class="sec-note">Hosts on Airbnb become "people" on Prism. The card holds a 96px avatar (with a red verification badge), name, role, then a 3-stat strip below the divider. Body content lives in the right column.</p>
+
+    <div class="specimen">
+      <div class="profile">
+        <div class="profile-card">
+          <div class="av-lg">M<span class="badge"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span></div>
+          <div class="name">Meera</div>
+          <div class="role">Host since 2019</div>
+          <div class="stats">
+            <div class="stat"><div class="v">281</div><div class="k">Reviews</div></div>
+            <div class="stat"><div class="v">4.94</div><div class="k">Rating</div></div>
+            <div class="stat"><div class="v">5y</div><div class="k">Hosting</div></div>
+          </div>
+        </div>
+        <div class="profile-bio">
+          <h4>About Meera</h4>
+          <p>Architect by training, host by accident. Meera and her partner restored this property over two monsoons and learned, in the process, that hospitality is mostly about leaving people alone gracefully. She'll be on the property when you arrive, gone by the second night, and on text if you need anything.</p>
+          <div class="traits">
+            <span class="trait"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg> Identity verified</span>
+            <span class="trait"><svg class="ic" aria-hidden="true"><use href="#i-shield"/></svg> Background checked</span>
+            <span class="trait"><svg class="ic" aria-hidden="true"><use href="#i-globe"/></svg> Speaks English, Hindi, Konkani</span>
+            <span class="trait"><svg class="ic" aria-hidden="true"><use href="#i-edit"/></svg> 98% response rate</span>
+          </div>
+          <div style="margin-top: 18px;">
+            <button class="btn secondary">Message host</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── Things to know ───── -->
+  <section>
+    <div class="sec-eye">Things to know</div>
+    <h2 class="sec-title">Three-column rules · safety · cancellation</h2>
+    <p class="sec-note">Plain-prose lists. No icons, no chrome. Each column has a 17px Manrope bold header and an unbordered <code>&lt;ul&gt;</code> below — items separated by line-height alone.</p>
+
+    <div class="specimen">
+      <div class="ttk-cols">
+        <div class="ttk">
+          <h4>House rules</h4>
+          <ul>
+            <li>Check-in after 3:00 pm</li>
+            <li>Checkout before 11:00 am</li>
+            <li>Quiet hours after 10:00 pm</li>
+            <li>No smoking inside</li>
+            <li>No parties or events</li>
+            <li><a href="#">Show more</a></li>
+          </ul>
+        </div>
+        <div class="ttk">
+          <h4>Safety &amp; property</h4>
+          <ul>
+            <li>Pool not fenced — children supervised</li>
+            <li>Stairs leading to lower terrace</li>
+            <li>Carbon monoxide alarm not reported</li>
+            <li>Smoke alarm in living room only</li>
+            <li>Security camera at entrance</li>
+            <li><a href="#">Show more</a></li>
+          </ul>
+        </div>
+        <div class="ttk">
+          <h4>Cancellation policy</h4>
+          <ul>
+            <li>Free cancellation before May 7</li>
+            <li>50% refund before May 10</li>
+            <li>No refund after May 12</li>
+            <li><a href="#">Review full policy</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── Auth modal ───── -->
+  <section>
+    <div class="sec-eye">Auth</div>
+    <h2 class="sec-title">Login / Sign-up — phone-first, social fallback</h2>
+    <p class="sec-note">440px modal, 16-radius shell. Stacked floating-label inputs for country and phone read as one combined field. Social row uses secondary buttons with a centered label and a leading 18px icon. Fine print under the social block.</p>
+
+    <div class="specimen" style="background: var(--bg-subtle); padding: 32px; display: flex; justify-content: center;">
+      <div class="modal">
+        <div class="modal-head">
+          <span class="t">Log in or sign up</span>
+          <button class="x" aria-label="Close"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button>
+        </div>
+        <div class="modal-body">
+          <h3 class="welcome">Welcome to Prism</h3>
+          <div class="float-stack">
+            <div class="float-field filled">
+              <label>Country / Region</label>
+              <input type="text" value="India (+91)">
+            </div>
+            <div class="float-field">
+              <label>Phone number</label>
+              <input type="tel">
+            </div>
+          </div>
+          <div class="fine-print" style="margin-top: 8px;">We'll call or text you to confirm your number. Standard message and data rates apply. <a href="#">Privacy policy</a></div>
+          <div style="margin-top: 18px;">
+            <button class="btn gradient lg" style="width: 100%;">Continue</button>
+          </div>
+          <div class="or-row">or</div>
+          <div class="social-row">
+            <button class="social-btn"><svg class="ic" aria-hidden="true"><use href="#i-google"/></svg><span class="label">Continue with Google</span></button>
+            <button class="social-btn"><svg class="ic" aria-hidden="true"><use href="#i-apple"/></svg><span class="label">Continue with Apple</span></button>
+            <button class="social-btn"><svg class="ic" aria-hidden="true"><use href="#i-mail"/></svg><span class="label">Continue with email</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── Mobile patterns ───── -->
+  <section>
+    <div class="sec-eye">Mobile patterns</div>
+    <h2 class="sec-title">Bottom sheet · sticky reserve bar</h2>
+    <p class="sec-note">Phone frame is illustrative. Bottom sheet has a 4px drag handle, 16-radius top corners, and a barely-there shadow rising up. The sticky reserve bar pins to the bottom of the viewport on mobile listing pages.</p>
+
+    <div class="specimen" style="display: flex; gap: 32px; flex-wrap: wrap; justify-content: center;">
+      <div class="phone-frame">
+        <div class="phone-content">
+          <div class="bottom-sheet">
+            <div class="handle"></div>
+            <h5>Confirm your dates</h5>
+            <p class="desc">You're booking May 12 – May 17 for 2 guests. Cancel free before May 7.</p>
+            <div class="actions">
+              <button class="btn secondary">Edit dates</button>
+              <button class="btn gradient">Confirm</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="phone-frame">
+        <div class="phone-content" style="padding: 36px 18px 80px;">
+          <div style="margin-top: 12px; height: 180px; border-radius: var(--r-lg); background: linear-gradient(135deg, #FFD3C2, #FF8E73);"></div>
+          <div style="margin-top: 14px;">
+            <div style="font-weight: 700; font-size: 18px; letter-spacing: -0.01em;">Beachfront villa with infinity pool</div>
+            <div style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">★ 4.94 · 281 reviews · Anjuna, Goa</div>
+          </div>
+          <div class="sticky-bar">
+            <div class="price-bit">
+              <span class="v">₹12,200 night</span>
+              <span class="dates">May 12 – 17</span>
+            </div>
+            <button class="btn gradient">Reserve</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───── Footer ───── -->
+  <div class="doc-foot">
+    <h4>What this page is</h4>
+    <p>A synthesis of Airbnb's product aesthetic with Prism's locked palette and design rules. It documents (1) the brand-color comparison, (2) the Prism→Airbnb role mapping, (3) the structural takeaways, and (4) the component patterns that travel between the two systems. The hero search pill and Airbnb-custom icons are intentionally absent. For Prism's canonical tokens and rules, see <a href="design.md"><code>design.md</code></a>.</p>
+  </div>
+
+</div>
+
+<!-- ───── Lucide-style icon sprite (line-style per design.md §6.1) ───── -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></g></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></g></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></g></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></g></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></g></symbol>
+    <symbol id="i-chevron-left" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></g></symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></g></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></g></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></g></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></g></symbol>
+    <symbol id="i-wifi" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13a10 10 0 0 1 14 0"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M2 8.82a15 15 0 0 1 20 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></g></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="3.5"/><path d="m10 13 9-9 3 3"/><path d="m18 8 2 2"/></g></symbol>
+    <symbol id="i-tv" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="m17 2-5 4-5-4"/></g></symbol>
+    <symbol id="i-droplets" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"/><path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"/></g></symbol>
+    <symbol id="i-coffee" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></g></symbol>
+    <symbol id="i-parking" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 17V7h4a3 3 0 1 1 0 6H9"/></g></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></g></symbol>
+    <symbol id="i-fire" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></g></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></g></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></g></symbol>
+    <symbol id="i-google" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.1c-.22-.66-.35-1.36-.35-2.1s.13-1.44.35-2.1V7.07H2.18A11 11 0 0 0 1 12c0 1.77.42 3.45 1.18 4.93l3.66-2.83z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.07l3.66 2.83C6.71 7.31 9.14 5.38 12 5.38z"/></symbol>
+    <symbol id="i-apple" viewBox="0 0 24 24"><path fill="currentColor" d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></g></symbol>
+  </defs>
+</svg>
+
+</body>
+</html>

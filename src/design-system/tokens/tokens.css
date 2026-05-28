@@ -10,149 +10,126 @@
  */
 
 :root {
-  /* ─── Brand palette (locked from Indian VCs Brand Guide v1.0) ─── */
-  --brand-red:        #D21905;  /* Indian VCs Red — brand-pause only */
-  --brand-charcoal:   #191816;  /* Charcoal — primary text */
-  --brand-cocoa:      #301008;  /* Dark Cocoa — premium dark surfaces */
-  --brand-pearl:      #F8F8EE;  /* Pearl Cream — marketing canvas only */
-  --brand-clay-dark:  #810100;  /* Clay Red Dark — pressed CTA */
-  --brand-clay-light: #AB342B;  /* Clay Red Light — primary CTA */
+  /* ─── Brand palette ─── */
+  --brand-red:        #D21905;  /* Brand Red — Marketing/branding only */
+  --accent-primary:   #C8102E;  /* Prism Product Accent — 3-5% usage target */
 
-  /* ─── Cool slate neutral ramp (anchored to Charcoal at 900) ─── */
-  --color-gray-50:  #F8F9FB;
-  --color-gray-100: #EFF1F4;
-  --color-gray-150: #E8EBF0;
-  --color-gray-200: #E1E4E9;
-  --color-gray-300: #C5CAD2;
-  --color-gray-400: #969CA6;
-  --color-gray-500: #6A707A;
-  --color-gray-600: #4A4F58;
-  --color-gray-700: #30343B;
-  --color-gray-800: #20232A;
-  --color-gray-900: #191816;
+  /* ─── Cool slate neutral ramp (950 to 50) ─── */
+  --color-gray-50:    #FBFCFD;
+  --color-gray-100:   #F5F7F9;
+  --color-gray-200:   #EAEFF3;
+  --color-gray-300:   #D8DEE4;
+  --color-gray-400:   #B8C0C8;
+  --color-gray-500:   #8F97A3;
+  --color-gray-600:   #69707C;
+  --color-gray-700:   #444B55;
+  --color-gray-800:   #2A2E35;
+  --color-gray-900:   #1C1F24;
+  --color-gray-950:   #121417;
 
-  /* ─── Accent (re-mapped from blue → Clay Red) ─── */
-  --color-accent-50:  #FCEEEA;
-  --color-accent-100: #F8DCD3;
-  --color-accent-200: #EBB8AC;
-  --color-accent-300: #D9897C;
-  --color-accent-400: #C25A4D;
-  --color-accent-500: #AB342B;  /* = brand-clay-light */
-  --color-accent-600: #93251D;
-  --color-accent-700: #810100;  /* = brand-clay-dark */
-  --color-accent-800: #5F0100;
-  --color-accent-900: #3D0100;
-
-  /* ─── Status colors ─── */
-  --color-red-50:    #FBE5E1;
-  --color-red-100:   #F1B7AE;
-  --color-red-500:   #D21905;  /* = brand-red */
-  --color-red-600:   #B11505;
-  --color-red-700:   #810100;
-
-  --color-amber-50:  #F8EDD2;
-  --color-amber-100: #E0C285;
-  --color-amber-500: #B27316;
-  --color-amber-600: #8E5A0F;
-  --color-amber-800: #5C3B08;
-
-  --color-green-50:  #E4F1EC;
-  --color-green-100: #A8D2BD;
-  --color-green-500: #1F8056;
-  --color-green-600: #166240;
-  --color-green-800: #0E3F2A;
-
-  --color-blue-50:   #E1ECF7;
-  --color-blue-100:  #B0C8E2;
-  --color-blue-500:  #2D5DA0;
-  --color-blue-600:  #244A82;
-  --color-blue-800:  #173258;
-
-  /* Decorative accents for status pills, avatars, charts */
-  --color-purple-50:  #F1ECFA;
-  --color-purple-400: #7B5AC9;
-  --color-pink-50:    #FBE7EE;
-  --color-pink-400:   #C44A78;
-  --color-cyan-50:    #DEEFF6;
-  --color-cyan-400:   #2E8AB0;
-  --color-orange-50:  #F8E7D8;
-  --color-orange-500: #B85F22;
-  --color-lime-50:    #ECF5D5;
-  --color-lime-500:   #5C7A1F;
-
-  /* ─── Semantic: Text ─── */
-  --text-primary:   var(--brand-charcoal);     /* #191816 */
-  --text-secondary: var(--color-gray-700);     /* #30343B */
-  --text-muted:     var(--color-gray-500);     /* #6A707A */
-  --text-faint:     var(--color-gray-400);     /* #969CA6 */
-  --text-ghost:     rgba(25, 24, 22, 0.30);
-  --text-inverse:   var(--brand-pearl);        /* #F8F8EE */
-  --text-link:      var(--brand-clay-light);   /* #AB342B */
-  --text-link-hover:var(--brand-clay-dark);    /* #810100 */
-  --text-success:   #166240;
-  --text-warning:   #8E5A0F;
-  --text-error:     var(--brand-red);          /* #D21905 */
+  /* ─── Secondary/Tertiary Colors (Charts, metadata, tags, secondary accents) ─── */
+  --color-mineral-grey: #6B7280;
+  --color-olive-grey:   #72766D;
+  --color-dust-taupe:   #8A8178;
+  --color-soft-bronze:  #927261;
+  --color-plum-grey:    #6C626B;
 
   /* ─── Semantic: Surface ─── */
-  --surface-page:     #F5F6F8;                 /* PRODUCT CANVAS — not Pearl Cream */
-  --surface-sidebar:  #FFFFFF;                 /* white sidebar on cool canvas */
-  --surface-subtle:   rgba(25, 24, 22, 0.04);
-  --surface-muted:    var(--color-gray-100);   /* #EFF1F4 */
-  --surface-elevated: #FFFFFF;
-  --surface-hover:    var(--color-gray-100);   /* #EFF1F4 */
-  --surface-active:   var(--color-gray-200);   /* #E1E4E9 */
-  --surface-selected: rgba(171, 52, 43, 0.08); /* Clay Red Light @ 8% */
-  --surface-overlay:  rgba(25, 24, 22, 0.55);
+  --surface-base:         #FBFCFD;  /* surface/base */
+  --surface-secondary:    #F5F7F9;  /* surface/secondary */
+  --surface-raised:       #FFFFFF;  /* surface/raised */
+  --surface-interactive:  #F3F5F7;  /* surface/interactive */
+  --surface-selected:     rgba(28, 31, 36, 0.06);  /* surface/selected (neutral cool selection) */
+  --surface-overlay:      rgba(18, 20, 23, 0.48);  /* surface/overlay */
+  --surface-page:         #FFFFFF;
+  --surface-sidebar:      var(--surface-secondary);
+  --surface-elevated:     var(--surface-raised);
+  --surface-hover:        var(--surface-interactive);
+  --surface-active:       rgba(28, 31, 36, 0.06);
 
-  /* Marketing-only canvas */
-  --surface-marketing: var(--brand-pearl);     /* #F8F8EE */
+  /* ─── Semantic: Text ─── */
+  --text-primary:     #1C1F24;  /* text/primary */
+  --text-secondary:   #444B55;  /* text/secondary */
+  --text-muted:       #69707C;  /* text/muted */
+  --text-disabled:    #B8C0C8;  /* text/disabled */
+  --text-inverse:     #FBFCFD;  /* text/inverse */
+  --text-link:        var(--accent-primary);
+  --text-link-hover:  #AE0E28;  /* 10% darker accent */
 
   /* ─── Semantic: Border ─── */
-  --border-default: var(--color-gray-200);     /* #E1E4E9 */
-  --border-subtle:  var(--color-gray-150);     /* #E8EBF0 */
-  --border-faint:   rgba(25, 24, 22, 0.05);
-  --border-strong:  var(--color-gray-300);     /* #C5CAD2 */
-  --border-focus:   rgba(210, 25, 5, 0.32);    /* Brand red @ 32% — focus halo */
-  --border-accent:  var(--brand-red);          /* #D21905 — Link motif (active tab, focus border) */
-  --border-error:   var(--brand-red);          /* #D21905 */
+  --border-subtle:    #E8ECEF;  /* border/subtle */
+  --border-default:   #D2D8DE;  /* border/default */
+  --border-strong:    #B8C0C8;  /* border/strong */
+  --border-focus:     #1C1F24;  /* border/focus (neutral-900 black) */
+  --divider:          var(--border-subtle);
 
-  /* ─── Semantic: Icon ─── */
-  --icon-default: var(--color-gray-600);       /* #4A4F58 */
-  --icon-muted:   var(--color-gray-500);       /* #6A707A */
-  --icon-inverse: var(--brand-pearl);          /* #F8F8EE */
-  --icon-accent:  var(--brand-red);            /* #D21905 — logo, brand moments */
+  /* ─── Semantic: States ─── */
+  --state-success:    #72766D;  /* Muted Olive Grey */
+  --state-warning:    #927261;  /* Soft Bronze */
+  --state-error:      #C8102E;  /* Prism Product Accent */
+  --state-info:       #6B7280;  /* Mineral Grey */
 
-  /* ─── Semantic: Accent (drives primary CTA) ─── */
-  --accent-primary:         var(--brand-clay-light); /* #AB342B */
-  --accent-primary-hover:   var(--brand-clay-dark);  /* #810100 */
-  --accent-primary-active:  var(--brand-clay-dark);  /* #810100 */
-  --accent-primary-subtle:  rgba(171, 52, 43, 0.08); /* Clay Red Light @ 8% */
-  --accent-primary-fg:      var(--brand-pearl);      /* #F8F8EE — text on CTA */
-
-  /* Brand-pause CTA — rare, reserved for explicit brand moments */
-  --accent-brand:    var(--brand-red);         /* #D21905 */
-  --accent-brand-fg: var(--brand-pearl);       /* #F8F8EE */
+  /* Backward compatibility variables for existing components */
+  --text-success:     var(--state-success);
+  --text-warning:     var(--state-warning);
+  --text-error:       var(--state-error);
+  --color-accent-500: var(--accent-primary);
+  --accent-primary-hover:   #AE0E28;
+  --accent-primary-active:  #940B22;
+  --accent-primary-fg:      var(--text-inverse);
+  --icon-default:     var(--text-primary);
+  --icon-muted:       var(--text-muted);
+  --icon-inverse:     var(--text-inverse);
+  --icon-accent:      var(--accent-primary);
+  --link-bar:         var(--accent-primary);
+  --focus-ring:       var(--accent-primary);
 
   /* ─── Typography ─── */
-  --font-sans: 'Switzer', 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-serif: 'Arapey', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --font-sans: 'Manrope', sans-serif;
+  --font-serif: 'Manrope', sans-serif;
   --font-mono: 'SF Mono', 'JetBrains Mono', 'Fira Code', 'Roboto Mono', monospace;
 
-  --text-xs:   11px;
-  --text-sm:   12px;
-  --text-base: 14px;
-  --text-md:   16px;
-  --text-lg:   18px;
-  --text-xl:   20px;
-  --text-2xl:  24px;
-  --text-3xl:  28px;
-  --text-4xl:  32px;
-  --text-5xl:  36px;  /* heading.section-anchor (Arapey only) */
+  /* Typography Scale */
+  --text-display-xl: 64px;
+  --lh-display-xl: 72px;
+  --text-display-l: 52px;
+  --lh-display-l: 60px;
+  
+  --text-h1: 40px;
+  --lh-h1: 48px;
+  --text-h2: 32px;
+  --lh-h2: 40px;
+  --text-h3: 24px;
+  --lh-h3: 32px;
+  --text-h4: 20px;
+  --lh-h4: 28px;
+  --text-h5: 18px;
+  --lh-h5: 26px;
+
+  --text-body-l: 18px;
+  --lh-body-l: 30px;
+  --text-body-m: 16px;
+  --lh-body-m: 28px;
+  --text-body-s: 14px;
+  --lh-body-s: 24px;
+  --text-caption: 12px;
+  --lh-caption: 18px;
+
+  /* Standard aliases for backwards compatibility with component styles */
+  --text-xs:   var(--text-caption);   /* 12px */
+  --text-sm:   var(--text-body-s);    /* 14px */
+  --text-base: var(--text-body-m);    /* 16px */
+  --text-md:   var(--text-body-m);    /* 16px */
+  --text-lg:   var(--text-body-l);    /* 18px */
+  --text-xl:   var(--text-h4);        /* 20px */
+  --text-2xl:  var(--text-h3);        /* 24px */
+  --text-3xl:  var(--text-h2);        /* 32px */
+  --text-4xl:  var(--text-h1);        /* 40px */
+  --text-5xl:  var(--text-display-l);  /* 52px */
 
   --font-normal:   400;
   --font-medium:   500;
   --font-semibold: 600;
-  --font-bold:     700;
 
   --leading-none:   1;
   --leading-tight:  1.25;
@@ -161,19 +138,15 @@
 
   --tracking-tight:   -0.01em;
   --tracking-snug:    -0.005em;
-  --tracking-cta:     0.08em;     /* CTA buttons (uppercase Switzer Medium) */
-  --tracking-eyebrow: 0.08em;
+  --tracking-cta:     0.04em;
+  --tracking-eyebrow: 0.04em;
 
-  /* ─── Spacing (4px base, 8px primary) ─── */
+  /* ─── Spacing Scale (Base-8 Grid) ─── */
   --space-0:   0px;
-  --space-0-5: 2px;
   --space-1:   4px;
-  --space-1-5: 6px;
   --space-2:   8px;
-  --space-2-5: 10px;
   --space-3:   12px;
   --space-4:   16px;
-  --space-5:   20px;
   --space-6:   24px;
   --space-8:   32px;
   --space-10:  40px;
@@ -181,35 +154,58 @@
   --space-16:  64px;
   --space-20:  80px;
   --space-24:  96px;
+  --space-30:  120px;
+
+  /* Spacing names mapping to the brief */
+  --space-4px:   4px;
+  --space-8px:   8px;
+  --space-12px:  12px;
+  --space-16px:  16px;
+  --space-24px:  24px;
+  --space-32px:  32px;
+  --space-40px:  40px;
+  --space-48px:  48px;
+  --space-64px:  64px;
+  --space-80px:  80px;
+  --space-96px:  96px;
+  --space-120px: 120px;
+
+  /* Section Spacing */
+  --space-section-sm:  48px;
+  --space-section-std: 64px;
+  --space-section-lg:  96px;
 
   /* ─── Border Radius ─── */
-  --radius-sm:   2px;
-  --radius-md:   4px;
-  --radius:      6px;     /* default — buttons, inputs, chips */
-  --radius-lg:   8px;     /* cards, panels */
-  --radius-xl:   12px;    /* large cards */
-  --radius-2xl:  16px;
-  --radius-3xl:  24px;
-  --radius-full: 9999px;  /* pills, avatars */
+  --radius-sm:   8px;   /* S */
+  --radius-md:   12px;  /* M */
+  --radius:      12px;  /* default */
+  --radius-lg:   16px;  /* L */
+  --radius-xl:   24px;  /* XL */
+  --radius-full: 9999px;
 
-  /* ─── Shadows (warm — Charcoal alpha, never cool/black) ─── */
-  --shadow-border:      rgba(25, 24, 22, 0.05) 0px 0px 0px 1px inset;
-  --shadow-sm:          rgba(25, 24, 22, 0.06) 0px 1px 2px 0px;
-  --shadow-md:          rgba(25, 24, 22, 0.08) 0px 2px 8px -2px, rgba(25, 24, 22, 0.04) 0px 1px 2px 0px;
-  --shadow-lg:          rgba(25, 24, 22, 0.12) 0px 8px 24px -8px, rgba(25, 24, 22, 0.06) 0px 2px 6px -2px;
-  --shadow-xl:          rgba(25, 24, 22, 0.18) 0px 24px 48px -16px, rgba(25, 24, 22, 0.08) 0px 4px 12px -4px;
-  --shadow-primary-btn: rgba(0, 0, 0, 0.10) 0px 0px 0px 1px inset, rgba(171, 52, 43, 0.18) 0px 2px 4px -2px, rgba(171, 52, 43, 0.10) 0px 3px 6px -2px;
-  --shadow-focus-ring:  rgba(210, 25, 5, 0.32) 0px 0px 0px 2px;
-  --shadow-popover:     rgba(25, 24, 22, 0.12) 0px 8px 24px -8px, rgba(25, 24, 22, 0.06) 0px 2px 8px 0px, rgba(25, 24, 22, 0.04) 0px 0px 0px 1px;
-  --shadow-modal:       rgba(25, 24, 22, 0.18) 0px 24px 48px -16px, rgba(25, 24, 22, 0.08) 0px 4px 12px -4px;
+  /* ─── Elevation System (Atmospheric Shadows) ─── */
+  --shadow-sm:          0px 1px 2px rgba(16,24,40,0.04), 0px 1px 3px rgba(16,24,40,0.06);
+  --shadow-md:          0px 4px 8px rgba(16,24,40,0.06), 0px 2px 4px rgba(16,24,40,0.04);
+  --shadow-lg:          0px 12px 24px rgba(16,24,40,0.10), 0px 4px 8px rgba(16,24,40,0.06);
+  --shadow-xl:          0px 24px 48px rgba(16,24,40,0.14), 0px 8px 16px rgba(16,24,40,0.08);
+
+  --elev-1:             var(--shadow-sm);
+  --elev-2:             var(--shadow-md);
+  --elev-3:             var(--shadow-lg);
+  --elev-4:             var(--shadow-xl);
+  
+  --shadow-border:      rgba(16, 24, 40, 0.05) 0px 0px 0px 1px inset;
+  --shadow-primary-btn: rgba(0, 0, 0, 0.10) 0px 0px 0px 1px inset, rgba(200, 16, 46, 0.18) 0px 2px 4px -2px;
+  --shadow-focus-ring:  rgba(28, 31, 36, 0.24) 0px 0px 0px 2px;
+  --shadow-popover:     var(--shadow-lg);
+  --shadow-modal:       var(--shadow-xl);
 
   /* ─── Motion ─── */
   --duration-instant:    80ms;
-  --duration-fast:      150ms;
-  --duration-normal:    220ms;     /* default UI */
-  --duration-moderate:  220ms;     /* alias retained for component compat */
-  --duration-slow:      320ms;     /* modals, drawers, page enter */
-  --duration-deliberate: 480ms;    /* marketing reveals */
+  --duration-fast:      120ms;
+  --duration-normal:    180ms;  /* default UI timing */
+  --duration-moderate:  240ms;
+  --duration-slow:      320ms;
 
   --ease-default:    cubic-bezier(0.2, 0, 0, 1);
   --ease-in:         cubic-bezier(0.4, 0, 1, 1);
@@ -242,11 +238,10 @@
   --touch-target-min:          44px;
 
   /* ─── Breakpoints ─── */
-  --breakpoint-sm:   640px;
-  --breakpoint-md:   768px;
-  --breakpoint-lg:  1024px;
-  --breakpoint-xl:  1280px;
-  --breakpoint-2xl: 1536px;
+  --breakpoint-sm:   768px;  /* Tablet starts at 768px */
+  --breakpoint-md:   1024px; /* Desktop starts at 1024px */
+  --breakpoint-lg:   1440px; /* Wide starts at 1440px */
+  --breakpoint-xl:   1440px;
 }
 
 /* ─── Dark theme (scaffolded — activate when theme-parity decision lands) ─── */
@@ -260,7 +255,7 @@
   --surface-elevated: #2A2E36;
   --surface-hover:    #2A2E36;
   --surface-active:   #353940;
-  --surface-selected: rgba(171, 52, 43, 0.16);
+  --surface-selected: rgba(251, 252, 253, 0.08);
   --surface-overlay:  rgba(0, 0, 0, 0.65);
 
   /* Text */
@@ -281,7 +276,7 @@
   --border-subtle:  #2A2E36;
   --border-faint:   rgba(248, 248, 238, 0.06);
   --border-strong:  #4A4F58;
-  --border-focus:   rgba(210, 25, 5, 0.4);
+  --border-focus:   rgba(251, 252, 253, 0.4);
   --border-accent:  var(--brand-red);
   --border-error:   var(--brand-red);
 
@@ -305,7 +300,7 @@
   --shadow-lg:          rgba(0, 0, 0, 0.40) 0px 8px 24px -8px, rgba(0, 0, 0, 0.20) 0px 2px 6px -2px;
   --shadow-xl:          rgba(0, 0, 0, 0.50) 0px 24px 48px -16px, rgba(0, 0, 0, 0.30) 0px 4px 12px -4px;
   --shadow-primary-btn: rgba(0, 0, 0, 0.30) 0px 0px 0px 1px inset, rgba(171, 52, 43, 0.30) 0px 2px 4px -2px;
-  --shadow-focus-ring:  rgba(210, 25, 5, 0.40) 0px 0px 0px 2px;
+  --shadow-focus-ring:  rgba(251, 252, 253, 0.24) 0px 0px 0px 2px;
   --shadow-popover:     rgba(0, 0, 0, 0.50) 0px 8px 24px 0px, rgba(0, 0, 0, 0.30) 0px 2px 8px 0px, rgba(248, 248, 238, 0.06) 0px 0px 0px 1px;
   --shadow-modal:       rgba(0, 0, 0, 0.60) 0px 24px 48px -16px, rgba(0, 0, 0, 0.30) 0px 4px 16px -4px;
 }

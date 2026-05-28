@@ -41,7 +41,7 @@ const TabsTrigger = React.forwardRef<
       // Active/Selected — animated bottom border indicator
       'data-[state=active]:text-[var(--text-primary)]',
       'after:absolute after:bottom-0 after:left-3 after:right-3',
-      'after:h-[2px] after:bg-[var(--accent-primary)] after:rounded-full',
+      'after:h-[2px] after:bg-[var(--color-gray-900)] after:rounded-full',
       'after:origin-center after:scale-x-0',
       'after:transition-transform after:duration-[var(--duration-moderate)] after:ease-[var(--ease-default)]',
       'data-[state=active]:after:scale-x-100',

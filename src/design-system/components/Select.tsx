@@ -91,7 +91,7 @@ const SelectTrigger = React.forwardRef<
       'data-[placeholder]:text-[var(--text-faint)] data-[placeholder]:font-[var(--font-normal)]',
       hasError
         ? 'border-[var(--border-error)] focus:border-[var(--border-error)] focus:shadow-[0_0_0_2px_rgba(220,38,38,0.2)]'
-        : 'border-[var(--border-default)] focus:border-[var(--border-accent)] focus:shadow-[var(--shadow-focus-ring)]',
+        : 'border-[var(--border-default)] focus:border-[var(--border-focus)] focus:shadow-[var(--shadow-focus-ring)]',
       className
     )}
     {...props}
@@ -235,7 +235,7 @@ const SelectItem = React.forwardRef<
     </SelectPrimitive.ItemText>
     <span className="absolute right-2 flex h-4 w-4 items-center justify-center">
       <SelectPrimitive.ItemIndicator>
-        <CheckIcon className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
+        <CheckIcon className="h-3.5 w-3.5 text-[var(--color-gray-900)]" />
       </SelectPrimitive.ItemIndicator>
     </span>
   </SelectPrimitive.Item>

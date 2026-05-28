@@ -32,7 +32,7 @@ const textareaVariants = cva(
       },
       hasError: {
         true: 'border-[var(--border-error)] focus:border-[var(--border-error)] focus:shadow-[0_0_0_2px_rgba(220,38,38,0.2)]',
-        false: 'focus:border-[var(--border-accent)] focus:shadow-[var(--shadow-focus-ring)]',
+        false: 'focus:border-[var(--border-focus)] focus:shadow-[var(--shadow-focus-ring)]',
       },
     },
     defaultVariants: {

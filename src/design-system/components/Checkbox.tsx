@@ -72,12 +72,12 @@ const Checkbox = React.forwardRef<
         'disabled:cursor-not-allowed disabled:opacity-50',
         /* unchecked */
         'border-[var(--border-strong)] bg-white',
-        'hover:border-[var(--border-accent)]',
+        'hover:border-[var(--border-focus)]',
         /* checked */
-        'data-[state=checked]:border-[var(--accent-primary)] data-[state=checked]:bg-[var(--accent-primary)]',
-        'data-[state=checked]:hover:bg-[var(--accent-primary-hover)] data-[state=checked]:hover:border-[var(--accent-primary-hover)]',
+        'data-[state=checked]:border-[var(--color-gray-900)] data-[state=checked]:bg-[var(--color-gray-900)]',
+        'data-[state=checked]:hover:bg-[var(--color-gray-950)] data-[state=checked]:hover:border-[var(--color-gray-950)]',
         /* indeterminate */
-        'data-[state=indeterminate]:border-[var(--accent-primary)] data-[state=indeterminate]:bg-[var(--accent-primary)]',
+        'data-[state=indeterminate]:border-[var(--color-gray-900)] data-[state=indeterminate]:bg-[var(--color-gray-900)]',
         className
       )}
       {...props}

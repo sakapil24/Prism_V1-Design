@@ -25,7 +25,7 @@ export { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 
 export { Popover, PopoverTrigger, PopoverContent } from './Popover';
 
-export { Modal, ModalHeader, ModalTitle, ModalDescription, ModalBody, ModalFooter } from './Modal';
+export { Modal, ModalContent, ModalHeader, ModalTitle, ModalDescription, ModalBody, ModalFooter } from './Modal';
 
 export { Toast, Toaster, useToast } from './Toast';
 
@@ -55,8 +55,26 @@ export type { RadioGroupProps, RadioGroupItemProps } from './Radio';
 export { Combobox } from './Combobox';
 export type { ComboboxProps, ComboboxOption } from './Combobox';
 
-export { DatePicker, Calendar } from './DatePicker';
+export { DatePicker } from './DatePicker';
 export type { DatePickerProps } from './DatePicker';
+
+export { Calendar } from './Calendar';
+export type { CalendarProps, CalendarRange } from './Calendar';
+
+export { DateRangePicker } from './DateRangePicker';
+export type { DateRangePickerProps } from './DateRangePicker';
+
+export { Footer } from './Footer';
+export type { FooterProps, FooterColumn, FooterLink } from './Footer';
+
+export { StageIndicator } from './StageIndicator';
+export type { StageIndicatorProps, StageStep } from './StageIndicator';
+
+export { DocumentRow } from './DocumentRow';
+export type { DocumentRowProps } from './DocumentRow';
+
+export { CommentThread } from './CommentThread';
+export type { CommentThreadProps, Comment } from './CommentThread';
 
 export { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem, ContextMenuCheckboxItem, ContextMenuRadioItem, ContextMenuLabel, ContextMenuSeparator, ContextMenuShortcut, ContextMenuGroup, ContextMenuSub, ContextMenuSubContent, ContextMenuSubTrigger, ContextMenuRadioGroup } from './ContextMenu';
 

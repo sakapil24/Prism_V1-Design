@@ -70,7 +70,7 @@ function Combobox({
           'border border-[var(--border-default)] bg-white',
           'transition-[border-color,box-shadow] duration-[var(--duration-moderate)] ease-[var(--ease-default)]',
           'hover:border-[var(--border-strong)]',
-          'focus-visible:outline-none focus-visible:border-[var(--border-accent)] focus-visible:shadow-[var(--shadow-focus-ring)]',
+          'focus-visible:outline-none focus-visible:border-[var(--border-focus)] focus-visible:shadow-[var(--shadow-focus-ring)]',
           'disabled:cursor-not-allowed disabled:opacity-50',
           hasError && 'border-[var(--border-error)]',
           className
@@ -115,7 +115,7 @@ function Combobox({
                 'text-[var(--text-base)] font-[var(--font-medium)]',
                 'placeholder:text-[var(--text-faint)] placeholder:font-[var(--font-normal)]',
                 'outline-none border-0',
-                'focus:ring-1 focus:ring-[var(--border-accent)]'
+                'focus:ring-1 focus:ring-[var(--border-focus)]'
               )}
             />
           </div>

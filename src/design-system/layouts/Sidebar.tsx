@@ -95,24 +95,23 @@ const SidebarNavItem = React.forwardRef<HTMLButtonElement, SidebarNavItemProps>(
       data-active={active || undefined}
       className={cn(
         // Base
-        'group flex items-center gap-[6px] w-full h-7 rounded-[var(--radius-lg)]',
+        'group flex items-center gap-[10px] w-full py-2 px-3 rounded-[var(--radius-sm)]',
         'text-[14px] font-medium text-[var(--text-primary)]',
         'cursor-pointer select-none',
         'transition-[background-color,opacity] duration-[160ms]',
         // Padding with indent
-        indent === 0 && 'px-2',
-        indent === 1 && 'pl-7 pr-2',
-        indent === 2 && 'pl-10 pr-2',
+        indent === 1 && 'pl-7 pr-3',
+        indent === 2 && 'pl-10 pr-3',
         // Hover
-        'hover:bg-[var(--surface-hover)]',
+        'hover:bg-[var(--surface-hover)] hover:text-[var(--text-primary)]',
         // Active state
-        'data-[active]:bg-[var(--surface-hover)]',
+        'data-[active]:bg-neutral-900 data-[active]:text-white data-[active]:font-semibold',
         className,
       )}
       {...props}
     >
       {icon && (
-        <span className="flex-shrink-0 w-4 h-4 flex items-center justify-center text-[var(--icon-default)]">
+        <span className="flex-shrink-0 w-[18px] h-[18px] flex items-center justify-center text-[var(--icon-default)] group-data-[active]:text-white transition-colors duration-[160ms]">
           {icon}
         </span>
       )}

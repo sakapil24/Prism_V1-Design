@@ -23,11 +23,11 @@ const inputVariants = cva(
       size: {
         sm: 'h-7 px-2 py-1 text-[var(--text-sm)]',
         md: 'h-8 px-2 py-1',
-        lg: 'h-9 px-3 py-1.5',
+        lg: 'h-10 px-3.5 py-2.5',
       },
       hasError: {
         true: 'border-[var(--border-error)] focus:border-[var(--border-error)] focus:shadow-[0_0_0_2px_rgba(220,38,38,0.2)]',
-        false: 'focus:border-[var(--border-accent)] focus:shadow-[var(--shadow-focus-ring)]',
+        false: 'focus:border-[var(--border-focus)] focus:shadow-none focus:outline-none focus-visible:outline-none focus-visible:ring-0',
       },
     },
     defaultVariants: {
@@ -84,8 +84,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           className={cn(
             inputVariants({ size, hasError }),
             'flex items-center gap-1.5',
-            'focus-within:border-[var(--border-accent)]',
-            !hasError && 'focus-within:shadow-[var(--shadow-focus-ring)]',
+            'focus-within:border-[var(--border-focus)]',
+            !hasError && 'focus-within:shadow-none focus-within:outline-none',
             hasError && 'focus-within:shadow-[0_0_0_2px_rgba(220,38,38,0.2)]',
             disabled && 'cursor-not-allowed opacity-50 bg-[var(--surface-muted)]',
             readOnly && 'bg-[var(--surface-muted)] cursor-default',
@@ -112,8 +112,17 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               'text-[var(--text-primary)] font-[var(--font-medium)]',
               'placeholder:text-[var(--text-faint)] placeholder:font-[var(--font-normal)]',
               'disabled:cursor-not-allowed',
+              'focus:shadow-none focus-within:shadow-none focus-visible:shadow-none focus-visible:outline-none focus:outline-none [appearance:none] [-webkit-appearance:none]',
               className
             )}
+            style={{
+              border: 'none',
+              outline: 'none',
+              boxShadow: 'none',
+              appearance: 'none',
+              WebkitAppearance: 'none',
+              ...props.style
+            }}
             {...props}
           />
           {suffix && (
@@ -136,7 +145,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         ref={ref}
         disabled={disabled}
         readOnly={readOnly}
-        className={cn(inputVariants({ size, hasError }), className)}
+        className={cn(
+          inputVariants({ size, hasError }),
+          'focus:shadow-none focus-within:shadow-none focus-visible:shadow-none focus-visible:outline-none focus:outline-none',
+          className
+        )}
         {...props}
       />
     );

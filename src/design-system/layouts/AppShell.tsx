@@ -74,7 +74,7 @@ const AppShell = React.forwardRef<HTMLDivElement, AppShellProps>(
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 flex flex-col overflow-hidden min-w-0">
+      <main className="flex-1 flex flex-col overflow-hidden min-w-0 bg-white">
         {children}
       </main>
     </div>

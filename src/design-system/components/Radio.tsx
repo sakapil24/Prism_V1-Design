@@ -51,16 +51,16 @@ const RadioGroupItem = React.forwardRef<
         'peer h-4 w-4 flex-shrink-0 rounded-full',
         'border border-[var(--border-strong)] bg-white',
         'transition-all duration-[var(--duration-moderate)] ease-[var(--ease-default)]',
-        'hover:border-[var(--border-accent)]',
+        'hover:border-[var(--border-focus)]',
         'focus-visible:outline-none focus-visible:shadow-[var(--shadow-focus-ring)]',
         'disabled:cursor-not-allowed disabled:opacity-50',
-        'data-[state=checked]:border-[var(--accent-primary)]',
+        'data-[state=checked]:border-[var(--color-gray-900)]',
         className
       )}
       {...props}
     >
       <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
-        <div className="h-2 w-2 rounded-full bg-[var(--accent-primary)] animate-in zoom-in-75" />
+        <div className="h-2 w-2 rounded-full bg-[var(--color-gray-900)] animate-in zoom-in-75" />
       </RadioGroupPrimitive.Indicator>
     </RadioGroupPrimitive.Item>
   );

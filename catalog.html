@@ -1,0 +1,1990 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catalog — Prism · Indian VCs</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ───────────────────────────── Tokens (Charcoal × Airbnb) ───────────────────────────── */
+  :root {
+    --brand-red: #D21905;
+    --brand-charcoal: #191816;
+    --brand-cocoa: #301008;
+    --brand-pearl: #F8F8EE;
+    --brand-clay-dark: #810100;
+    --brand-clay-light: #AB342B;
+
+    --n-0: #FFFFFF; --n-50: #F8F9FB; --n-100: #EFF1F4; --n-200: #E1E4E9;
+    --n-300: #C5CAD2; --n-400: #969CA6; --n-500: #6A707A; --n-600: #4A4F58;
+    --n-700: #30343B; --n-800: #20232A; --n-900: #191816;
+
+    --bg-canvas:  #F5F6F8;
+    --bg-surface: #FFFFFF;
+    --bg-subtle:  #EFF1F4;
+    --bg-muted:   #F8F9FB;
+
+    --text-primary:   var(--brand-charcoal);
+    --text-secondary: var(--n-700);
+    --text-muted:     var(--n-500);
+    --text-faint:     var(--n-400);
+
+    --border-subtle:  var(--n-200);
+    --border-default: var(--n-300);
+    --border-strong:  var(--n-700);
+    --divider:        var(--n-200);
+
+    /* Charcoal variant: primary CTA is Charcoal, not Clay Red. */
+    --cta-primary-bg:       var(--brand-charcoal);
+    --cta-primary-bg-hover: #2B2825;
+    --cta-primary-fg:       var(--brand-pearl);
+
+    /* Brand red is reserved for The Link motif only. */
+    --link-bar:   var(--brand-red);
+    --focus-ring: var(--brand-red);
+
+    --st-success-fg: #1F8056; --st-success-bg: #E4F1EC; --st-success-bd: #A8D2BD;
+    --st-warning-fg: #B27316; --st-warning-bg: #F8EDD2; --st-warning-bd: #E0C285;
+    --st-info-fg:    #2D5DA0; --st-info-bg:    #E1ECF7; --st-info-bd:    #B0C8E2;
+    --st-error-fg:   #D21905; --st-error-bg:   #FBE5E1; --st-error-bd:   #F1B7AE;
+
+    --elev-1: 0 1px 2px 0 rgba(25,24,22,0.06);
+    --elev-2: 0 2px 8px -2px rgba(25,24,22,0.08), 0 1px 2px 0 rgba(25,24,22,0.04);
+    --elev-3: 0 8px 24px -8px rgba(25,24,22,0.12), 0 2px 6px -2px rgba(25,24,22,0.06);
+    --elev-4: 0 24px 48px -16px rgba(25,24,22,0.18), 0 4px 12px -4px rgba(25,24,22,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg-canvas);
+    color: var(--text-primary);
+    font-family: 'Manrope', 'Switzer', 'DM Sans', -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    padding: 32px 24px 96px;
+  }
+  ::selection { background: rgba(25, 24, 22, 0.10); }
+  a { color: var(--brand-clay-light); text-decoration: none; }
+  a:hover { color: var(--brand-clay-dark); }
+
+  .container { max-width: 1320px; margin: 0 auto; }
+
+  /* ───────────────────────────── Page hero (section anchor) ───────────────────────────── */
+  .page-hero { margin-bottom: 28px; }
+  .anchor-bar { width: 48px; height: 3px; background: var(--link-bar); margin-bottom: 18px; border-radius: 1px; }
+  .page-hero h1 {
+    font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    font-weight: 400; font-size: 40px; line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin: 0 0 8px;
+  }
+  .page-hero .subtitle {
+    color: var(--text-muted);
+    font-size: 14.5px;
+    margin: 0;
+    max-width: 720px;
+  }
+
+  /* ───────────────────────────── Sub-nav tabs (Explore / Categories / Vendors / Saved) ───────────────────────────── */
+  .subnav {
+    display: flex; gap: 0;
+    border-bottom: 1px solid var(--divider);
+    margin: 24px 0 24px;
+  }
+  .subnav-tab {
+    padding: 12px 16px;
+    font-size: 13.5px; font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    position: relative;
+    background: transparent;
+    border: 0;
+    font-family: inherit;
+    transition: color 150ms;
+  }
+  .subnav-tab:hover { color: var(--text-primary); }
+  .subnav-tab.active { color: var(--text-primary); }
+  .subnav-tab.active::after {
+    content: ""; position: absolute;
+    left: 16px; right: 16px; bottom: -1px;
+    height: 2px;
+    background: var(--link-bar);
+  }
+  .subnav-tab .count {
+    display: inline-flex; align-items: center; justify-content: center;
+    margin-left: 8px;
+    min-width: 18px; height: 18px;
+    padding: 0 5px;
+    background: var(--bg-subtle);
+    color: var(--text-muted);
+    border-radius: 999px;
+    font-size: 11px; font-weight: 500;
+  }
+  .subnav-tab.active .count { background: rgba(25,24,22,0.08); color: var(--text-primary); }
+
+  /* ───────────────────────────── Toolbar (search + filters + view toggle) ───────────────────────────── */
+  .toolbar {
+    display: flex; gap: 10px; align-items: center;
+    margin-bottom: 16px; flex-wrap: wrap;
+  }
+  .search-input-group { position: relative; flex: 1; min-width: 280px; max-width: 480px; }
+  .search-input-group .leading {
+    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+    color: var(--text-muted); display: flex; pointer-events: none;
+  }
+  .search-input-group .leading svg { width: 16px; height: 16px; fill: currentColor; }
+  .search-input {
+    height: 40px;
+    width: 100%;
+    padding: 0 14px 0 40px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font: inherit; font-size: 14px;
+    outline: none;
+    transition: border-color 150ms, box-shadow 150ms;
+  }
+  .search-input::placeholder { color: var(--text-faint); }
+  .search-input:focus {
+    border-color: var(--focus-ring);
+    border-width: 2px;
+    padding: 0 13px 0 39px;
+  }
+
+  .filter-select-wrap { position: relative; }
+  .filter-select {
+    appearance: none; -webkit-appearance: none;
+    height: 40px;
+    padding: 0 32px 0 14px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-default);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font: inherit; font-size: 13.5px;
+    cursor: pointer;
+    outline: none;
+  }
+  .filter-select.has-value { background: rgba(25, 24, 22, 0.04); border-color: var(--border-strong); font-weight: 500; }
+  .filter-select-wrap::after {
+    content: ""; position: absolute; right: 14px; top: 50%;
+    width: 8px; height: 8px;
+    border-right: 1.5px solid var(--text-muted);
+    border-bottom: 1.5px solid var(--text-muted);
+    transform: translateY(-75%) rotate(45deg);
+    pointer-events: none;
+  }
+  .filter-select:focus { border-color: var(--focus-ring); border-width: 2px; padding: 0 31px 0 13px; }
+
+  .view-toggle {
+    display: inline-flex; gap: 2px;
+    background: var(--bg-subtle);
+    border-radius: 8px;
+    padding: 3px;
+    margin-left: auto;
+  }
+  .view-toggle button {
+    border: 0; background: transparent;
+    width: 32px; height: 32px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--text-secondary);
+    border-radius: 6px; cursor: pointer;
+    transition: background 150ms, color 150ms;
+  }
+  .view-toggle button:hover { color: var(--text-primary); }
+  .view-toggle button.active { background: var(--bg-surface); color: var(--text-primary); box-shadow: var(--elev-1); }
+  .view-toggle button svg { width: 14px; height: 14px; fill: currentColor; }
+
+  .active-filters { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; align-items: center; }
+  .active-filters .lab { font-size: 12px; color: var(--text-muted); margin-right: 4px; }
+  .filter-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 28px;
+    padding: 0 6px 0 12px;
+    background: rgba(25, 24, 22, 0.06);
+    border-radius: 999px;
+    font-size: 12px; font-weight: 500;
+    color: var(--text-primary);
+    border: 0;
+    font-family: inherit;
+    cursor: default;
+  }
+  .filter-chip .x {
+    width: 18px; height: 18px;
+    border-radius: 999px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: transparent;
+    cursor: pointer;
+    color: var(--text-muted);
+    border: 0; padding: 0;
+  }
+  .filter-chip .x:hover { background: rgba(25, 24, 22, 0.10); color: var(--text-primary); }
+  .filter-chip .x svg { width: 9px; height: 9px; fill: currentColor; }
+  .clear-all-btn {
+    background: transparent; border: 0;
+    font: inherit; font-size: 12px; font-weight: 500;
+    color: var(--brand-clay-light);
+    cursor: pointer;
+    padding: 4px 6px;
+  }
+  .clear-all-btn:hover { color: var(--brand-clay-dark); }
+
+  /* ───────────────────────────── Product grid ───────────────────────────── */
+  .results-meta { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; }
+  .results-meta strong { color: var(--text-primary); font-weight: 600; }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 1200px) { .product-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
+  @media (max-width: 900px)  { .product-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; } }
+  @media (max-width: 600px)  { .product-grid { grid-template-columns: 1fr; } }
+
+  .prod-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: box-shadow 220ms cubic-bezier(0.2, 0, 0, 1), transform 220ms cubic-bezier(0.2, 0, 0, 1), border-color 220ms;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  .prod-card:hover {
+    box-shadow: var(--elev-3);
+    transform: translateY(-2px);
+    border-color: var(--border-default);
+  }
+  .prod-card .cover {
+    aspect-ratio: 16 / 10;
+    background: var(--bg-subtle);
+    position: relative;
+    overflow: hidden;
+  }
+  .prod-card .cover img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 320ms cubic-bezier(0.2, 0, 0, 1);
+  }
+  .prod-card:hover .cover img { transform: scale(1.03); }
+  .prod-card .logo-chip {
+    position: absolute; top: 12px; left: 12px;
+    width: 36px; height: 36px;
+    background: var(--bg-surface);
+    border-radius: 8px;
+    box-shadow: var(--elev-2);
+    display: flex; align-items: center; justify-content: center;
+    padding: 5px;
+  }
+  .prod-card .logo-chip img {
+    max-width: 100%; max-height: 100%;
+    object-fit: contain;
+    border-radius: 4px;
+  }
+  .prod-card .logo-chip .fallback {
+    font-size: 12px; font-weight: 700; color: var(--text-primary);
+  }
+  .prod-card .save-btn {
+    position: absolute; top: 12px; right: 12px;
+    width: 32px; height: 32px;
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(25,24,22,0.06);
+    border-radius: 999px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    color: var(--text-primary);
+    transition: background 150ms;
+    padding: 0;
+  }
+  .prod-card .save-btn:hover { background: rgba(255,255,255,1); }
+  .prod-card .save-btn svg { width: 15px; height: 15px; fill: currentColor; }
+  .prod-card .save-btn.saved { background: var(--brand-charcoal); color: var(--brand-pearl); border-color: var(--brand-charcoal); }
+  .prod-card .save-btn.saved:hover { background: var(--brand-charcoal); }
+
+  .prod-card .body {
+    padding: 14px 16px 8px;
+    display: flex; flex-direction: column; gap: 6px;
+    flex: 1;
+  }
+  .prod-card .vendor-line {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12px; color: var(--text-muted); font-weight: 500;
+  }
+  .prod-card .name {
+    font-size: 15.5px; font-weight: 600;
+    margin: 0;
+    letter-spacing: -0.005em;
+    line-height: 1.3;
+  }
+  .prod-card .desc {
+    font-size: 13px; color: var(--text-secondary);
+    line-height: 1.45;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .prod-card .foot {
+    padding: 10px 16px 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .prod-card .deal-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 10px;
+    background: var(--bg-subtle);
+    border-radius: 999px;
+    font-size: 12px; font-weight: 500;
+    color: var(--text-primary);
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .prod-card .deal-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--st-success-fg); flex: none; }
+  .prod-card .deal-pill.in-listings .dot { background: var(--brand-charcoal); }
+  .prod-card .in-listings-tag {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 8px;
+    background: var(--brand-charcoal); color: var(--brand-pearl);
+    border-radius: 999px;
+    font-size: 11px; font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .prod-card .in-listings-tag svg { width: 10px; height: 10px; fill: currentColor; }
+
+  /* ───────────────────────────── Product list view ───────────────────────────── */
+  .product-list { display: flex; flex-direction: column; gap: 8px; }
+  .prod-row {
+    display: flex; align-items: center; gap: 16px;
+    padding: 14px 18px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: box-shadow 220ms, border-color 220ms;
+  }
+  .prod-row:hover { box-shadow: var(--elev-1); border-color: var(--border-default); }
+  .prod-row .lo {
+    width: 48px; height: 48px;
+    border-radius: 10px;
+    background: var(--bg-subtle);
+    flex: none;
+    display: flex; align-items: center; justify-content: center;
+    padding: 6px;
+  }
+  .prod-row .lo img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .prod-row .lo .fallback { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+  .prod-row .main { flex: 1; min-width: 0; }
+  .prod-row .main .v { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+  .prod-row .main .n { font-size: 15px; font-weight: 600; margin: 1px 0 3px; letter-spacing: -0.005em; }
+  .prod-row .main .d { font-size: 13px; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .prod-row .deal-meta { font-size: 12.5px; color: var(--text-primary); flex: none; min-width: 180px; max-width: 220px; }
+  .prod-row .deal-meta .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--st-success-fg); margin-right: 6px; vertical-align: middle; }
+  .prod-row .acts { display: flex; gap: 6px; flex: none; }
+
+  /* ───────────────────────────── Category grid ───────────────────────────── */
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 1100px) { .cat-grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 700px)  { .cat-grid { grid-template-columns: repeat(2, 1fr); } }
+  .cat-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    display: flex; flex-direction: column; gap: 14px;
+    min-height: 148px;
+    transition: box-shadow 220ms, transform 220ms, border-color 220ms;
+    font-family: inherit;
+    text-align: left;
+  }
+  .cat-card:hover { box-shadow: var(--elev-2); transform: translateY(-2px); border-color: var(--border-default); }
+  .cat-card .ic {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: var(--bg-subtle);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-primary);
+  }
+  .cat-card .ic svg { width: 20px; height: 20px; fill: currentColor; }
+  .cat-card .name { font-size: 16px; font-weight: 600; letter-spacing: -0.005em; line-height: 1.3; }
+  .cat-card .count { font-size: 12.5px; color: var(--text-muted); margin-top: auto; font-weight: 500; }
+
+  /* ───────────────────────────── Vendor grid ───────────────────────────── */
+  .vendor-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 1000px) { .vendor-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px)  { .vendor-grid { grid-template-columns: 1fr; } }
+  .vendor-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 18px;
+    display: flex; gap: 16px;
+    cursor: pointer;
+    transition: box-shadow 220ms, border-color 220ms;
+    align-items: flex-start;
+  }
+  .vendor-card:hover { box-shadow: var(--elev-2); border-color: var(--border-default); }
+  .vendor-card .vlogo {
+    width: 52px; height: 52px;
+    border-radius: 10px;
+    background: var(--bg-subtle);
+    display: flex; align-items: center; justify-content: center;
+    padding: 7px;
+    flex: none;
+  }
+  .vendor-card .vlogo img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .vendor-card .vlogo .fallback { font-size: 16px; font-weight: 700; color: var(--text-primary); }
+  .vendor-card .info { flex: 1; min-width: 0; }
+  .vendor-card .vn { font-size: 16px; font-weight: 600; letter-spacing: -0.005em; margin: 0; }
+  .vendor-card .vd { font-size: 13px; color: var(--text-secondary); margin: 4px 0 0; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .vendor-card .vmeta { display: flex; gap: 10px; margin-top: 10px; font-size: 12px; color: var(--text-muted); font-weight: 500; }
+  .vendor-card .vmeta .dot { width: 3px; height: 3px; background: var(--n-400); border-radius: 50%; align-self: center; }
+
+  /* ───────────────────────────── Detail pages ───────────────────────────── */
+  .crumb { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-muted); margin-bottom: 14px; flex-wrap: wrap; line-height: 1; }
+  .crumb a, .crumb button {
+    color: var(--text-muted);
+    background: none; border: 0; padding: 0;
+    font: inherit; font-size: 12px;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .crumb a:hover, .crumb button:hover { color: var(--text-primary); }
+  .crumb .cur { color: var(--text-primary); font-weight: 500; }
+  .crumb .sep { display: inline-flex; align-items: center; color: var(--text-faint); }
+  .crumb .sep svg { width: 10px; height: 10px; fill: currentColor; display: block; }
+
+  .detail {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: var(--elev-1);
+  }
+  .detail-hero {
+    padding: 32px;
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 36px;
+    align-items: flex-start;
+  }
+  @media (max-width: 900px) {
+    .detail-hero { grid-template-columns: 1fr; gap: 24px; padding: 24px; }
+    .detail-hero .cover { width: 100%; max-width: none; }
+  }
+  .detail-hero .cover {
+    width: 100%;
+    aspect-ratio: 16/10;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-subtle);
+  }
+  .detail-hero .cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .detail-hero .meta-block { display: flex; flex-direction: column; gap: 14px; }
+  .vendor-link-row {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: transparent; border: 0; padding: 4px 0;
+    font: inherit; cursor: pointer;
+    color: var(--text-secondary);
+    align-self: flex-start;
+  }
+  .vendor-link-row:hover { color: var(--text-primary); }
+  .vendor-link-row .vlg {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+    padding: 3px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .vendor-link-row .vlg img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .vendor-link-row .vlg .fallback { font-size: 11px; font-weight: 700; color: var(--text-primary); }
+  .vendor-link-row .vn { font-size: 14px; font-weight: 500; }
+  .vendor-link-row .arrow { width: 11px; height: 11px; fill: currentColor; opacity: 0; transition: opacity 150ms, transform 150ms; }
+  .vendor-link-row:hover .arrow { opacity: 1; transform: translateX(2px); }
+  .detail-title {
+    font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    font-weight: 400;
+    font-size: 36px; line-height: 1.1;
+    letter-spacing: -0.015em;
+    margin: 0;
+  }
+  .detail-desc {
+    font-size: 16px; line-height: 1.55;
+    color: var(--text-secondary);
+    margin: 0;
+    max-width: 620px;
+  }
+  .detail-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px; }
+
+  .detail-body {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 40px;
+    padding: 32px;
+    border-top: 1px solid var(--divider);
+    background: var(--bg-muted);
+  }
+  @media (max-width: 900px) {
+    .detail-body { grid-template-columns: 1fr; padding: 24px; gap: 28px; }
+  }
+  .detail-main section + section { margin-top: 32px; }
+  .detail-main h3 {
+    font-size: 14px; font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin: 0 0 14px;
+  }
+  .detail-main h3::before {
+    content: ""; display: inline-block;
+    width: 16px; height: 2px; background: var(--link-bar);
+    vertical-align: middle; margin-right: 10px;
+  }
+  .detail-main .long-desc {
+    font-size: 15px; line-height: 1.6;
+    color: var(--text-primary);
+    margin: 0;
+    white-space: pre-line;
+  }
+
+  /* Deal card */
+  .deal-card {
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    background: var(--bg-surface);
+    padding: 18px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .deal-card + .deal-card { margin-top: 10px; }
+  .deal-card .dt-row { display: flex; align-items: flex-start; gap: 12px; justify-content: space-between; }
+  .deal-card .dt { font-size: 15px; font-weight: 600; letter-spacing: -0.005em; line-height: 1.3; }
+  .deal-card .dod { font-size: 13.5px; color: var(--text-secondary); line-height: 1.55; margin: 0; }
+  .deal-card .dmeta {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 18px;
+    padding-top: 12px;
+    border-top: 1px solid var(--divider);
+    font-size: 12.5px;
+  }
+  .deal-card .dmeta .item { display: flex; flex-direction: column; gap: 2px; }
+  .deal-card .dmeta .k { color: var(--text-muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+  .deal-card .dmeta .v { color: var(--text-primary); font-weight: 500; }
+  .deal-status-pill {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 3px 9px;
+    background: var(--st-success-bg);
+    color: var(--st-success-fg);
+    border: 1px solid var(--st-success-bd);
+    border-radius: 999px;
+    font-size: 11px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    flex: none;
+  }
+  .deal-status-pill.expired {
+    background: var(--st-neutral-bg, var(--bg-subtle));
+    color: var(--text-muted);
+    border-color: var(--border-default);
+  }
+
+  /* Screenshot gallery */
+  .screenshots {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media (max-width: 700px) { .screenshots { grid-template-columns: 1fr; } }
+  .screenshots img {
+    width: 100%;
+    aspect-ratio: 16/10;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid var(--border-subtle);
+    background: var(--bg-subtle);
+  }
+
+  /* Tag row */
+  .tag-row { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    display: inline-flex; align-items: center;
+    padding: 4px 11px;
+    border-radius: 999px;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-subtle);
+    font-size: 12px; color: var(--text-secondary);
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 150ms, color 150ms;
+  }
+  .tag:hover { background: rgba(25, 24, 22, 0.08); color: var(--text-primary); }
+  .tag.cat { font-weight: 500; color: var(--text-primary); }
+
+  /* Detail aside */
+  .detail-aside { display: flex; flex-direction: column; gap: 14px; }
+  .aside-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .aside-card h4 {
+    font-size: 11px; font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin: 0 0 12px;
+  }
+  .aside-card .kv-row { display: flex; justify-content: space-between; padding: 6px 0; border-top: 1px solid var(--divider); font-size: 13px; }
+  .aside-card .kv-row:first-of-type { border-top: 0; padding-top: 0; }
+  .aside-card .kv-row .k { color: var(--text-muted); }
+  .aside-card .kv-row .v { color: var(--text-primary); font-weight: 500; }
+  .aside-card .vendor-mini { display: flex; gap: 12px; align-items: center; cursor: pointer; }
+  .aside-card .vendor-mini .vlg { width: 40px; height: 40px; border-radius: 8px; background: var(--bg-subtle); display: flex; align-items: center; justify-content: center; padding: 5px; flex: none; }
+  .aside-card .vendor-mini .vlg img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .aside-card .vendor-mini .vname { font-size: 14px; font-weight: 600; }
+  .aside-card .vendor-mini .vdesc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .external-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 500;
+    color: var(--brand-clay-light);
+  }
+  .external-link:hover { color: var(--brand-clay-dark); }
+  .external-link svg { width: 12px; height: 12px; fill: currentColor; }
+
+  /* ───────────────────────────── Buttons ───────────────────────────── */
+  .btn {
+    position: relative;
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 6px;
+    padding: 0 14px;
+    height: 36px;
+    font: inherit; font-weight: 500; font-size: 13px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    border-radius: 8px; border: 0;
+    cursor: pointer;
+    transition: background 150ms, color 150ms, opacity 150ms, transform 80ms;
+    white-space: nowrap; user-select: none;
+    font-family: inherit;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+  .btn.primary {
+    background: var(--cta-primary-bg);
+    color: var(--cta-primary-fg);
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.10), 0 2px 4px -2px rgba(25,24,22,0.20), 0 3px 6px -2px rgba(25,24,22,0.10);
+  }
+  .btn.primary:hover { background: var(--cta-primary-bg-hover); }
+  .btn.secondary {
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    box-shadow: inset 0 0 0 1px var(--border-default);
+  }
+  .btn.secondary:hover { background: var(--bg-subtle); }
+  .btn.ghost { background: transparent; color: var(--text-secondary); }
+  .btn.ghost:hover { background: var(--bg-subtle); color: var(--text-primary); }
+  .btn.sm { height: 30px; padding: 0 12px; font-size: 12px; border-radius: 6px; }
+  .btn.icon-only { width: 36px; padding: 0; }
+  .btn.icon-only.sm { width: 30px; }
+  .btn svg { width: 14px; height: 14px; fill: currentColor; flex: none; }
+  .btn:disabled, .btn.is-disabled { opacity: 0.55; cursor: not-allowed; }
+
+  /* ───────────────────────────── Empty state ───────────────────────────── */
+  .empty {
+    background: var(--bg-surface);
+    border: 1px dashed var(--border-default);
+    border-radius: 14px;
+    padding: 56px 32px;
+    text-align: center;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .empty .red-line { width: 24px; height: 3px; background: var(--link-bar); margin: 0 auto 18px; border-radius: 1px; }
+  .empty .ic {
+    width: 56px; height: 56px;
+    margin: 0 auto 14px;
+    border-radius: 999px;
+    background: var(--bg-subtle);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-muted);
+  }
+  .empty .ic svg { width: 24px; height: 24px; fill: currentColor; }
+  .empty .ttl { font-size: 16px; font-weight: 600; margin: 0 0 6px; letter-spacing: -0.005em; }
+  .empty .desc { font-size: 13.5px; color: var(--text-muted); margin: 0 0 18px; line-height: 1.5; }
+
+  /* ───────────────────────────── Toast ───────────────────────────── */
+  #toast-host {
+    position: fixed; bottom: 24px; right: 24px;
+    display: flex; flex-direction: column-reverse; gap: 8px;
+    z-index: 100;
+    pointer-events: none;
+  }
+  .toast {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    padding: 12px 14px;
+    box-shadow: var(--elev-3);
+    display: flex; gap: 10px; align-items: flex-start;
+    min-width: 280px; max-width: 360px;
+    pointer-events: auto;
+    animation: toast-in 220ms cubic-bezier(0, 0, 0, 1);
+    border-left: 3px solid var(--st-success-fg);
+  }
+  .toast.info  { border-left-color: var(--st-info-fg); }
+  .toast.removing { animation: toast-out 180ms cubic-bezier(0.4, 0, 1, 1) forwards; }
+  @keyframes toast-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes toast-out {
+    to { opacity: 0; transform: translateY(8px); }
+  }
+  .toast .body { flex: 1; min-width: 0; }
+  .toast .t { font-size: 13.5px; font-weight: 600; }
+  .toast .d { font-size: 12.5px; color: var(--text-secondary); margin-top: 2px; }
+  .toast .ic {
+    width: 18px; height: 18px;
+    border-radius: 999px;
+    background: var(--st-success-bg);
+    color: var(--st-success-fg);
+    display: flex; align-items: center; justify-content: center;
+    flex: none;
+  }
+  .toast.info .ic { background: var(--st-info-bg); color: var(--st-info-fg); }
+  .toast .ic svg { width: 11px; height: 11px; fill: currentColor; }
+  .toast .x { background: transparent; border: 0; padding: 0; cursor: pointer; color: var(--text-muted); display: flex; align-items: center; }
+  .toast .x:hover { color: var(--text-primary); }
+  .toast .x svg { width: 12px; height: 12px; fill: currentColor; }
+
+  /* ───────────────────────────── Skeleton ───────────────────────────── */
+  .skel {
+    background: linear-gradient(90deg, #EFF1F4 25%, #F8F9FB 50%, #EFF1F4 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s ease-in-out infinite;
+    border-radius: 6px;
+  }
+  @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+
+  /* ───────────────────────────── Vendor detail extras ───────────────────────────── */
+  .vendor-detail-hero {
+    padding: 32px;
+    display: flex; align-items: center; gap: 24px;
+    background: var(--bg-surface);
+  }
+  @media (max-width: 700px) {
+    .vendor-detail-hero { padding: 24px; flex-direction: column; align-items: flex-start; gap: 16px; }
+  }
+  .vendor-detail-hero .vlg-lg {
+    width: 88px; height: 88px;
+    border-radius: 16px;
+    background: var(--bg-subtle);
+    display: flex; align-items: center; justify-content: center;
+    padding: 14px;
+    flex: none;
+    border: 1px solid var(--border-subtle);
+  }
+  .vendor-detail-hero .vlg-lg img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .vendor-detail-hero .vlg-lg .fallback { font-size: 28px; font-weight: 700; color: var(--text-primary); }
+  .vendor-detail-hero .info { flex: 1; min-width: 0; }
+  .vendor-detail-hero .v-title {
+    font-family: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    font-weight: 400;
+    font-size: 34px;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+    margin: 0 0 8px;
+  }
+  .vendor-detail-hero .v-desc {
+    font-size: 15px; color: var(--text-secondary);
+    line-height: 1.55;
+    margin: 0 0 12px;
+    max-width: 680px;
+  }
+  .vendor-detail-hero .v-meta { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; font-size: 13px; color: var(--text-muted); }
+  .vendor-detail-hero .v-meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--n-400); }
+
+  .vendor-detail-section { padding: 24px 32px 32px; border-top: 1px solid var(--divider); background: var(--bg-muted); }
+  @media (max-width: 700px) { .vendor-detail-section { padding: 20px 24px; } }
+  .vendor-detail-section h3 {
+    font-size: 14px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin: 0 0 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .vendor-detail-section h3::before {
+    content: ""; display: inline-block;
+    width: 16px; height: 2px; background: var(--link-bar);
+  }
+  .vendor-detail-section h3 .count {
+    font-size: 12px; font-weight: 500; color: var(--text-faint);
+    text-transform: none; letter-spacing: 0;
+  }
+
+  /* ───────────────────────────── Detail-page chrome ───────────────────────────── */
+  /* On product/vendor detail pages, the catalog hero + sub-nav are not the right
+     context. Breadcrumb is the navigation surface. */
+  body.is-detail .page-hero,
+  body.is-detail .subnav { display: none; }
+
+  /* ───────────────────────────── Footer / utility ───────────────────────────── */
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ─────────── PAGE HERO ─────────── -->
+  <header class="page-hero">
+    <div class="anchor-bar"></div>
+    <h1>Catalog</h1>
+    <p class="subtitle">Browse, evaluate, and shortlist ecosystem products and deals from across the startup landscape. Add anything you like to your marketplace as a listing.</p>
+  </header>
+
+  <!-- ─────────── SUB-NAV ─────────── -->
+  <nav class="subnav" role="tablist" id="subnav">
+    <button class="subnav-tab" role="tab" data-route="explore">Explore</button>
+    <button class="subnav-tab" role="tab" data-route="categories">Categories</button>
+    <button class="subnav-tab" role="tab" data-route="vendors">Vendors</button>
+    <button class="subnav-tab" role="tab" data-route="saved">Saved <span class="count" id="saved-count">0</span></button>
+  </nav>
+
+  <!-- ─────────── APP CONTENT ─────────── -->
+  <main id="app" role="main"></main>
+
+</div>
+
+<!-- ─────────── TOAST HOST ─────────── -->
+<div id="toast-host" aria-live="polite" aria-atomic="true"></div>
+
+<!-- ─────────── ICONS (sprite) ─────────── -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-search" viewBox="0 0 24 24"><path d="M10 4a6 6 0 1 1 0 12 6 6 0 0 1 0-12zm0 2a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm6.32 8.906l3.387 3.387-1.414 1.414-3.387-3.387 1.414-1.414z"/></symbol>
+    <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1zm1 2v14.05l5-2.86 5 2.86V5H7z"/></symbol>
+    <symbol id="i-bookmark-filled" viewBox="0 0 24 24"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M11 4h2v7h7v2h-7v7h-2v-7H4v-2h7V4z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18.3 5.71 12 12l6.3 6.29-1.41 1.42L10.59 13.4 4.29 19.71 2.88 18.29 9.18 12 2.88 5.71 4.29 4.29l6.3 6.3 6.3-6.3z"/></symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42L17.59 5H14V3zM5 5h6v2H5v12h12v-6h2v8H3V5z"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M3 5h2v2H3V5zm4 0h14v2H7V5zM3 11h2v2H3v-2zm4 0h14v2H7v-2zM3 17h2v2H3v-2zm4 0h14v2H7v-2z"/></symbol>
+    <symbol id="i-package" viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4V7zm9-1.8L5.2 8 12 11.05 18.8 8 12 5.2zM5 9.5v6.65l6 2.67v-6.65L5 9.5zm14 0L13 12.17v6.65l6-2.67V9.5z"/></symbol>
+    <symbol id="i-tag" viewBox="0 0 24 24"><path d="M21 11.59V4a1 1 0 0 0-1-1h-7.59L3 12.41l8.59 8.59L21 11.59zM5.83 12.41 12.83 5H19v6.17L11.59 18.6l-5.76-6.19zM15.5 6.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17 19H7a5 5 0 0 1-.78-9.94 6 6 0 0 1 11.54 1.04A4.5 4.5 0 0 1 17 19zm-.5-2a2.5 2.5 0 1 0 0-5 1 1 0 0 1-1-1 4 4 0 0 0-7.68-1.6 1 1 0 0 1-.78.6A3 3 0 0 0 7 17h9.5z"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 2l1.95 5.07L19 9l-5.05 1.93L12 16l-1.95-5.07L5 9l5.05-1.93L12 2zM6 14l1.05 2.55L9.5 17.5 7 18.5 6 21l-1-2.5-2.5-1 2.55-1L6 14zm12 0l1.05 2.55L21.5 17.5 19 18.5 18 21l-1-2.5-2.5-1 2.55-1L18 14z"/></symbol>
+    <symbol id="i-list-checks" viewBox="0 0 24 24"><path d="M3 5h2v2H3V5zm4 0h14v2H7V5zm-4 6h2v2H3v-2zm4 0h14v2H7v-2zm-4 6h2v2H3v-2zm4 0h14v2H7v-2z"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="M9.4 16.6 4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zM14.6 16.6l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></symbol>
+    <symbol id="i-credit-card" viewBox="0 0 24 24"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1 4v8h16V9H4zm0-2h16V7H4v0zm2 6h6v2H6v-2z"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M9 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm0-2a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm-7 9c0-3.31 3.13-6 7-6s7 2.69 7 6v1H2v-1zm2-.18V19h10v-.18C14 16.9 11.94 15 9 15s-5 1.9-5 3.82zM16.83 4.17a4 4 0 0 1 0 7.66 5.96 5.96 0 0 0-1.66-1.83 2 2 0 1 0 0-3.99 5.96 5.96 0 0 0 1.66-1.84zM22 19v1h-6v-1c0-1.96-.74-3.74-1.93-5.05a8.86 8.86 0 0 1 .43-.01c3.87 0 7.5 2.69 7.5 5.06z"/></symbol>
+    <symbol id="i-megaphone" viewBox="0 0 24 24"><path d="M21 4v16l-7-4H6a3 3 0 0 1-3-3v-2a3 3 0 0 1 3-3h8l7-4zm-2 3.4L14.55 10H6a1 1 0 0 0-1 1v2a1 1 0 0 0 1 1h8.55L19 16.6V7.4zM7 16h2v4H7v-4z"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20zm0 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16zm0 3a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm0 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 21V3h2v16h16v2H3zm14-13h4v10h-4V8zm-6-4h4v14h-4V4zM5 12h4v6H5v-6z"/></symbol>
+    <symbol id="i-brush" viewBox="0 0 24 24"><path d="M20.71 4.04a1 1 0 0 0-1.41 0L9 14.34V18h3.66L22.96 7.7a1 1 0 0 0 0-1.41l-2.25-2.25zm-3.41 4.42 1.41 1.41-7.59 7.59H10v-1.13l7.3-7.87zM4 20h16v2H4v-2z"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M12 4l-1.4 1.4 5.6 5.6H4v2h12.2l-5.6 5.6L12 20l8-8z"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 5h6l2 2h10a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1 4v9h16V9H10.17l-2-2H4v2z"/></symbol>
+  </defs>
+</svg>
+
+<script>
+/* ───────────────────────────── DATA ───────────────────────────── */
+const CATEGORIES = [
+  { id: 'cloud',        name: 'Cloud & Infrastructure', icon: 'i-cloud' },
+  { id: 'ai',           name: 'AI & ML',                icon: 'i-sparkle' },
+  { id: 'productivity', name: 'Productivity',           icon: 'i-list-checks' },
+  { id: 'devtools',     name: 'Developer Tools',        icon: 'i-code' },
+  { id: 'finance',      name: 'Finance & Banking',      icon: 'i-credit-card' },
+  { id: 'hr',           name: 'HR & Hiring',            icon: 'i-users' },
+  { id: 'marketing',    name: 'Marketing',              icon: 'i-megaphone' },
+  { id: 'sales',        name: 'Sales',                  icon: 'i-target' },
+  { id: 'analytics',    name: 'Analytics',              icon: 'i-chart' },
+  { id: 'design',       name: 'Design',                 icon: 'i-brush' },
+];
+
+const STAGES  = ['Pre-Seed', 'Seed', 'Series A', 'Series B+'];
+const REGIONS = ['Global', 'India', 'United States', 'Europe', 'APAC'];
+
+const VENDORS = [
+  { id: 'aws',      name: 'AWS',           domain: 'aws.amazon.com',  desc: 'Cloud computing platform — compute, storage, AI, and 200+ services.', categories: ['cloud','ai','devtools'] },
+  { id: 'gcp',      name: 'Google Cloud',  domain: 'cloud.google.com',desc: 'Cloud infrastructure and machine-learning platform from Google.',   categories: ['cloud','ai'] },
+  { id: 'openai',   name: 'OpenAI',        domain: 'openai.com',      desc: 'API access to GPT, DALL·E, and frontier reasoning models.',          categories: ['ai'] },
+  { id: 'notion',   name: 'Notion',        domain: 'notion.so',       desc: 'Workspace for docs, wikis, projects, and AI-powered notes.',         categories: ['productivity'] },
+  { id: 'hubspot',  name: 'HubSpot',       domain: 'hubspot.com',     desc: 'CRM, marketing, sales, and customer-service platform.',              categories: ['marketing','sales'] },
+  { id: 'stripe',   name: 'Stripe',        domain: 'stripe.com',      desc: 'Online payment processing, billing, and financial infrastructure.', categories: ['finance'] },
+  { id: 'brex',     name: 'Brex',          domain: 'brex.com',        desc: 'Corporate cards, banking, and expense management for startups.',    categories: ['finance'] },
+  { id: 'mercury',  name: 'Mercury',       domain: 'mercury.com',     desc: 'Banking built for startups — checking, savings, credit, treasury.', categories: ['finance'] },
+  { id: 'figma',    name: 'Figma',         domain: 'figma.com',       desc: 'Collaborative design platform for product teams.',                  categories: ['design'] },
+  { id: 'vercel',   name: 'Vercel',        domain: 'vercel.com',      desc: 'Frontend cloud platform for Next.js, React, and static sites.',     categories: ['cloud','devtools'] },
+  { id: 'linear',   name: 'Linear',        domain: 'linear.app',      desc: 'Issue tracking and project management for software teams.',         categories: ['productivity','devtools'] },
+  { id: 'segment',  name: 'Segment',       domain: 'segment.com',     desc: 'Customer data platform — collect and route data to 300+ tools.',    categories: ['analytics','marketing'] },
+  { id: 'datadog',  name: 'Datadog',       domain: 'datadoghq.com',   desc: 'Monitoring, observability, and security for cloud applications.',   categories: ['devtools','analytics'] },
+  { id: 'deel',     name: 'Deel',          domain: 'deel.com',        desc: 'Global payroll, contractors, and EOR — hire anywhere in the world.',categories: ['hr'] },
+  { id: 'carta',    name: 'Carta',         domain: 'carta.com',       desc: 'Cap table, valuations, and equity management for startups.',        categories: ['finance','hr'] },
+  { id: 'mixpanel', name: 'Mixpanel',      domain: 'mixpanel.com',    desc: 'Product analytics for engagement, retention, and funnel insight.',  categories: ['analytics'] },
+];
+
+const PRODUCTS = [
+  {
+    id: 'aws-activate',
+    vendorId: 'aws',
+    name: 'AWS Activate',
+    short: 'Credits, training, and expert advisory for startups building on AWS.',
+    long: 'AWS Activate gives startups the resources to build, launch, and scale their products on AWS. Eligible startups receive cloud credits, AWS Business Support, exclusive trainings, and one-on-one time with AWS experts.\n\nUse credits across the full AWS catalog — EC2, S3, RDS, Bedrock, SageMaker, and 200+ other services. Founders get dedicated onboarding, technical reviews, and architecture guidance.',
+    categories: ['cloud'],
+    tags: ['credits','startup-program','compute','storage'],
+    stages: ['Pre-Seed','Seed','Series A'],
+  },
+  {
+    id: 'aws-bedrock',
+    vendorId: 'aws',
+    name: 'Amazon Bedrock',
+    short: 'Foundation models from Anthropic, Meta, Mistral and more via a unified API.',
+    long: 'Amazon Bedrock is a fully managed service offering high-performing foundation models from leading AI companies through a single API. Build generative AI applications with built-in security, privacy, and responsible-AI capabilities.',
+    categories: ['ai','cloud'],
+    tags: ['llm','foundation-models','api','genai'],
+    stages: ['Seed','Series A','Series B+'],
+  },
+  {
+    id: 'gcp-startups',
+    vendorId: 'gcp',
+    name: 'Google for Startups Cloud',
+    short: 'Up to $200k in Google Cloud credits, mentorship and Gemini access.',
+    long: 'A program built for AI-first startups. Receive up to $200,000 in Google Cloud credits, expert mentorship, technical workshops, and dedicated access to Gemini and Vertex AI for model training, fine-tuning, and inference at scale.',
+    categories: ['cloud','ai'],
+    tags: ['credits','gemini','vertex-ai','startup-program'],
+    stages: ['Pre-Seed','Seed','Series A'],
+  },
+  {
+    id: 'openai-api',
+    vendorId: 'openai',
+    name: 'OpenAI API',
+    short: 'GPT-4o, o1, and the OpenAI model family for any application.',
+    long: 'Build with the most capable AI models available. The OpenAI API gives you access to GPT-4o, o1, embeddings, image generation, voice, and the Assistants API. Pay only for what you use, with predictable pricing and enterprise-grade security.',
+    categories: ['ai'],
+    tags: ['llm','api','reasoning','vision'],
+    stages: ['Pre-Seed','Seed','Series A','Series B+'],
+  },
+  {
+    id: 'notion-plus',
+    vendorId: 'notion',
+    name: 'Notion Plus',
+    short: 'Connected workspace for notes, docs, wikis and projects.',
+    long: 'Notion Plus brings all your team\'s knowledge, projects, and processes into a single connected workspace. Includes unlimited file uploads, 30-day page history, and integrations with Slack, GitHub, and Jira.',
+    categories: ['productivity'],
+    tags: ['docs','wiki','project-management'],
+    stages: ['Pre-Seed','Seed','Series A'],
+  },
+  {
+    id: 'notion-ai',
+    vendorId: 'notion',
+    name: 'Notion AI',
+    short: 'AI-powered writing, summarization and Q&A built into your workspace.',
+    long: 'Notion AI helps you write faster, summarize long content, translate, brainstorm, and answer questions directly from your workspace knowledge — without leaving the page.',
+    categories: ['productivity','ai'],
+    tags: ['ai-writing','summarization','workspace-ai'],
+    stages: ['Seed','Series A','Series B+'],
+  },
+  {
+    id: 'hubspot-crm',
+    vendorId: 'hubspot',
+    name: 'HubSpot CRM',
+    short: 'CRM with marketing, sales and service hubs in one platform.',
+    long: 'A unified customer platform with everything you need to grow — Marketing Hub, Sales Hub, Service Hub, CMS Hub, and Operations Hub — all built on the same CRM. AI-powered tools for prospecting, content, and reporting included.',
+    categories: ['marketing','sales'],
+    tags: ['crm','marketing-automation','sales-pipeline'],
+    stages: ['Seed','Series A'],
+  },
+  {
+    id: 'stripe-atlas',
+    vendorId: 'stripe',
+    name: 'Stripe Atlas',
+    short: 'Incorporate a US company, open a bank account, and accept payments anywhere.',
+    long: 'Stripe Atlas helps founders incorporate a Delaware C Corp, set up tax and legal infrastructure, get a US bank account, issue equity, and start accepting payments globally — all in a single onboarding flow.',
+    categories: ['finance'],
+    tags: ['incorporation','banking','tax','legal'],
+    stages: ['Pre-Seed','Seed'],
+  },
+  {
+    id: 'stripe-payments',
+    vendorId: 'stripe',
+    name: 'Stripe Payments',
+    short: 'Accept payments online, in person and across the globe with one API.',
+    long: 'Stripe Payments is a fully integrated suite of payment products. Accept cards, wallets, bank debits, and local methods across 195+ countries. Built-in fraud prevention, multi-currency support, and revenue optimization.',
+    categories: ['finance'],
+    tags: ['payments','api','fraud','revenue'],
+    stages: ['Seed','Series A','Series B+'],
+  },
+  {
+    id: 'brex-cards',
+    vendorId: 'brex',
+    name: 'Brex Corporate Card',
+    short: 'Corporate cards with higher limits, automatic categorization, and rewards.',
+    long: 'Brex offers high-limit corporate cards with no personal-guarantee requirement, real-time expense management, and automatic categorization built for venture-backed startups.',
+    categories: ['finance'],
+    tags: ['corporate-card','expense-management','rewards'],
+    stages: ['Seed','Series A','Series B+'],
+  },
+  {
+    id: 'mercury-banking',
+    vendorId: 'mercury',
+    name: 'Mercury Business Banking',
+    short: 'Banking built for startups — no minimums, no monthly fees.',
+    long: 'Open a business bank account in under 10 minutes. Mercury offers checking and savings accounts, free domestic & international wires, virtual cards, and treasury yields on idle cash — purpose-built for startups.',
+    categories: ['finance'],
+    tags: ['banking','treasury','wires','startup-banking'],
+    stages: ['Pre-Seed','Seed','Series A'],
+  },
+  {
+    id: 'figma-org',
+    vendorId: 'figma',
+    name: 'Figma Organization',
+    short: 'Org-level design collaboration with FigJam, Dev Mode, and design systems.',
+    long: 'Bring your whole design organization onto Figma — with FigJam for whiteboarding, Dev Mode for engineering handoff, and centralized design-system management. Includes SSO, audit logs, and advanced permissions.',
+    categories: ['design'],
+    tags: ['design','collaboration','dev-mode','figjam'],
+    stages: ['Series A','Series B+'],
+  },
+  {
+    id: 'vercel-pro',
+    vendorId: 'vercel',
+    name: 'Vercel Pro',
+    short: 'Production-ready hosting for Next.js, React, and static sites.',
+    long: 'Vercel Pro gives you a global edge network, preview deployments on every PR, image and font optimization, edge functions, and analytics — without managing infrastructure.',
+    categories: ['cloud','devtools'],
+    tags: ['hosting','edge','nextjs','cdn'],
+    stages: ['Seed','Series A','Series B+'],
+  },
+  {
+    id: 'linear-startup',
+    vendorId: 'linear',
+    name: 'Linear for Startups',
+    short: 'Beautifully fast issue tracking, sprints and roadmaps.',
+    long: 'Linear is built for high-performance product teams. Plan in cycles, track issues, manage roadmaps, and integrate with GitHub, GitLab, Slack, and Figma — all with sub-second navigation and a keyboard-first interface.',
+    categories: ['productivity','devtools'],
+    tags: ['issue-tracking','sprints','roadmap'],
+    stages: ['Pre-Seed','Seed','Series A','Series B+'],
+  },
+  {
+    id: 'segment-cdp',
+    vendorId: 'segment',
+    name: 'Segment Customer Data Platform',
+    short: 'Collect, unify, and route customer data to 300+ tools.',
+    long: 'Twilio Segment is the leading customer data platform. Collect events from web, mobile, and server, build unified customer profiles, and route data to your data warehouse and 300+ marketing, analytics, and product tools.',
+    categories: ['analytics','marketing'],
+    tags: ['cdp','tracking','warehouse','reverse-etl'],
+    stages: ['Series A','Series B+'],
+  },
+  {
+    id: 'datadog-startup',
+    vendorId: 'datadog',
+    name: 'Datadog for Startups',
+    short: 'Observability for cloud-scale applications.',
+    long: 'Monitor infrastructure, applications, logs, security, and user experience in a single platform. Datadog for Startups offers 12 months of free access to most products plus discounts on paid plans.',
+    categories: ['devtools','analytics'],
+    tags: ['monitoring','apm','logs','observability'],
+    stages: ['Seed','Series A'],
+  },
+  {
+    id: 'deel-global',
+    vendorId: 'deel',
+    name: 'Deel Global Hiring',
+    short: 'Hire, onboard, and pay contractors and employees in 150+ countries.',
+    long: 'Deel handles global payroll, contractor agreements, compliance, equity, and benefits in 150+ countries. Hire anyone, anywhere, in minutes — without setting up a local entity.',
+    categories: ['hr'],
+    tags: ['global-payroll','eor','contractors','compliance'],
+    stages: ['Seed','Series A','Series B+'],
+  },
+  {
+    id: 'carta-launch',
+    vendorId: 'carta',
+    name: 'Carta Launch',
+    short: 'Free cap-table management for early-stage startups.',
+    long: 'Carta Launch is free cap-table management for early-stage startups. Issue equity, manage stakeholders, track ownership, and prepare for fundraising — all in one place.',
+    categories: ['finance','hr'],
+    tags: ['cap-table','equity','409a','stakeholders'],
+    stages: ['Pre-Seed','Seed'],
+  },
+  {
+    id: 'mixpanel-startup',
+    vendorId: 'mixpanel',
+    name: 'Mixpanel for Startups',
+    short: 'Product analytics for engagement, retention and growth.',
+    long: 'Track every user interaction across web and mobile. Build funnels, retention reports, and cohorts in seconds. Mixpanel for Startups gives qualifying companies free access for up to one year plus discounted pricing afterward.',
+    categories: ['analytics'],
+    tags: ['product-analytics','funnels','retention','cohorts'],
+    stages: ['Pre-Seed','Seed','Series A'],
+  },
+  {
+    id: 'vercel-edge',
+    vendorId: 'vercel',
+    name: 'Vercel Edge Functions',
+    short: 'Run serverless code at the edge, milliseconds from your users.',
+    long: 'Vercel Edge Functions let you run lightweight JavaScript at the edge — perfect for personalization, authentication, and A/B testing. Sub-50ms cold starts globally.',
+    categories: ['cloud','devtools'],
+    tags: ['serverless','edge','workers'],
+    stages: ['Series A','Series B+'],
+  },
+];
+
+const DEALS = [
+  { id:'d-aws-1',    productId:'aws-activate',     title:'Up to $100,000 in AWS credits', offerDescription:'Founders Package: up to $100k in AWS credits, 2 years of AWS Business Support, training, and 1:1 architecture advisory.', eligibility:'VC-backed startups, < 10 years old, < $100M raised, not previously enrolled.', expiryDate:'2026-12-31', region:'Global',        redemptionMethod:'Apply via the AWS Activate console with VC referral code. Approval typically within 5 business days.', terms:'Credits non-transferable. Subject to AWS Activate Terms.', status:'active' },
+  { id:'d-aws-2',    productId:'aws-activate',     title:'$5,000 starter credits',          offerDescription:'$5,000 in AWS credits and 1 year of Developer Support for early-stage founders without VC backing.', eligibility:'Founders < 10 years old, not previously enrolled.', expiryDate:'2026-12-31', region:'Global',        redemptionMethod:'Self-service via AWS Activate Founders portal.', terms:'Standard AWS Activate Terms apply.', status:'active' },
+  { id:'d-aws-3',    productId:'aws-bedrock',      title:'90 days of Bedrock at no cost',   offerDescription:'Free Bedrock usage for foundation-model evaluation — Anthropic Claude, Meta Llama, Mistral, and Amazon Titan.', eligibility:'AWS Activate members on the Portfolio tier.', expiryDate:'2026-09-30', region:'Global', redemptionMethod:'Enable Bedrock in the AWS console; credits applied automatically.', terms:'90-day window from first activation.', status:'active' },
+  { id:'d-gcp-1',    productId:'gcp-startups',     title:'Up to $200k in Google Cloud credits', offerDescription:'AI-first startups receive up to $200k over 2 years, mentorship, and dedicated Gemini access.', eligibility:'VC-backed AI startups, founded < 5 years ago.', expiryDate:'2026-12-31', region:'Global', redemptionMethod:'Apply at cloud.google.com/startup; require VC partner sign-off.', terms:'Subject to program review every 6 months.', status:'active' },
+  { id:'d-gcp-2',    productId:'gcp-startups',     title:'$25k cloud credits — Seed tier', offerDescription:'$25k in Google Cloud credits for Pre-Seed and Seed-stage startups.', eligibility:'Pre-Seed or Seed stage, founded < 3 years ago.', expiryDate:'2027-03-31', region:'Global', redemptionMethod:'Apply via Google for Startups Cloud Program.', terms:'Credits valid for 12 months from activation.', status:'active' },
+  { id:'d-openai-1', productId:'openai-api',       title:'$2,500 API credit for early-stage AI startups', offerDescription:'Free $2,500 in OpenAI API credits for verified VC-portfolio startups building production AI features.', eligibility:'VC-backed startup, < 3 years old, building user-facing AI features.', expiryDate:'2026-12-31', region:'Global', redemptionMethod:'Submit through OpenAI Startup Program; verification within 7 days.', terms:'Credits valid for 6 months. Subject to OpenAI Usage Policies.', status:'active' },
+  { id:'d-notion-1', productId:'notion-plus',      title:'6 months free + 50% off year 2', offerDescription:'Notion Plus free for 6 months, then 50% off the second-year subscription for your entire team.', eligibility:'VC-backed startup, < 100 employees.', expiryDate:'2026-12-31', region:'Global', redemptionMethod:'Apply at notion.so/startups with portfolio code.', terms:'Auto-renews at standard rate after year 2.', status:'active' },
+  { id:'d-notion-2', productId:'notion-ai',        title:'3 months Notion AI included',    offerDescription:'Get 3 months of Notion AI bundled with the Notion Plus startup deal — for unlimited AI writing and Q&A.', eligibility:'Active Notion Plus startup-deal subscribers.', expiryDate:'2026-12-31', region:'Global', redemptionMethod:'Bundled automatically with the Notion Plus startup deal.', terms:'Notion AI charges resume at standard rate after 3 months.', status:'active' },
+  { id:'d-hubspot-1',productId:'hubspot-crm',      title:'90% off HubSpot for Startups',   offerDescription:'90% off year 1 and 50% off year 2 for HubSpot Marketing, Sales, Service, and CMS hubs.', eligibility:'VC-backed startup, < $2M ARR, raised < $25M.', expiryDate:'2026-12-31', region:'Global', redemptionMethod:'Apply via HubSpot for Startups program — VC partner code required.', terms:'Pricing escalates to standard plans in year 3.', status:'active' },
+  { id:'d-stripe-1', productId:'stripe-atlas',     title:'Free Atlas incorporation ($500 waived)', offerDescription:'Atlas incorporation fee waived ($500 value) plus $20,000 in fee-free payment processing.', eligibility:'First-time founders incorporating via Atlas.', expiryDate:'2026-12-31', region:'Global', redemptionMethod:'Use partner code at Atlas signup.', terms:'Fee-free processing applies to first $20k in volume only.', status:'active' },
+  { id:'d-stripe-2', productId:'stripe-payments',  title:'Waived processing fees on first $250k', offerDescription:'Pay no Stripe processing fees on the first $250,000 in payment volume.', eligibility:'New Stripe accounts via VC referral, < 1 year of processing history.', expiryDate:'2026-12-31', region:'Global', redemptionMethod:'VC admin shares partner link; fees waived automatically.', terms:'Standard Stripe pricing resumes after $250k.', status:'active' },
+  { id:'d-brex-1',   productId:'brex-cards',       title:'$50,000 statement credit',       offerDescription:'$50,000 in Brex card statement credits over the first 12 months of usage.', eligibility:'VC-backed startup signing up via partner program.', expiryDate:'2026-12-31', region:'United States', redemptionMethod:'Apply at brex.com/partners.', terms:'Credits issued monthly based on spend; subject to Brex terms.', status:'active' },
+  { id:'d-mercury-1',productId:'mercury-banking',  title:'$1,000 cash bonus + free wires for 1 year', offerDescription:'$1,000 bonus after maintaining a $20k balance for 60 days, plus free domestic & international wires for the first 12 months.', eligibility:'New Mercury accounts via VC partner program.', expiryDate:'2026-12-31', region:'United States', redemptionMethod:'Use partner referral link at mercury.com/partners.', terms:'Subject to Mercury account-opening requirements.', status:'active' },
+  { id:'d-figma-1',  productId:'figma-org',        title:'1 year free — Figma Organization', offerDescription:'Figma Organization free for 1 year for qualifying startups, including FigJam, Dev Mode, and design-system management.', eligibility:'VC-backed startup, < 20 designers.', expiryDate:'2026-12-31', region:'Global', redemptionMethod:'Apply via Figma Startup Program with portfolio referral.', terms:'Auto-renews at standard rate after 12 months.', status:'active' },
+  { id:'d-vercel-1', productId:'vercel-pro',       title:'12 months Vercel Pro free',      offerDescription:'12 months of Vercel Pro free for VC-portfolio startups — unlimited preview deploys, edge network, image optimization.', eligibility:'VC-backed startup, < 50 employees.', expiryDate:'2026-12-31', region:'Global', redemptionMethod:'Apply via Vercel for Startups with VC code.', terms:'Standard Pro pricing resumes after 12 months.', status:'active' },
+  { id:'d-vercel-2', productId:'vercel-edge',      title:'1M edge requests / month free',  offerDescription:'1 million additional Edge Function invocations per month included free for startup-deal subscribers.', eligibility:'Vercel for Startups subscribers.', expiryDate:'2026-12-31', region:'Global', redemptionMethod:'Auto-applied to Vercel Pro startup accounts.', terms:'Beyond 1M, standard usage rates apply.', status:'active' },
+  { id:'d-linear-1', productId:'linear-startup',   title:'1 year free for teams under 10', offerDescription:'Linear Business plan free for 12 months for startup teams up to 10 members.', eligibility:'VC-backed startup, < 10 active users.', expiryDate:'2026-12-31', region:'Global', redemptionMethod:'Apply at linear.app/startup-program.', terms:'Standard pricing applies after 12 months or > 10 users.', status:'active' },
+  { id:'d-segment-1',productId:'segment-cdp',      title:'1 year of Segment Team plan free', offerDescription:'Segment Team plan free for 1 year — up to 1M monthly tracked users.', eligibility:'Seed or Series A startup, < 2M tracked users / month.', expiryDate:'2026-12-31', region:'Global', redemptionMethod:'Apply at segment.com/industry/startups.', terms:'Subject to Segment Startup Program terms.', status:'active' },
+  { id:'d-datadog-1',productId:'datadog-startup',  title:'12 months of Datadog free',      offerDescription:'12 months free across Infrastructure, APM, Logs, RUM, and Synthetics. Up to 5 hosts and 1M log events / day.', eligibility:'VC-backed startup, founded < 5 years ago.', expiryDate:'2026-12-31', region:'Global', redemptionMethod:'Apply via datadoghq.com/startups.', terms:'Soft caps on usage; overage discounts apply.', status:'active' },
+  { id:'d-deel-1',   productId:'deel-global',      title:'First 3 contractor hires free',  offerDescription:'No platform fees on the first 3 contractor hires made via Deel for the first 12 months.', eligibility:'Startups < 50 employees, signing up via partner link.', expiryDate:'2026-12-31', region:'Global', redemptionMethod:'Use partner link at signup.', terms:'EOR hires and global payroll not included; standard rates apply.', status:'active' },
+  { id:'d-carta-1',  productId:'carta-launch',     title:'Free 409A valuation in year 1',  offerDescription:'Carta Launch is free, plus your first 409A valuation included at no cost (typically $3,000+).', eligibility:'Pre-Seed or Seed startup using Carta Launch.', expiryDate:'2026-12-31', region:'Global', redemptionMethod:'Available automatically on Carta Launch accounts.', terms:'One 409A per account; standard fees apply thereafter.', status:'active' },
+  { id:'d-mixpanel-1',productId:'mixpanel-startup',title:'1 year of Mixpanel Growth free', offerDescription:'1 year of the Mixpanel Growth plan free — up to 1M tracked events / month.', eligibility:'Pre-Seed or Seed startup, < $2M raised.', expiryDate:'2026-12-31', region:'Global', redemptionMethod:'Apply at mixpanel.com/startups.', terms:'50% off the second year; standard pricing thereafter.', status:'active' },
+  { id:'d-mixpanel-2',productId:'mixpanel-startup',title:'India-only: 18 months free',     offerDescription:'Extended program for India-based startups — 18 months free on Mixpanel Growth.', eligibility:'Startups headquartered in India, registered as a Private Limited.', expiryDate:'2026-09-30', region:'India', redemptionMethod:'Apply via Mixpanel India program form.', terms:'India HQ verification required.', status:'active' },
+];
+
+/* ───────────────────────────── HELPERS ───────────────────────────── */
+const $ = (sel, root) => (root || document).querySelector(sel);
+const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
+const escape = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const byId = (arr, id) => arr.find(x => x.id === id);
+const productsByVendor = (vid) => PRODUCTS.filter(p => p.vendorId === vid);
+const dealsByProduct  = (pid) => DEALS.filter(d => d.productId === pid);
+const dealsByVendor   = (vid) => DEALS.filter(d => productsByVendor(vid).some(p => p.id === d.productId));
+const vendorOf = (p) => byId(VENDORS, p.vendorId);
+const catName = (id) => (byId(CATEGORIES, id) || { name: id }).name;
+const logoUrl  = (domain) => `https://logos.hunter.io/${domain}`;
+const coverUrl = (id) => `https://picsum.photos/seed/prism-${id}/720/450`;
+
+const formatDate = (iso) => {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+};
+
+const headlineDeal = (productId) => {
+  const ds = dealsByProduct(productId);
+  return ds[0] || null;
+};
+
+const icon = (id) => `<svg aria-hidden="true"><use href="#${id}"/></svg>`;
+
+/* ───────────────────────────── STATE + PERSISTENCE ───────────────────────────── */
+const LS_SAVED = 'prism-catalog-saved';
+const LS_LISTINGS = 'prism-catalog-listings';
+
+function loadSet(key) {
+  try { return new Set(JSON.parse(localStorage.getItem(key)) || []); }
+  catch { return new Set(); }
+}
+function saveSet(key, set) {
+  try { localStorage.setItem(key, JSON.stringify(Array.from(set))); } catch {}
+}
+
+const state = {
+  saved: loadSet(LS_SAVED),
+  inListings: loadSet(LS_LISTINGS),
+  search: '',
+  filterCategory: '',
+  filterStage: '',
+  filterRegion: '',
+  view: 'grid', // grid | list
+};
+
+function setSaved(productId, value) {
+  if (value) state.saved.add(productId); else state.saved.delete(productId);
+  saveSet(LS_SAVED, state.saved);
+  updateSavedCount();
+}
+function setInListings(productId) {
+  state.inListings.add(productId);
+  saveSet(LS_LISTINGS, state.inListings);
+}
+function updateSavedCount() {
+  const el = $('#saved-count');
+  if (el) el.textContent = state.saved.size;
+}
+
+/* ───────────────────────────── ROUTER ───────────────────────────── */
+function parseRoute() {
+  const h = (location.hash || '').replace(/^#\/?/, '');
+  if (!h) return { view: 'explore', params: [] };
+  const [view, ...params] = h.split('/');
+  return { view, params };
+}
+function navigate(hash, opts) {
+  if (opts && opts.replace) {
+    history.replaceState(null, '', '#' + hash);
+    render();
+  } else {
+    location.hash = hash;
+  }
+}
+window.addEventListener('hashchange', render);
+window.addEventListener('DOMContentLoaded', () => {
+  updateSavedCount();
+  render();
+});
+
+/* ───────────────────────────── RENDER DISPATCH ───────────────────────────── */
+function setActiveSubnav(view) {
+  $$('.subnav-tab').forEach(t => t.classList.toggle('active', t.dataset.route === view));
+}
+
+function render() {
+  const { view, params } = parseRoute();
+  const app = $('#app');
+  const topLevel = ['explore','categories','vendors','saved'].includes(view) ? view : 'explore';
+  setActiveSubnav(topLevel);
+
+  const isDetail = view === 'product' || view === 'vendor';
+  document.body.classList.toggle('is-detail', isDetail);
+
+  window.scrollTo({ top: 0, behavior: 'instant' });
+
+  if (view === 'product' && params[0]) {
+    app.innerHTML = renderProductDetail(params[0]);
+    bindProductDetail();
+  } else if (view === 'vendor' && params[0]) {
+    app.innerHTML = renderVendorDetail(params[0]);
+    bindVendorDetail();
+  } else if (view === 'categories') {
+    app.innerHTML = renderCategoriesView();
+    bindCategoriesView();
+  } else if (view === 'vendors') {
+    app.innerHTML = renderVendorsView();
+    bindVendorsView();
+  } else if (view === 'saved') {
+    app.innerHTML = renderSavedView();
+    bindExplore(true);
+  } else {
+    app.innerHTML = renderExploreView();
+    bindExplore(false);
+  }
+}
+
+/* ───────────────────────────── EXPLORE VIEW ───────────────────────────── */
+function filterProducts(products) {
+  const q = state.search.trim().toLowerCase();
+  return products.filter(p => {
+    if (state.filterCategory && !p.categories.includes(state.filterCategory)) return false;
+    if (state.filterStage && !(p.stages || []).includes(state.filterStage)) return false;
+    if (state.filterRegion) {
+      const dRegions = dealsByProduct(p.id).map(d => d.region);
+      if (!dRegions.includes(state.filterRegion) && !dRegions.includes('Global')) return false;
+    }
+    if (!q) return true;
+    const v = vendorOf(p);
+    const hay = [
+      p.name, p.short, p.long, (p.tags || []).join(' '),
+      v ? v.name : '',
+      ...dealsByProduct(p.id).map(d => d.title + ' ' + d.offerDescription),
+    ].join(' ').toLowerCase();
+    return hay.includes(q);
+  });
+}
+
+function renderExploreView() {
+  const products = filterProducts(PRODUCTS);
+  return `
+    ${renderToolbar()}
+    ${renderActiveFilters()}
+    <div class="results-meta"><strong>${products.length}</strong> product${products.length === 1 ? '' : 's'}${state.search ? ` matching "${escape(state.search)}"` : ''}</div>
+    ${products.length === 0
+      ? renderEmpty('No products match your filters', 'Try clearing a filter or searching for something else.', `<button class="btn secondary sm" data-action="clear-filters">Clear filters</button>`)
+      : state.view === 'grid'
+        ? `<div class="product-grid">${products.map(productCard).join('')}</div>`
+        : `<div class="product-list">${products.map(productRow).join('')}</div>`
+    }
+  `;
+}
+
+function renderToolbar() {
+  return `
+    <div class="toolbar">
+      <div class="search-input-group">
+        <span class="leading">${icon('i-search')}</span>
+        <input id="search" class="search-input" type="search" placeholder="Search products, vendors, or deals" value="${escape(state.search)}" autocomplete="off">
+      </div>
+      <div class="filter-select-wrap">
+        <select id="f-cat" class="filter-select ${state.filterCategory ? 'has-value' : ''}">
+          <option value="">All categories</option>
+          ${CATEGORIES.map(c => `<option value="${c.id}" ${state.filterCategory === c.id ? 'selected' : ''}>${escape(c.name)}</option>`).join('')}
+        </select>
+      </div>
+      <div class="filter-select-wrap">
+        <select id="f-stage" class="filter-select ${state.filterStage ? 'has-value' : ''}">
+          <option value="">All stages</option>
+          ${STAGES.map(s => `<option value="${s}" ${state.filterStage === s ? 'selected' : ''}>${escape(s)}</option>`).join('')}
+        </select>
+      </div>
+      <div class="filter-select-wrap">
+        <select id="f-region" class="filter-select ${state.filterRegion ? 'has-value' : ''}">
+          <option value="">All regions</option>
+          ${REGIONS.map(r => `<option value="${r}" ${state.filterRegion === r ? 'selected' : ''}>${escape(r)}</option>`).join('')}
+        </select>
+      </div>
+      <div class="view-toggle" role="group" aria-label="View toggle">
+        <button class="${state.view === 'grid' ? 'active' : ''}" data-view="grid" title="Grid view" aria-label="Grid view">${icon('i-grid')}</button>
+        <button class="${state.view === 'list' ? 'active' : ''}" data-view="list" title="List view" aria-label="List view">${icon('i-list')}</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderActiveFilters() {
+  const chips = [];
+  if (state.filterCategory) chips.push({ k: 'category', label: catName(state.filterCategory) });
+  if (state.filterStage)    chips.push({ k: 'stage',    label: state.filterStage });
+  if (state.filterRegion)   chips.push({ k: 'region',   label: state.filterRegion });
+  if (chips.length === 0) return '';
+  return `
+    <div class="active-filters">
+      <span class="lab">Filtered by:</span>
+      ${chips.map(c => `
+        <span class="filter-chip">${escape(c.label)}
+          <button class="x" data-clear="${c.k}" aria-label="Remove ${escape(c.label)} filter">${icon('i-x')}</button>
+        </span>
+      `).join('')}
+      <button class="clear-all-btn" data-action="clear-filters">Clear all</button>
+    </div>
+  `;
+}
+
+function productCard(p) {
+  const v = vendorOf(p);
+  const d = headlineDeal(p.id);
+  const isSaved = state.saved.has(p.id);
+  const inList = state.inListings.has(p.id);
+  return `
+    <article class="prod-card" data-product="${p.id}" tabindex="0" role="link" aria-label="${escape(p.name)} — view details">
+      <div class="cover">
+        <img src="${coverUrl(p.id)}" alt="" loading="lazy">
+        <div class="logo-chip" aria-hidden="true">
+          <img src="${logoUrl(v.domain)}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+          <span class="fallback" style="display:none">${escape(v.name.slice(0, 2).toUpperCase())}</span>
+        </div>
+        <button class="save-btn ${isSaved ? 'saved' : ''}" data-save="${p.id}" aria-label="${isSaved ? 'Remove from saved' : 'Save product'}" title="${isSaved ? 'Remove from saved' : 'Save product'}">
+          ${icon(isSaved ? 'i-bookmark-filled' : 'i-bookmark')}
+        </button>
+      </div>
+      <div class="body">
+        <div class="vendor-line">${escape(v.name)}</div>
+        <h3 class="name">${escape(p.name)}</h3>
+        <p class="desc">${escape(p.short)}</p>
+      </div>
+      <div class="foot">
+        ${inList
+          ? `<span class="in-listings-tag">${icon('i-check')} In listings</span>`
+          : d
+            ? `<span class="deal-pill" title="${escape(d.title)}"><span class="dot"></span>${escape(shortenDeal(d.title))}</span>`
+            : ''
+        }
+      </div>
+    </article>
+  `;
+}
+
+function shortenDeal(title) {
+  if (title.length <= 32) return title;
+  return title.slice(0, 30).trim() + '…';
+}
+
+function productRow(p) {
+  const v = vendorOf(p);
+  const d = headlineDeal(p.id);
+  const isSaved = state.saved.has(p.id);
+  const inList = state.inListings.has(p.id);
+  return `
+    <article class="prod-row" data-product="${p.id}" tabindex="0" role="link" aria-label="${escape(p.name)} — view details">
+      <div class="lo">
+        <img src="${logoUrl(v.domain)}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+        <span class="fallback" style="display:none">${escape(v.name.slice(0, 2).toUpperCase())}</span>
+      </div>
+      <div class="main">
+        <div class="v">${escape(v.name)}</div>
+        <div class="n">${escape(p.name)}</div>
+        <div class="d">${escape(p.short)}</div>
+      </div>
+      <div class="deal-meta">
+        ${inList
+          ? `<span class="in-listings-tag">${icon('i-check')} In listings</span>`
+          : d
+            ? `<span class="dot"></span>${escape(d.title)}`
+            : '—'
+        }
+      </div>
+      <div class="acts">
+        <button class="btn ghost icon-only sm" data-save="${p.id}" title="${isSaved ? 'Remove from saved' : 'Save'}" aria-label="${isSaved ? 'Remove from saved' : 'Save product'}">${icon(isSaved ? 'i-bookmark-filled' : 'i-bookmark')}</button>
+        <button class="btn secondary sm" data-add-listing="${p.id}" ${inList ? 'disabled' : ''}>${inList ? 'Added' : 'Add'}</button>
+      </div>
+    </article>
+  `;
+}
+
+function renderEmpty(title, desc, action) {
+  return `
+    <div class="empty">
+      <div class="red-line"></div>
+      <div class="ic">${icon('i-package')}</div>
+      <h3 class="ttl">${escape(title)}</h3>
+      <p class="desc">${escape(desc)}</p>
+      ${action || ''}
+    </div>
+  `;
+}
+
+function bindExplore(isSavedView) {
+  const searchEl = $('#search');
+  if (searchEl) {
+    searchEl.addEventListener('input', (e) => {
+      state.search = e.target.value;
+      const meta = $('.results-meta');
+      const grid = $('.product-grid') || $('.product-list');
+      // Re-render only the list to preserve input focus
+      const products = filterProducts(isSavedView ? PRODUCTS.filter(p => state.saved.has(p.id)) : PRODUCTS);
+      if (meta) meta.innerHTML = `<strong>${products.length}</strong> product${products.length === 1 ? '' : 's'}${state.search ? ` matching "${escape(state.search)}"` : ''}`;
+      if (grid) {
+        if (products.length === 0) {
+          grid.outerHTML = renderEmpty('No products match your filters', 'Try clearing a filter or searching for something else.', `<button class="btn secondary sm" data-action="clear-filters">Clear filters</button>`);
+        } else {
+          grid.outerHTML = state.view === 'grid'
+            ? `<div class="product-grid">${products.map(productCard).join('')}</div>`
+            : `<div class="product-list">${products.map(productRow).join('')}</div>`;
+        }
+      } else {
+        // Was empty; check if now has results
+        if (products.length > 0) {
+          const empty = $('.empty');
+          if (empty) empty.outerHTML = state.view === 'grid'
+            ? `<div class="product-grid">${products.map(productCard).join('')}</div>`
+            : `<div class="product-list">${products.map(productRow).join('')}</div>`;
+        }
+      }
+    });
+  }
+
+  const fc = $('#f-cat'),    fs = $('#f-stage'), fr = $('#f-region');
+  if (fc) fc.addEventListener('change', (e) => { state.filterCategory = e.target.value; render(); });
+  if (fs) fs.addEventListener('change', (e) => { state.filterStage    = e.target.value; render(); });
+  if (fr) fr.addEventListener('change', (e) => { state.filterRegion   = e.target.value; render(); });
+
+  $$('.view-toggle button').forEach(b => b.addEventListener('click', () => {
+    state.view = b.dataset.view;
+    render();
+  }));
+
+  $$('[data-clear]').forEach(b => b.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const k = b.dataset.clear;
+    if (k === 'category') state.filterCategory = '';
+    if (k === 'stage')    state.filterStage = '';
+    if (k === 'region')   state.filterRegion = '';
+    render();
+  }));
+
+  $$('[data-action="clear-filters"]').forEach(b => b.addEventListener('click', () => {
+    state.filterCategory = ''; state.filterStage = ''; state.filterRegion = '';
+    render();
+  }));
+
+  bindCardCommon();
+}
+
+/* ───────────────────────────── CATEGORIES VIEW ───────────────────────────── */
+function renderCategoriesView() {
+  return `
+    <div class="results-meta"><strong>${CATEGORIES.length}</strong> categories — browse products by area.</div>
+    <div class="cat-grid">
+      ${CATEGORIES.map(c => {
+        const n = PRODUCTS.filter(p => p.categories.includes(c.id)).length;
+        return `
+          <button class="cat-card" data-cat="${c.id}" type="button">
+            <div class="ic">${icon(c.icon)}</div>
+            <div class="name">${escape(c.name)}</div>
+            <div class="count">${n} product${n === 1 ? '' : 's'}</div>
+          </button>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+
+function bindCategoriesView() {
+  $$('.cat-card').forEach(c => c.addEventListener('click', () => {
+    state.filterCategory = c.dataset.cat;
+    state.filterStage = ''; state.filterRegion = ''; state.search = '';
+    navigate('explore');
+  }));
+}
+
+/* ───────────────────────────── VENDORS VIEW ───────────────────────────── */
+function renderVendorsView() {
+  const vendorsSorted = [...VENDORS].sort((a, b) => a.name.localeCompare(b.name));
+  return `
+    <div class="results-meta"><strong>${vendorsSorted.length}</strong> vendors</div>
+    <div class="vendor-grid">
+      ${vendorsSorted.map(vendorCard).join('')}
+    </div>
+  `;
+}
+
+function vendorCard(v) {
+  const ps = productsByVendor(v.id);
+  const ds = dealsByVendor(v.id);
+  return `
+    <article class="vendor-card" data-vendor="${v.id}" tabindex="0" role="link" aria-label="${escape(v.name)} — view vendor">
+      <div class="vlogo">
+        <img src="${logoUrl(v.domain)}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+        <span class="fallback" style="display:none">${escape(v.name.slice(0, 2).toUpperCase())}</span>
+      </div>
+      <div class="info">
+        <h3 class="vn">${escape(v.name)}</h3>
+        <p class="vd">${escape(v.desc)}</p>
+        <div class="vmeta">
+          <span>${ps.length} product${ps.length === 1 ? '' : 's'}</span>
+          <span class="dot"></span>
+          <span>${ds.length} deal${ds.length === 1 ? '' : 's'}</span>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function bindVendorsView() {
+  $$('.vendor-card').forEach(c => {
+    const goTo = () => navigate('vendor/' + c.dataset.vendor);
+    c.addEventListener('click', goTo);
+    c.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goTo(); } });
+  });
+}
+
+/* ───────────────────────────── SAVED VIEW ───────────────────────────── */
+function renderSavedView() {
+  const saved = PRODUCTS.filter(p => state.saved.has(p.id));
+  const filtered = filterProducts(saved);
+
+  return `
+    ${saved.length > 0 ? renderToolbar() : ''}
+    ${saved.length > 0 ? renderActiveFilters() : ''}
+    ${saved.length === 0
+      ? renderEmpty(
+          'No saved products yet',
+          'Bookmark anything from the catalog to come back to it later and add it to your listings.',
+          `<button class="btn primary sm" data-action="go-explore">Browse catalog</button>`
+        )
+      : filtered.length === 0
+        ? renderEmpty('No saved products match your filters', 'Try clearing a filter.', `<button class="btn secondary sm" data-action="clear-filters">Clear filters</button>`)
+        : `
+          <div class="results-meta"><strong>${filtered.length}</strong> saved product${filtered.length === 1 ? '' : 's'}</div>
+          ${state.view === 'grid'
+            ? `<div class="product-grid">${filtered.map(productCard).join('')}</div>`
+            : `<div class="product-list">${filtered.map(productRow).join('')}</div>`
+          }
+        `
+    }
+  `;
+}
+
+/* ───────────────────────────── PRODUCT DETAIL ───────────────────────────── */
+function renderProductDetail(productId) {
+  const p = byId(PRODUCTS, productId);
+  if (!p) return renderEmpty('Product not found', 'This product may have been removed.', `<button class="btn secondary sm" data-action="go-explore">Back to Catalog</button>`);
+  const v = vendorOf(p);
+  const ds = dealsByProduct(p.id);
+  const isSaved = state.saved.has(p.id);
+  const inList = state.inListings.has(p.id);
+
+  return `
+    <div class="crumb">
+      <button data-nav="explore">Catalog</button>
+      <span class="sep">${icon('i-chevron-right')}</span>
+      <button data-nav="explore">Explore</button>
+      <span class="sep">${icon('i-chevron-right')}</span>
+      <span class="cur">${escape(p.name)}</span>
+    </div>
+
+    <div class="detail">
+      <div class="detail-hero">
+        <div class="cover">
+          <img src="${coverUrl(p.id + '-detail')}" alt="">
+        </div>
+        <div class="meta-block">
+          <button class="vendor-link-row" data-nav="vendor/${v.id}">
+            <span class="vlg">
+              <img src="${logoUrl(v.domain)}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+              <span class="fallback" style="display:none">${escape(v.name.slice(0, 2).toUpperCase())}</span>
+            </span>
+            <span class="vn">${escape(v.name)}</span>
+            <svg class="arrow" aria-hidden="true"><use href="#i-arrow-right"/></svg>
+          </button>
+          <h2 class="detail-title">${escape(p.name)}</h2>
+          <p class="detail-desc">${escape(p.short)}</p>
+          <div class="detail-actions">
+            <button class="btn primary" data-add-listing="${p.id}" ${inList ? 'disabled' : ''}>
+              ${inList ? `${icon('i-check')} Added to listings` : `${icon('i-plus')} Add to listings`}
+            </button>
+            <button class="btn secondary" data-save="${p.id}">
+              ${icon(isSaved ? 'i-bookmark-filled' : 'i-bookmark')} ${isSaved ? 'Saved' : 'Save'}
+            </button>
+            <a class="btn ghost" href="https://${v.domain}" target="_blank" rel="noopener">${icon('i-external')} Visit website</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-body">
+        <div class="detail-main">
+          <section>
+            <h3>About</h3>
+            <p class="long-desc">${escape(p.long)}</p>
+          </section>
+
+          <section>
+            <h3>Categories & tags</h3>
+            <div class="tag-row" style="margin-bottom: 8px;">
+              ${p.categories.map(c => `<button class="tag cat" data-cat="${c}">${escape(catName(c))}</button>`).join('')}
+            </div>
+            <div class="tag-row">
+              ${(p.tags || []).map(t => `<span class="tag">${escape(t)}</span>`).join('')}
+            </div>
+          </section>
+
+          <section>
+            <h3>Available deals <span style="color: var(--text-faint); font-weight: 500; text-transform: none; letter-spacing: 0; margin-left: 6px;">${ds.length}</span></h3>
+            ${ds.length === 0
+              ? `<p style="font-size: 13.5px; color: var(--text-muted);">No active deals for this product.</p>`
+              : ds.map(dealCard).join('')
+            }
+          </section>
+        </div>
+
+        <aside class="detail-aside">
+          <div class="aside-card">
+            <h4>Vendor</h4>
+            <button class="vendor-mini" data-nav="vendor/${v.id}" style="background: none; border: 0; padding: 0; cursor: pointer; text-align: left; width: 100%;">
+              <span class="vlg">
+                <img src="${logoUrl(v.domain)}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+                <span class="fallback" style="display:none">${escape(v.name.slice(0, 2).toUpperCase())}</span>
+              </span>
+              <span>
+                <div class="vname">${escape(v.name)}</div>
+                <div class="vdesc">${productsByVendor(v.id).length} product${productsByVendor(v.id).length === 1 ? '' : 's'} on catalog</div>
+              </span>
+            </button>
+          </div>
+
+          <div class="aside-card">
+            <h4>At a glance</h4>
+            <div class="kv-row"><span class="k">Stages</span><span class="v">${(p.stages || []).join(', ') || '—'}</span></div>
+            <div class="kv-row"><span class="k">Category</span><span class="v">${p.categories.map(catName).join(', ')}</span></div>
+            <div class="kv-row"><span class="k">Active deals</span><span class="v">${ds.length}</span></div>
+            <div class="kv-row"><span class="k">Website</span><span class="v"><a class="external-link" href="https://${v.domain}" target="_blank" rel="noopener">${escape(v.domain)} ${icon('i-external')}</a></span></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  `;
+}
+
+function dealCard(d) {
+  const isExpired = new Date(d.expiryDate) < new Date();
+  return `
+    <div class="deal-card">
+      <div class="dt-row">
+        <div class="dt">${escape(d.title)}</div>
+        <span class="deal-status-pill ${isExpired ? 'expired' : ''}">${isExpired ? 'Expired' : 'Active'}</span>
+      </div>
+      <p class="dod">${escape(d.offerDescription)}</p>
+      <div class="dmeta">
+        <div class="item"><span class="k">Eligibility</span><span class="v">${escape(d.eligibility)}</span></div>
+        <div class="item"><span class="k">Region</span><span class="v">${escape(d.region)}</span></div>
+        <div class="item"><span class="k">Expires</span><span class="v">${formatDate(d.expiryDate)}</span></div>
+        <div class="item"><span class="k">Redemption</span><span class="v">${escape(d.redemptionMethod)}</span></div>
+      </div>
+    </div>
+  `;
+}
+
+function bindProductDetail() {
+  bindCardCommon();
+  $$('[data-nav]').forEach(b => b.addEventListener('click', (e) => {
+    e.stopPropagation();
+    navigate(b.dataset.nav);
+  }));
+  $$('.tag-row [data-cat]').forEach(t => t.addEventListener('click', (e) => {
+    e.stopPropagation();
+    state.filterCategory = t.dataset.cat;
+    state.filterStage = ''; state.filterRegion = ''; state.search = '';
+    navigate('explore');
+  }));
+}
+
+/* ───────────────────────────── VENDOR DETAIL ───────────────────────────── */
+function renderVendorDetail(vendorId) {
+  const v = byId(VENDORS, vendorId);
+  if (!v) return renderEmpty('Vendor not found', 'This vendor may have been removed.', `<button class="btn secondary sm" data-action="go-vendors">Back to Vendors</button>`);
+  const ps = productsByVendor(v.id);
+  const ds = dealsByVendor(v.id);
+
+  return `
+    <div class="crumb">
+      <button data-nav="explore">Catalog</button>
+      <span class="sep">${icon('i-chevron-right')}</span>
+      <button data-nav="vendors">Vendors</button>
+      <span class="sep">${icon('i-chevron-right')}</span>
+      <span class="cur">${escape(v.name)}</span>
+    </div>
+
+    <div class="detail">
+      <div class="vendor-detail-hero">
+        <div class="vlg-lg">
+          <img src="${logoUrl(v.domain)}" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+          <span class="fallback" style="display:none">${escape(v.name.slice(0, 2).toUpperCase())}</span>
+        </div>
+        <div class="info">
+          <h2 class="v-title">${escape(v.name)}</h2>
+          <p class="v-desc">${escape(v.desc)}</p>
+          <div class="v-meta">
+            <a class="external-link" href="https://${v.domain}" target="_blank" rel="noopener">${escape(v.domain)} ${icon('i-external')}</a>
+            <span class="dot"></span>
+            <span>${ps.length} product${ps.length === 1 ? '' : 's'}</span>
+            <span class="dot"></span>
+            <span>${ds.length} deal${ds.length === 1 ? '' : 's'}</span>
+            <span class="dot"></span>
+            <span>${v.categories.map(catName).join(' · ')}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="vendor-detail-section">
+        <h3>Products <span class="count">· ${ps.length}</span></h3>
+        ${ps.length === 0
+          ? `<p style="font-size: 13.5px; color: var(--text-muted);">No products listed for this vendor.</p>`
+          : `<div class="product-grid">${ps.map(productCard).join('')}</div>`
+        }
+      </div>
+
+      <div class="vendor-detail-section">
+        <h3>Active deals <span class="count">· ${ds.length}</span></h3>
+        ${ds.length === 0
+          ? `<p style="font-size: 13.5px; color: var(--text-muted);">No active deals from this vendor.</p>`
+          : ds.map(d => {
+              const p = byId(PRODUCTS, d.productId);
+              return `
+                <div class="deal-card" style="cursor: pointer;" data-product-link="${p.id}">
+                  <div class="dt-row">
+                    <div>
+                      <div style="font-size: 11px; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px;">${escape(p.name)}</div>
+                      <div class="dt">${escape(d.title)}</div>
+                    </div>
+                    <span class="deal-status-pill">Active</span>
+                  </div>
+                  <p class="dod">${escape(d.offerDescription)}</p>
+                  <div class="dmeta">
+                    <div class="item"><span class="k">Eligibility</span><span class="v">${escape(d.eligibility)}</span></div>
+                    <div class="item"><span class="k">Region</span><span class="v">${escape(d.region)}</span></div>
+                    <div class="item"><span class="k">Expires</span><span class="v">${formatDate(d.expiryDate)}</span></div>
+                    <div class="item"><span class="k">Redemption</span><span class="v">${escape(d.redemptionMethod)}</span></div>
+                  </div>
+                </div>
+              `;
+            }).join('')
+        }
+      </div>
+    </div>
+  `;
+}
+
+function bindVendorDetail() {
+  bindCardCommon();
+  $$('[data-nav]').forEach(b => b.addEventListener('click', (e) => {
+    e.stopPropagation();
+    navigate(b.dataset.nav);
+  }));
+  $$('[data-product-link]').forEach(b => b.addEventListener('click', (e) => {
+    e.stopPropagation();
+    navigate('product/' + b.dataset.productLink);
+  }));
+  $$('[data-action="go-vendors"]').forEach(b => b.addEventListener('click', () => navigate('vendors')));
+}
+
+/* ───────────────────────────── COMMON CARD BINDINGS ───────────────────────────── */
+function bindCardCommon() {
+  // Save buttons
+  $$('[data-save]').forEach(btn => btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const id = btn.dataset.save;
+    const wasSaved = state.saved.has(id);
+    setSaved(id, !wasSaved);
+    const p = byId(PRODUCTS, id);
+    toast(
+      wasSaved ? 'Removed from Saved' : 'Saved',
+      wasSaved ? `${p.name} is no longer in your saved list.` : `${p.name} added to your saved products.`,
+      'info'
+    );
+    // Soft re-render — preserve search input focus by limiting to swapping affected card
+    softRefreshAfterSaveOrListing(id);
+  }));
+
+  // Add to Listings buttons
+  $$('[data-add-listing]').forEach(btn => btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const id = btn.dataset.addListing;
+    if (state.inListings.has(id)) return;
+    setInListings(id);
+    const p = byId(PRODUCTS, id);
+    toast('Added to listings', `${p.name} is now in your listings — open the Listings module to publish it.`, 'success');
+    softRefreshAfterSaveOrListing(id);
+  }));
+
+  // Card click → product detail (use event delegation to avoid interfering with inner buttons)
+  $$('[data-product]').forEach(c => {
+    const goTo = (e) => {
+      // Don't navigate when clicking a child button
+      if (e.target.closest('button')) return;
+      navigate('product/' + c.dataset.product);
+    };
+    c.addEventListener('click', goTo);
+    c.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        if (e.target.closest('button')) return;
+        e.preventDefault();
+        navigate('product/' + c.dataset.product);
+      }
+    });
+  });
+
+  // Go-explore action
+  $$('[data-action="go-explore"]').forEach(b => b.addEventListener('click', () => navigate('explore')));
+}
+
+function softRefreshAfterSaveOrListing(productId) {
+  // Re-render current view, but only the relevant parts to keep scroll/focus
+  const { view } = parseRoute();
+  if (view === 'product') {
+    // Re-render product detail to update buttons
+    render();
+  } else {
+    // For lists, re-render the card(s) in place
+    $$(`[data-product="${productId}"]`).forEach(el => {
+      const isRow = el.classList.contains('prod-row');
+      const p = byId(PRODUCTS, productId);
+      const html = isRow ? productRow(p) : productCard(p);
+      const wrapper = document.createElement('div');
+      wrapper.innerHTML = html;
+      const fresh = wrapper.firstElementChild;
+      el.replaceWith(fresh);
+      // Re-bind on the new node only
+      rebindOne(fresh);
+    });
+    updateSavedCount();
+    // Also update Saved view if currently there and item was un-saved
+    if (view === 'saved' && !state.saved.has(productId)) {
+      render();
+    }
+  }
+}
+
+function rebindOne(el) {
+  el.querySelectorAll('[data-save]').forEach(btn => btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const id = btn.dataset.save;
+    const wasSaved = state.saved.has(id);
+    setSaved(id, !wasSaved);
+    const p = byId(PRODUCTS, id);
+    toast(
+      wasSaved ? 'Removed from Saved' : 'Saved',
+      wasSaved ? `${p.name} is no longer in your saved list.` : `${p.name} added to your saved products.`,
+      'info'
+    );
+    softRefreshAfterSaveOrListing(id);
+  }));
+  el.querySelectorAll('[data-add-listing]').forEach(btn => btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const id = btn.dataset.addListing;
+    if (state.inListings.has(id)) return;
+    setInListings(id);
+    const p = byId(PRODUCTS, id);
+    toast('Added to listings', `${p.name} is now in your listings — open the Listings module to publish it.`, 'success');
+    softRefreshAfterSaveOrListing(id);
+  }));
+  const goTo = (e) => {
+    if (e.target.closest('button')) return;
+    navigate('product/' + el.dataset.product);
+  };
+  el.addEventListener('click', goTo);
+  el.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      if (e.target.closest('button')) return;
+      e.preventDefault();
+      navigate('product/' + el.dataset.product);
+    }
+  });
+}
+
+/* ───────────────────────────── SUB-NAV BINDING ───────────────────────────── */
+$$('.subnav-tab').forEach(t => t.addEventListener('click', () => navigate(t.dataset.route)));
+
+/* ───────────────────────────── TOAST ───────────────────────────── */
+function toast(title, desc, type) {
+  const host = $('#toast-host');
+  if (!host) return;
+  const el = document.createElement('div');
+  el.className = 'toast ' + (type === 'info' ? 'info' : 'success');
+  el.innerHTML = `
+    <span class="ic">${icon(type === 'info' ? 'i-bookmark' : 'i-check')}</span>
+    <div class="body">
+      <div class="t">${escape(title)}</div>
+      <div class="d">${escape(desc)}</div>
+    </div>
+    <button class="x" aria-label="Dismiss">${icon('i-x')}</button>
+  `;
+  host.appendChild(el);
+  const close = () => {
+    el.classList.add('removing');
+    setTimeout(() => el.remove(), 200);
+  };
+  el.querySelector('.x').addEventListener('click', close);
+  setTimeout(close, 3600);
+}
+</script>
+
+</body>
+</html>

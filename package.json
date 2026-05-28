@@ -5,6 +5,7 @@
   "description": "Prism — Indian VCs design system. v1 locked: cool slate canvas, Clay Red Light primary CTA, Switzer typography.",
   "type": "module",
   "scripts": {
+    "dev": "vite",
     "build": "tsc --noEmit",
     "format": "prettier --write \"src/**/*.{ts,tsx,css,json,md}\""
   },

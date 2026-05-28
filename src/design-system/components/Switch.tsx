@@ -37,7 +37,7 @@ const Switch = React.forwardRef<
         /* off */
         'bg-[var(--color-gray-200)]',
         /* on */
-        'data-[state=checked]:bg-[var(--accent-primary)]',
+        'data-[state=checked]:bg-[var(--color-gray-900)]',
         className
       )}
       {...props}

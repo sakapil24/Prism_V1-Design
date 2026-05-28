@@ -1,0 +1,2448 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prism Design Spec & Component Library</title>
+
+<!-- Google Font: Manrope -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Link to design-system CSS custom properties -->
+<link rel="stylesheet" href="./src/design-system/tokens/tokens.css">
+
+<style>
+  /* ───────── Reset & Base ───────── */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--surface-base, #FBFCFD);
+    color: var(--text-primary, #1C1F24);
+    font-family: var(--font-sans, 'Manrope', sans-serif);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    line-height: 1.5;
+    scroll-behavior: smooth;
+  }
+
+  /* ───────── Layout Wrapper ───────── */
+  .container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: var(--space-8px, 32px) var(--space-6px, 24px);
+  }
+
+  .layout-wrapper {
+    display: flex;
+    gap: var(--space-8px, 32px);
+    margin-top: var(--space-8px, 32px);
+  }
+
+  /* ───────── Sticky Sidebar ───────── */
+  .sidebar {
+    width: 240px;
+    position: sticky;
+    top: var(--space-8px, 32px);
+    height: calc(100vh - 96px);
+    overflow-y: auto;
+    flex-shrink: 0;
+    padding-right: var(--space-4, 16px);
+  }
+
+  /* Hide scrollbar in sidebar for visual elegance */
+  .sidebar::-webkit-scrollbar { display: none; }
+  .sidebar { -ms-overflow-style: none; scrollbar-width: none; }
+
+  .nav-group {
+    margin-bottom: var(--space-6, 24px);
+  }
+
+  .nav-group-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-muted, #69707C);
+    letter-spacing: var(--tracking-eyebrow, 0.04em);
+    margin-bottom: var(--space-2, 8px);
+    padding-left: var(--space-2, 8px);
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    padding: var(--space-2, 8px) var(--space-3, 12px) var(--space-2, 8px) var(--space-4, 16px);
+    font-size: 13px;
+    font-weight: var(--font-medium, 500);
+    color: var(--text-secondary, #444B55);
+    border-left: 2px solid transparent;
+    border-radius: 0 var(--radius-sm, 8px) var(--radius-sm, 8px) 0;
+    text-decoration: none;
+    transition: background-color var(--duration-fast, 120ms), 
+                color var(--duration-fast, 120ms),
+                border-color var(--duration-fast, 120ms);
+  }
+
+  .nav-link:hover {
+    background-color: var(--surface-secondary, #F5F7F9);
+    color: var(--text-primary, #1C1F24);
+  }
+
+  .nav-link.active {
+    background-color: var(--surface-interactive, #F3F5F7);
+    color: var(--accent-primary, #C8102E);
+    border-left-color: var(--accent-primary, #C8102E);
+    font-weight: 600;
+  }
+
+  /* ───────── Main Content ───────── */
+  .content {
+    flex-grow: 1;
+    min-width: 0;
+    max-width: 1080px;
+  }
+
+  /* ───────── Header / Hero ───────── */
+  header.hero {
+    border-bottom: 1px solid var(--border-subtle, #E8ECEF);
+    padding-bottom: var(--space-6, 24px);
+    margin-bottom: var(--space-8, 32px);
+  }
+
+  .brand-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2, 8px);
+    padding: var(--space-1, 4px) var(--space-3, 12px);
+    background: var(--surface-secondary, #F5F7F9);
+    border: 1px solid var(--border-subtle, #E8ECEF);
+    border-radius: var(--radius-full, 9999px);
+    font-size: var(--text-caption, 12px);
+    font-weight: var(--font-semibold, 600);
+    color: var(--text-secondary, #444B55);
+    margin-bottom: var(--space-4, 16px);
+  }
+
+  .brand-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--accent-primary, #C8102E);
+  }
+
+  h1.title {
+    font-size: var(--text-display-l, 52px);
+    line-height: var(--lh-display-l, 60px);
+    font-weight: var(--font-semibold, 600);
+    letter-spacing: var(--tracking-tight, -0.01em);
+    margin: 0 0 var(--space-3, 12px) 0;
+    color: var(--text-primary, #1C1F24);
+  }
+
+  .subtitle {
+    font-size: var(--text-body-l, 18px);
+    line-height: var(--lh-body-l, 30px);
+    color: var(--text-secondary, #444B55);
+    max-width: 860px;
+    margin: 0;
+  }
+
+  /* ───────── Sections ───────── */
+  .spec-section {
+    padding-top: var(--space-8px, 32px);
+    margin-bottom: var(--space-16px, 64px);
+  }
+
+  .sec-header {
+    margin-bottom: var(--space-8px, 32px);
+    padding-bottom: var(--space-4, 16px);
+  }
+
+  #colors .sec-header {
+    border-bottom: 1px solid var(--border-subtle, #E8ECEF);
+  }
+
+  .sec-tag {
+    font-size: var(--text-caption, 12px);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-eyebrow, 0.04em);
+    font-weight: var(--font-semibold, 600);
+    color: var(--accent-primary, #C8102E);
+    margin-bottom: var(--space-1, 4px);
+    display: block;
+  }
+
+  .sec-title {
+    font-size: var(--text-h3, 24px);
+    line-height: var(--lh-h3, 32px);
+    font-weight: var(--font-semibold, 600);
+    margin: 0 0 var(--space-2, 8px) 0;
+    letter-spacing: var(--tracking-snug, -0.005em);
+  }
+
+  .sec-desc {
+    font-size: var(--text-body-s, 14px);
+    color: var(--text-muted, #69707C);
+    margin: 0;
+    max-width: 900px;
+  }
+
+  /* ───────── Grid Cards ───────── */
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-6, 24px); }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6, 24px); }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4, 16px); }
+
+  @media (max-width: 1023px) {
+    .sidebar { display: none; }
+    .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 767px) {
+    .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--surface-raised, #FFFFFF);
+    border: 1px solid var(--border-subtle, #E8ECEF);
+    border-radius: var(--radius-md, 12px);
+    padding: var(--space-6, 24px);
+    box-shadow: var(--elev-1);
+    transition: transform var(--duration-fast, 120ms) var(--ease-default), 
+                box-shadow var(--duration-fast, 120ms) var(--ease-default);
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--elev-2);
+  }
+
+  /* ───────── Color Badges ───────── */
+  .color-badge {
+    height: 64px;
+    border-radius: var(--radius-sm, 8px);
+    margin-bottom: var(--space-3, 12px);
+    border: 1px solid var(--border-subtle, #E8ECEF);
+    display: flex;
+    align-items: flex-end;
+    padding: var(--space-2, 8px) var(--space-3, 12px);
+  }
+  .color-badge span {
+    font-size: 10px;
+    font-family: var(--font-mono, monospace);
+    font-weight: 500;
+    background: rgba(0, 0, 0, 0.4);
+    color: #FFFFFF;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .color-meta {
+    font-size: var(--text-caption, 12px);
+  }
+  .color-name {
+    font-weight: var(--font-semibold, 600);
+    margin-bottom: 2px;
+  }
+  .color-hex {
+    font-family: var(--font-mono, monospace);
+    color: var(--text-muted, #69707C);
+  }
+  .color-use {
+    font-size: 11px;
+    color: var(--text-secondary, #444B55);
+    margin-top: var(--space-2, 8px);
+    line-height: 1.4;
+  }
+
+  .semantic-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-2, 8px) 0;
+    border-bottom: 1px solid var(--border-subtle, #E8ECEF);
+  }
+  .semantic-row:last-child {
+    border-bottom: 0;
+  }
+  .sem-label {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3, 12px);
+  }
+  .sem-swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    border: 1px solid var(--border-subtle, #E8ECEF);
+  }
+
+  /* ───────── Typography Specimens ───────── */
+  .type-specimen-row {
+    padding: var(--space-4, 16px) 0;
+    border-bottom: 1px solid var(--border-subtle, #E8ECEF);
+  }
+  .type-specimen-row:last-child {
+    border-bottom: 0;
+  }
+  .type-specimen-row .meta {
+    font-size: var(--text-caption, 12px);
+    color: var(--text-muted, #69707C);
+    margin-bottom: var(--space-2, 8px);
+    font-family: var(--font-mono, monospace);
+  }
+  .type-label {
+    display: inline-block;
+    background: var(--surface-secondary, #F5F7F9);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 500;
+    margin-right: var(--space-3, 12px);
+  }
+
+  /* ───────── Spacing Specimens ───────── */
+  .space-ramp {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3, 12px);
+  }
+  .space-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4, 16px);
+  }
+  .space-info {
+    width: 120px;
+    font-size: var(--text-body-s, 14px);
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono, monospace);
+    color: var(--text-secondary, #444B55);
+  }
+  .space-bar-wrapper {
+    flex-grow: 1;
+    background: var(--surface-secondary, #F5F7F9);
+    border-radius: 4px;
+    height: var(--space-4px, 16px);
+    display: flex;
+    align-items: center;
+  }
+  .space-bar {
+    background: var(--accent-primary, #C8102E);
+    height: 100%;
+    border-radius: 4px;
+    transition: opacity var(--duration-fast, 120ms) var(--ease-default);
+  }
+  .space-bar:hover {
+    opacity: 0.85;
+  }
+
+  /* ───────── Radii Specimens ───────── */
+  .radius-box {
+    aspect-ratio: 1.5;
+    background: var(--surface-secondary, #F5F7F9);
+    border: 1.5px solid var(--border-default, #D2D8DE);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: var(--space-3, 12px);
+    text-align: center;
+    font-size: var(--text-body-s, 14px);
+  }
+  .radius-box.r-s { border-radius: var(--radius-sm, 8px); }
+  .radius-box.r-m { border-radius: var(--radius-md, 12px); }
+  .radius-box.r-l { border-radius: var(--radius-lg, 16px); }
+  .radius-box.r-xl { border-radius: var(--radius-xl, 24px); }
+
+  .radius-box code {
+    margin-top: var(--space-2, 8px);
+    font-family: var(--font-mono, monospace);
+    font-size: 11px;
+    color: var(--text-muted, #69707C);
+  }
+
+  /* ───────── Elevation Specimens ───────── */
+  .elevation-card {
+    height: 100px;
+    background: var(--surface-raised, #FFFFFF);
+    border-radius: var(--radius-md, 12px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: var(--space-3, 12px);
+  }
+  .elevation-card.e-1 { box-shadow: var(--elev-1); border: 1px solid var(--border-subtle, #E8ECEF); }
+  .elevation-card.e-2 { box-shadow: var(--elev-2); border: 1px solid var(--border-subtle, #E8ECEF); }
+  .elevation-card.e-3 { box-shadow: var(--elev-3); }
+  .elevation-card.e-4 { box-shadow: var(--elev-4); }
+
+  .elevation-card .title {
+    font-size: var(--text-body-s, 14px);
+    font-weight: var(--font-semibold, 600);
+    margin-bottom: var(--space-1, 4px);
+  }
+  .elevation-card code {
+    font-family: var(--font-mono, monospace);
+    font-size: 10px;
+    color: var(--text-muted, #69707C);
+  }
+
+  /* ───────── Component Showcase Styles ───────── */
+  .showcase-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-8px, 32px);
+  }
+
+  .comp-card {
+    background: var(--surface-raised, #FFFFFF);
+    border: 1px solid var(--border-subtle, #E8ECEF);
+    border-radius: var(--radius-md, 12px);
+    box-shadow: var(--elev-1);
+    overflow: hidden;
+  }
+
+  .comp-head {
+    padding: var(--space-4, 16px) var(--space-6, 24px);
+    background-color: var(--surface-secondary, #F5F7F9);
+    border-bottom: 1px solid var(--border-subtle, #E8ECEF);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .comp-name {
+    font-size: var(--text-h5, 18px);
+    font-weight: var(--font-semibold, 600);
+  }
+
+  .comp-body {
+    padding: var(--space-6, 24px);
+  }
+
+  .comp-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4, 16px);
+    align-items: center;
+    margin-bottom: var(--space-6, 24px);
+  }
+  .comp-row:last-child {
+    margin-bottom: 0;
+  }
+
+  .comp-row-title {
+    font-size: var(--text-caption, 12px);
+    text-transform: uppercase;
+    font-weight: var(--font-semibold, 600);
+    color: var(--text-muted, #69707C);
+    letter-spacing: var(--tracking-eyebrow, 0.04em);
+    margin-bottom: var(--space-3, 12px);
+  }
+
+  /* Buttons Styling */
+  .btn-ds {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2, 8px);
+    padding: 0 var(--space-4, 16px);
+    height: 40px;
+    font-size: var(--text-body-s, 14px);
+    font-weight: var(--font-medium, 500);
+    border-radius: var(--radius-sm, 8px);
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: transform var(--duration-fast, 120ms) var(--ease-default),
+                background-color var(--duration-fast, 120ms) var(--ease-default),
+                box-shadow var(--duration-fast, 120ms) var(--ease-default),
+                opacity var(--duration-fast, 120ms) var(--ease-default);
+    white-space: nowrap;
+    user-select: none;
+    text-decoration: none;
+  }
+  
+  .btn-ds:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--elev-1);
+  }
+  .btn-ds:active {
+    transform: translateY(1px);
+  }
+
+  .btn-ds.primary {
+    background-color: var(--accent-primary, #C8102E);
+    color: var(--text-inverse, #FBFCFD);
+    box-shadow: var(--shadow-primary-btn);
+  }
+  .btn-ds.primary:hover {
+    background-color: #AE0E28;
+  }
+
+  .btn-ds.secondary {
+    background-color: var(--surface-raised, #FFFFFF);
+    border-color: var(--border-default, #D2D8DE);
+    color: var(--text-primary, #1C1F24);
+  }
+  .btn-ds.secondary:hover {
+    background-color: var(--surface-interactive, #F3F5F7);
+  }
+
+  .btn-ds.tertiary {
+    background-color: transparent;
+    border-color: var(--border-subtle, #E8ECEF);
+    color: var(--text-secondary, #444B55);
+  }
+  .btn-ds.tertiary:hover {
+    background-color: var(--surface-secondary, #F5F7F9);
+    color: var(--text-primary, #1C1F24);
+  }
+
+  .btn-ds.ghost {
+    background-color: transparent;
+    color: var(--text-secondary, #444B55);
+  }
+  .btn-ds.ghost:hover {
+    background-color: var(--surface-interactive, #F3F5F7);
+    color: var(--text-primary, #1C1F24);
+  }
+
+  .btn-ds.destructive {
+    background-color: var(--state-error, #C8102E);
+    color: var(--text-inverse, #FBFCFD);
+  }
+  .btn-ds.destructive:hover {
+    background-color: #AE0E28;
+  }
+
+  .btn-ds:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Form / Input Layouts */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1, 4px);
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .form-label {
+    font-size: var(--text-caption, 12px);
+    font-weight: var(--font-medium, 500);
+    color: var(--text-secondary, #444B55);
+  }
+
+  .form-input {
+    width: 100%;
+    height: 40px;
+    background-color: var(--surface-raised, #FFFFFF);
+    border: 1px solid var(--border-default, #D2D8DE);
+    border-radius: var(--radius-sm, 8px);
+    padding: 0 var(--space-3, 12px);
+    font-family: inherit;
+    font-size: var(--text-body-s, 14px);
+    color: var(--text-primary, #1C1F24);
+    outline: none;
+    box-shadow: var(--elev-1);
+    transition: border-color var(--duration-fast, 120ms) var(--ease-default),
+                box-shadow var(--duration-fast, 120ms) var(--ease-default);
+  }
+
+  .form-input::placeholder {
+    color: var(--text-disabled, #B8C0C8);
+  }
+
+  .form-input:focus {
+    border-color: var(--border-focus, #1C1F24);
+    box-shadow: var(--shadow-focus-ring);
+  }
+
+  .form-input:disabled {
+    background-color: var(--surface-secondary, #F5F7F9);
+    border-color: var(--border-subtle, #E8ECEF);
+    color: var(--text-disabled, #B8C0C8);
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  .form-input.error {
+    border-color: var(--state-error, #C8102E);
+  }
+
+  .form-help {
+    font-size: 11px;
+    color: var(--text-muted, #69707C);
+  }
+
+  .form-error {
+    font-size: 11px;
+    color: var(--state-error, #C8102E);
+    font-weight: 500;
+  }
+
+  .form-textarea {
+    min-height: 80px;
+    padding: var(--space-2, 8px) var(--space-3, 12px);
+    resize: vertical;
+  }
+
+  /* Autocomplete & Dropdowns Mock */
+  .mock-select {
+    position: relative;
+  }
+  .mock-select::after {
+    content: '';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-right: 1.5px solid var(--text-muted, #69707C);
+    border-bottom: 1.5px solid var(--text-muted, #69707C);
+    transform: translateY(-70%) rotate(45deg);
+    pointer-events: none;
+  }
+
+  /* File Upload dropzone */
+  .dropzone {
+    width: 100%;
+    max-width: 480px;
+    border: 1.5px dashed var(--border-default, #D2D8DE);
+    border-radius: var(--radius-md, 12px);
+    padding: var(--space-6, 24px);
+    text-align: center;
+    background-color: var(--surface-base, #FBFCFD);
+    cursor: pointer;
+    transition: background-color var(--duration-fast, 120ms), border-color var(--duration-fast, 120ms);
+  }
+  .dropzone:hover {
+    background-color: var(--surface-secondary, #F5F7F9);
+    border-color: var(--accent-primary, #C8102E);
+  }
+  .dropzone-title {
+    font-size: var(--text-body-s, 14px);
+    font-weight: var(--font-medium, 500);
+    margin-bottom: var(--space-1, 4px);
+  }
+  .dropzone-desc {
+    font-size: var(--text-caption, 12px);
+    color: var(--text-muted, #69707C);
+  }
+
+  /* Navigation Mocks */
+  .mock-topbar {
+    width: 100%;
+    height: 56px;
+    background-color: var(--surface-raised, #FFFFFF);
+    border: 1px solid var(--border-subtle, #E8ECEF);
+    border-radius: var(--radius-sm, 8px);
+    padding: 0 var(--space-4, 16px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--elev-1);
+  }
+
+  .mock-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border-subtle, #E8ECEF);
+    gap: var(--space-6, 24px);
+  }
+  .mock-tab {
+    padding: var(--space-3, 12px) 0;
+    font-size: var(--text-body-s, 14px);
+    font-weight: var(--font-medium, 500);
+    color: var(--text-secondary, #444B55);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color var(--duration-fast, 120ms), border-color var(--duration-fast, 120ms);
+    text-decoration: none;
+  }
+  .mock-tab:hover {
+    color: var(--text-primary, #1C1F24);
+  }
+  .mock-tab.active {
+    color: var(--color-gray-900, #1C1F24);
+    border-color: var(--color-gray-900, #1C1F24);
+  }
+
+  .mock-breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2, 8px);
+    font-size: var(--text-body-s, 14px);
+    color: var(--text-muted, #69707C);
+  }
+  .mock-breadcrumbs a {
+    color: var(--text-secondary, #444B55);
+    text-decoration: none;
+  }
+  .mock-breadcrumbs a:hover {
+    color: var(--text-primary, #1C1F24);
+  }
+  
+  .mock-pagination {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .page-btn {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-sm, 8px);
+    border: 1px solid var(--border-subtle, #E8ECEF);
+    font-size: var(--text-caption, 12px);
+    font-weight: 500;
+    color: var(--text-secondary, #444B55);
+    text-decoration: none;
+    background: var(--surface-raised, #FFFFFF);
+    transition: background-color var(--duration-fast, 120ms);
+  }
+  .page-btn:hover {
+    background-color: var(--surface-interactive, #F3F5F7);
+    color: var(--text-primary, #1C1F24);
+  }
+  .page-btn.active {
+    background-color: var(--color-gray-900, #1C1F24);
+    color: var(--text-inverse, #FBFCFD);
+    border-color: var(--color-gray-900, #1C1F24);
+  }
+
+  /* Table Specimen */
+  .table-container {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--border-subtle, #E8ECEF);
+    border-radius: var(--radius-md, 12px);
+    box-shadow: var(--elev-1);
+  }
+  .ds-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-body-s, 14px);
+    background-color: var(--surface-raised, #FFFFFF);
+  }
+  .ds-table th, .ds-table td {
+    padding: var(--space-3, 12px) var(--space-4, 16px);
+    text-align: left;
+    border-bottom: 1px solid var(--border-subtle, #E8ECEF);
+  }
+  .ds-table th {
+    background-color: var(--surface-secondary, #F5F7F9);
+    font-weight: var(--font-semibold, 600);
+    color: var(--text-secondary, #444B55);
+  }
+  .ds-table tr:last-child td {
+    border-bottom: 0;
+  }
+  .ds-table tr:hover td {
+    background-color: var(--surface-interactive, #F3F5F7);
+  }
+
+  /* Stat Card */
+  .stat-card {
+    width: 240px;
+    padding: var(--space-4, 16px);
+    background-color: var(--surface-raised, #FFFFFF);
+    border: 1px solid var(--border-subtle, #E8ECEF);
+    border-radius: var(--radius-md, 12px);
+    box-shadow: var(--elev-1);
+  }
+  .stat-label {
+    font-size: var(--text-caption, 12px);
+    color: var(--text-muted, #69707C);
+    font-weight: 500;
+  }
+  .stat-val {
+    font-size: var(--text-h2, 32px);
+    font-weight: 600;
+    line-height: 1.25;
+    margin: var(--space-1, 4px) 0;
+  }
+  .stat-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm, 8px);
+  }
+  .stat-badge.up {
+    background-color: #E4F1EC;
+    color: var(--state-success, #72766D);
+  }
+
+  /* Badges & Tags */
+  .badge-ds {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: var(--radius-full, 9999px);
+    font-size: 11px;
+    font-weight: var(--font-semibold, 600);
+    border: 1px solid transparent;
+  }
+  .badge-ds.success { background-color: #E4F1EC; color: var(--state-success, #72766D); border-color: #A8D2BD; }
+  .badge-ds.warning { background-color: #F8EDD2; color: var(--state-warning, #927261); border-color: #E0C285; }
+  .badge-ds.error { background-color: #FBE5E1; color: var(--state-error, #C8102E); border-color: #F1B7AE; }
+  .badge-ds.info { background-color: #E1ECF7; color: var(--state-info, #6B7280); border-color: #B0C8E2; }
+  .badge-ds.neutral { background-color: var(--surface-secondary, #F5F7F9); color: var(--text-secondary, #444B55); border-color: var(--border-default, #D2D8DE); }
+
+  /* Banners / Alerts */
+  .banner-alert {
+    display: flex;
+    gap: var(--space-3, 12px);
+    padding: var(--space-3, 12px) var(--space-4, 16px);
+    border-radius: var(--radius-sm, 8px);
+    border: 1px solid;
+    font-size: var(--text-body-s, 14px);
+    width: 100%;
+    max-width: 640px;
+    box-shadow: var(--elev-1);
+  }
+  .banner-alert.success { background-color: #E4F1EC; color: #3A4B42; border-color: #A8D2BD; }
+  .banner-alert.warning { background-color: #F8EDD2; color: #5C4A33; border-color: #E0C285; }
+  .banner-alert.error { background-color: #FBE5E1; color: #7F221E; border-color: #F1B7AE; }
+  .banner-alert.info { background-color: #E1ECF7; color: #283C5A; border-color: #B0C8E2; }
+
+  /* Mock Overlays */
+  .mock-popover {
+    width: 240px;
+    background-color: var(--surface-raised, #FFFFFF);
+    border: 1px solid var(--border-subtle, #E8ECEF);
+    border-radius: var(--radius-md, 12px);
+    box-shadow: var(--elev-3);
+    padding: var(--space-4, 16px);
+  }
+  
+  .mock-menu {
+    width: 180px;
+    background-color: var(--surface-raised, #FFFFFF);
+    border: 1px solid var(--border-subtle, #E8ECEF);
+    border-radius: var(--radius-sm, 8px);
+    box-shadow: var(--elev-2);
+    padding: 4px;
+  }
+  .menu-item {
+    padding: var(--space-2, 8px) var(--space-3, 12px);
+    font-size: var(--text-body-s, 14px);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+  }
+  .menu-item:hover {
+    background-color: var(--surface-interactive, #F3F5F7);
+  }
+
+  /* Skeleton Loading */
+  .skeleton-loader {
+    width: 100%;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .sk-box {
+    background-color: var(--surface-secondary, #F5F7F9);
+    border-radius: 4px;
+    animation: sk-pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes sk-pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: var(--space-8px, 32px);
+    background-color: var(--surface-raised, #FFFFFF);
+    border: 1px solid var(--border-subtle, #E8ECEF);
+    border-radius: var(--radius-md, 12px);
+    max-width: 480px;
+    box-shadow: var(--elev-1);
+  }
+  .empty-title {
+    font-size: var(--text-h5, 18px);
+    font-weight: var(--font-semibold, 600);
+    margin: var(--space-3, 12px) 0 var(--space-2, 8px) 0;
+  }
+  .empty-desc {
+    font-size: var(--text-body-s, 14px);
+    color: var(--text-muted, #69707C);
+    margin-bottom: var(--space-4, 16px);
+  }
+
+  /* ─── Mock Charts ─── */
+  .chart-svg {
+    width: 100%;
+    max-width: 480px;
+    height: 180px;
+    border: 1.5px solid var(--border-subtle, #E8ECEF);
+    border-radius: var(--radius-md, 12px);
+    padding: var(--space-3, 12px);
+    background-color: var(--surface-raised, #FFFFFF);
+    box-shadow: var(--elev-1);
+  }
+  
+  /* ─── Premium Stepper Animations & Visual Enhancements ─── */
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(0.7);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.4);
+      opacity: 0;
+    }
+  }
+  .pulse-glow {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--color-gray-900);
+    animation: pulse-ring 2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+    z-index: -1;
+  }
+  .pulse-bubble {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid var(--color-gray-900);
+    animation: pulse-ring 2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+    z-index: -1;
+  }
+  .step-chevron-item {
+    position: relative;
+    z-index: 2;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Header -->
+  <header class="hero">
+    <div class="brand-badge">
+      <span class="brand-dot"></span>
+      Prism Workspace Spec
+    </div>
+    <h1 class="title">Prism Design System Spec</h1>
+    <p class="subtitle">
+      Unified design token scales and visual specifications for the modular, clean product experience in Indian VCs. Built on the <strong>Manrope</strong> system typeface and calm responsive interactions.
+    </p>
+  </header>
+
+  <!-- Side Navigation layout -->
+  <div class="layout-wrapper">
+    
+    <!-- Sidebar Navigation index -->
+    <aside class="sidebar">
+      <div class="nav-group">
+        <div class="nav-group-title">Foundations</div>
+        <a href="#colors" class="nav-link"><span class="lk"></span>Color System</a>
+        <a href="#typography" class="nav-link"><span class="lk"></span>Typography Spec</a>
+        <a href="#spacing" class="nav-link"><span class="lk"></span>Spacing Scale</a>
+        <a href="#radius" class="nav-link"><span class="lk"></span>Radius & Elevation</a>
+        <a href="#breakpoints" class="nav-link"><span class="lk"></span>Responsive Specs</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-title">Components</div>
+        <a href="#buttons" class="nav-link"><span class="lk"></span>Buttons</a>
+        <a href="#inputs" class="nav-link"><span class="lk"></span>Inputs & Forms</a>
+        <a href="#navigation" class="nav-link"><span class="lk"></span>Navigation UI</a>
+        <a href="#datadisplay" class="nav-link"><span class="lk"></span>Data Display</a>
+        <a href="#overlays" class="nav-link"><span class="lk"></span>Overlay Systems</a>
+        <a href="#feedback" class="nav-link"><span class="lk"></span>Feedback UI</a>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-title">Portals</div>
+        <a href="./buyer.html" class="nav-link" style="color: var(--accent-primary, #C8102E); font-weight: 600;"><span class="lk"></span>Startup Buyer Portal</a>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="content">
+
+      <!-- Colors -->
+      <section id="colors" class="spec-section">
+        <div class="sec-header">
+          <h2 class="sec-title">Color System</h2>
+          <p class="sec-desc">
+            Prism leverages cool gray neutral tones for primary canvas layouts, with targeted accent marks using active product red.
+          </p>
+        </div>
+
+        <h3 style="font-size: var(--text-body-l, 18px); font-weight: 600; margin-bottom: 12px;">Neutral Scale (Cool Slate)</h3>
+        <div class="grid-4" style="margin-bottom: 32px;">
+          <div class="card" style="padding: 12px;">
+            <div class="color-badge" style="background-color: var(--color-gray-50); color: #1C1F24;"><span>50</span></div>
+            <div class="color-meta">
+              <div class="color-name">neutral-50</div>
+              <div class="color-hex">#FBFCFD</div>
+            </div>
+            <div class="color-use">Canvas Background</div>
+          </div>
+          <div class="card" style="padding: 12px;">
+            <div class="color-badge" style="background-color: var(--color-gray-100); color: #1C1F24;"><span>100</span></div>
+            <div class="color-meta">
+              <div class="color-name">neutral-100</div>
+              <div class="color-hex">#F5F7F9</div>
+            </div>
+            <div class="color-use">Subtle Surface / Table Headers</div>
+          </div>
+          <div class="card" style="padding: 12px;">
+            <div class="color-badge" style="background-color: var(--color-gray-200); color: #1C1F24;"><span>200</span></div>
+            <div class="color-meta">
+              <div class="color-name">neutral-200</div>
+              <div class="color-hex">#EAEFF3</div>
+            </div>
+            <div class="color-use">Default Borders / Dividers</div>
+          </div>
+          <div class="card" style="padding: 12px;">
+            <div class="color-badge" style="background-color: var(--color-gray-300); color: #1C1F24;"><span>300</span></div>
+            <div class="color-meta">
+              <div class="color-name">neutral-300</div>
+              <div class="color-hex">#D8DEE4</div>
+            </div>
+            <div class="color-use">Strong Borders / Inputs</div>
+          </div>
+          <div class="card" style="padding: 12px;">
+            <div class="color-badge" style="background-color: var(--color-gray-400); color: #1C1F24;"><span>400</span></div>
+            <div class="color-meta">
+              <div class="color-name">neutral-400</div>
+              <div class="color-hex">#B8C0C8</div>
+            </div>
+            <div class="color-use">Placeholders / Disabled Text</div>
+          </div>
+          <div class="card" style="padding: 12px;">
+            <div class="color-badge" style="background-color: var(--color-gray-500); color: #FFFFFF;"><span>500</span></div>
+            <div class="color-meta">
+              <div class="color-name">neutral-500</div>
+              <div class="color-hex">#8F97A3</div>
+            </div>
+            <div class="color-use">Muted Icons / Metadata</div>
+          </div>
+          <div class="card" style="padding: 12px;">
+            <div class="color-badge" style="background-color: var(--color-gray-600); color: #FFFFFF;"><span>600</span></div>
+            <div class="color-meta">
+              <div class="color-name">neutral-600</div>
+              <div class="color-hex">#69707C</div>
+            </div>
+            <div class="color-use">Body Subtext / Details</div>
+          </div>
+          <div class="card" style="padding: 12px;">
+            <div class="color-badge" style="background-color: var(--color-gray-700); color: #FFFFFF;"><span>700</span></div>
+            <div class="color-meta">
+              <div class="color-name">neutral-700</div>
+              <div class="color-hex">#444B55</div>
+            </div>
+            <div class="color-use">Secondary Text / Labels</div>
+          </div>
+          <div class="card" style="padding: 12px;">
+            <div class="color-badge" style="background-color: var(--color-gray-800); color: #FFFFFF;"><span>800</span></div>
+            <div class="color-meta">
+              <div class="color-name">neutral-800</div>
+              <div class="color-hex">#2A2E35</div>
+            </div>
+            <div class="color-use">Dark Surfaces / Raised Panel</div>
+          </div>
+          <div class="card" style="padding: 12px;">
+            <div class="color-badge" style="background-color: var(--color-gray-900); color: #FFFFFF;"><span>900</span></div>
+            <div class="color-meta">
+              <div class="color-name">neutral-900</div>
+              <div class="color-hex">#1C1F24</div>
+            </div>
+            <div class="color-use">Primary Headings / Text</div>
+          </div>
+          <div class="card" style="padding: 12px; grid-column: span 2;">
+            <div class="color-badge" style="background-color: var(--color-gray-950); color: #FFFFFF;"><span>950</span></div>
+            <div class="color-meta">
+              <div class="color-name">neutral-950</div>
+              <div class="color-hex">#121417</div>
+            </div>
+            <div class="color-use">Dark Theme Page Base</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <!-- Primary accent -->
+          <div class="card">
+            <h3 style="font-size: var(--text-body-l, 18px); font-weight: 600; margin-bottom: 12px;">Primary Accents</h3>
+            <div class="semantic-row">
+              <div class="sem-label"><div class="sem-swatch" style="background-color: var(--accent-primary);"></div><span>Product Accent (accent-primary)</span></div>
+              <code style="font-size:11px;">#C8102E</code>
+            </div>
+            <div class="semantic-row">
+              <div class="sem-label"><div class="sem-swatch" style="background-color: var(--brand-red);"></div><span>Brand Red (brand-red)</span></div>
+              <code style="font-size:11px;">#D21905</code>
+            </div>
+          </div>
+          <!-- Secondary palette -->
+          <div class="card">
+            <h3 style="font-size: var(--text-body-l, 18px); font-weight: 600; margin-bottom: 12px;">Secondary & Chart Palette</h3>
+            <div class="semantic-row">
+              <div class="sem-label"><div class="sem-swatch" style="background-color: var(--color-mineral-grey);"></div><span>Mineral Grey</span></div>
+              <code style="font-size:11px;">#6B7280</code>
+            </div>
+            <div class="semantic-row">
+              <div class="sem-label"><div class="sem-swatch" style="background-color: var(--color-olive-grey);"></div><span>Muted Olive Grey</span></div>
+              <code style="font-size:11px;">#72766D</code>
+            </div>
+            <div class="semantic-row">
+              <div class="sem-label"><div class="sem-swatch" style="background-color: var(--color-dust-taupe);"></div><span>Dust Taupe</span></div>
+              <code style="font-size:11px;">#8A8178</code>
+            </div>
+            <div class="semantic-row">
+              <div class="sem-label"><div class="sem-swatch" style="background-color: var(--color-soft-bronze);"></div><span>Soft Bronze</span></div>
+              <code style="font-size:11px;">#927261</code>
+            </div>
+            <div class="semantic-row">
+              <div class="sem-label"><div class="sem-swatch" style="background-color: var(--color-plum-grey);"></div><span>Muted Plum Grey</span></div>
+              <code style="font-size:11px;">#6C626B</code>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Typography -->
+      <section id="typography" class="spec-section">
+        <div class="sec-header">
+          <h2 class="sec-title">Typography System</h2>
+          <p class="sec-desc">
+            Locked exclusively to the <strong>Manrope</strong> typeface family. Headings and body are aligned to strict sizes and line heights.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="type-specimen-row">
+            <div class="meta"><span class="type-label">Display XL</span><span>64px / 72px</span></div>
+            <h1 style="font-size: var(--text-display-xl); line-height: var(--lh-display-xl); font-weight: 600; margin: 0;">Restrained Space</h1>
+          </div>
+          <div class="type-specimen-row">
+            <div class="meta"><span class="type-label">Display L</span><span>52px / 60px</span></div>
+            <h2 style="font-size: var(--text-display-l); line-height: var(--lh-display-l); font-weight: 600; margin: 0;">Venture experience</h2>
+          </div>
+          <div class="type-specimen-row">
+            <div class="meta"><span class="type-label">H1 Heading</span><span>40px / 48px</span></div>
+            <h1 style="font-size: var(--text-h1); line-height: var(--lh-h1); font-weight: 600; margin: 0;">Core Dashboard title</h1>
+          </div>
+          <div class="type-specimen-row">
+            <div class="meta"><span class="type-label">H2 Heading</span><span>32px / 40px</span></div>
+            <h2 style="font-size: var(--text-h2); line-height: var(--lh-h2); font-weight: 600; margin: 0;">Secondary Section block</h2>
+          </div>
+          <div class="type-specimen-row">
+            <div class="meta"><span class="type-label">H3 Heading</span><span>24px / 32px</span></div>
+            <h3 style="font-size: var(--text-h3); line-height: var(--lh-h3); font-weight: 500; margin: 0;">Sub-panel section label</h3>
+          </div>
+          <div class="type-specimen-row">
+            <div class="meta"><span class="type-label">Body L</span><span>18px / 30px</span></div>
+            <p style="font-size: var(--text-body-l); line-height: var(--lh-body-l); margin: 0;">Generous, legible, clean editorial reading layout.</p>
+          </div>
+          <div class="type-specimen-row">
+            <div class="meta"><span class="type-label">Body M</span><span>16px / 28px</span></div>
+            <p style="font-size: var(--text-body-m); line-height: var(--lh-body-m); margin: 0;">Default body text used everywhere across tables, cards, descriptions.</p>
+          </div>
+          <div class="type-specimen-row">
+            <div class="meta"><span class="type-label">Body S</span><span>14px / 24px</span></div>
+            <p style="font-size: var(--text-body-s); line-height: var(--lh-body-s); margin: 0;">Small body copy used for dense form labels and list cells.</p>
+          </div>
+          <div class="type-specimen-row">
+            <div class="meta"><span class="type-label">Caption</span><span>12px / 18px</span></div>
+            <p style="font-size: var(--text-caption); line-height: var(--lh-caption); margin: 0;">Small timestamps, system notifications logs, secondary labels.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Spacing -->
+      <section id="spacing" class="spec-section">
+        <div class="sec-header">
+          <h2 class="sec-title">Spacing Scale</h2>
+          <p class="sec-desc">
+            Base-8 spacing grid ensuring absolute rhythm and hierarchy across padding, margins, and gaps.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="space-ramp">
+            <div class="space-row"><div class="space-info"><span>space-4px</span><span>4px</span></div><div class="space-bar-wrapper"><div class="space-bar" style="width: 4px;"></div></div></div>
+            <div class="space-row"><div class="space-info"><span>space-8px</span><span>8px</span></div><div class="space-bar-wrapper"><div class="space-bar" style="width: 8px;"></div></div></div>
+            <div class="space-row"><div class="space-info"><span>space-12px</span><span>12px</span></div><div class="space-bar-wrapper"><div class="space-bar" style="width: 12px;"></div></div></div>
+            <div class="space-row"><div class="space-info"><span>space-16px</span><span>16px</span></div><div class="space-bar-wrapper"><div class="space-bar" style="width: 16px;"></div></div></div>
+            <div class="space-row"><div class="space-info"><span>space-24px</span><span>24px</span></div><div class="space-bar-wrapper"><div class="space-bar" style="width: 24px;"></div></div></div>
+            <div class="space-row"><div class="space-info"><span>space-32px</span><span>32px</span></div><div class="space-bar-wrapper"><div class="space-bar" style="width: 32px;"></div></div></div>
+            <div class="space-row"><div class="space-info"><span>space-40px</span><span>40px</span></div><div class="space-bar-wrapper"><div class="space-bar" style="width: 40px;"></div></div></div>
+            <div class="space-row"><div class="space-info"><span>space-48px</span><span>48px</span></div><div class="space-bar-wrapper"><div class="space-bar" style="width: 48px;"></div></div></div>
+            <div class="space-row"><div class="space-info"><span>space-64px</span><span>64px</span></div><div class="space-bar-wrapper"><div class="space-bar" style="width: 64px;"></div></div></div>
+            <div class="space-row"><div class="space-info"><span>space-80px</span><span>80px</span></div><div class="space-bar-wrapper"><div class="space-bar" style="width: 80px;"></div></div></div>
+            <div class="space-row"><div class="space-info"><span>space-96px</span><span>96px</span></div><div class="space-bar-wrapper"><div class="space-bar" style="width: 96px;"></div></div></div>
+            <div class="space-row"><div class="space-info"><span>space-120px</span><span>120px</span></div><div class="space-bar-wrapper"><div class="space-bar" style="width: 120px;"></div></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Radius & Depth -->
+      <section id="radius" class="spec-section">
+        <div class="sec-header">
+          <h2 class="sec-title">Radius & Elevation</h2>
+          <p class="sec-desc">
+            Organic soft curvatures paired with warm, low-opacity shadows for clean layered depth.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <!-- Radius -->
+          <div class="card">
+            <h3 style="font-size: var(--text-body-l, 18px); font-weight: 600; margin-bottom: 12px;">Radius Scale</h3>
+            <div class="grid-4" style="gap: 12px;">
+              <div class="radius-box r-s"><span>S</span><code>8px</code></div>
+              <div class="radius-box r-m"><span>M</span><code>12px</code></div>
+              <div class="radius-box r-l"><span>L</span><code>16px</code></div>
+              <div class="radius-box r-xl"><span>XL</span><code>24px</code></div>
+            </div>
+          </div>
+          <!-- Elevation -->
+          <div class="card">
+            <h3 style="font-size: var(--text-body-l, 18px); font-weight: 600; margin-bottom: 12px;">Shadow Elevation</h3>
+            <div class="grid-2" style="gap: 12px;">
+              <div class="elevation-card e-1"><span class="title">Elevation 1</span><code>Cards & Inputs</code></div>
+              <div class="elevation-card e-2"><span class="title">Elevation 2</span><code>Hover Surfaces</code></div>
+              <div class="elevation-card e-3"><span class="title">Elevation 3</span><code>Dropdown & popover</code></div>
+              <div class="elevation-card e-4"><span class="title">Elevation 4</span><code>Modals & Overlays</code></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Breakpoints -->
+      <section id="breakpoints" class="spec-section">
+        <div class="sec-header">
+          <h2 class="sec-title">Responsive Specs</h2>
+          <p class="sec-desc">
+            Defining default viewports, grid columns layout, and standard container width configurations.
+          </p>
+        </div>
+
+        <div class="table-container">
+          <table class="ds-table">
+            <thead>
+              <tr><th>Target</th><th>Range</th><th>Columns</th><th>Container Width</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Mobile</td><td><span class="bp-val">0px – 767px</span></td><td>4 cols</td><td>Full width</td></tr>
+              <tr><td>Tablet</td><td><span class="bp-val">768px – 1023px</span></td><td>8 cols</td><td>720px (Narrow)</td></tr>
+              <tr><td>Desktop</td><td><span class="bp-val">1024px – 1439px</span></td><td>12 cols</td><td>1200px (Standard)</td></tr>
+              <tr><td>Wide</td><td><span class="bp-val">1440px+</span></td><td>12 cols</td><td>1440px (Dashboard)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Component Library Section Divider -->
+
+
+      <!-- Components Section Header -->
+      <header class="hero" style="border-bottom:0; padding-bottom:0; margin-bottom: 32px;">
+        <h1 class="title" style="font-size: 38px;">Core Component Library</h1>
+        <p class="subtitle" style="font-size: 16px;">
+          Visual visualizer specimens of core components, built to show exact interactive states, typography, padding, and alignments using design system variable values.
+        </p>
+      </header>
+
+      <!-- Buttons Section -->
+      <section id="buttons" class="spec-section">
+        <div class="sec-header">
+          <h2 class="sec-title">Buttons</h2>
+          <p class="sec-desc">
+            Primary, secondary, tertiary, ghost, and destructive action controls with micro-translation hovers.
+          </p>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-head"><span class="comp-name">Specimens</span></div>
+          <div class="comp-body">
+            
+            <div class="comp-row-title">Primary Button</div>
+            <div class="comp-row">
+              <button class="btn-ds primary">Primary (Default)</button>
+              <button class="btn-ds primary" style="background-color: #AE0E28; transform: translateY(-1px); box-shadow: var(--elev-1);">Primary (Hover)</button>
+              <button class="btn-ds primary" style="transform: translateY(1px); box-shadow: none;">Primary (Pressed)</button>
+              <button class="btn-ds primary" disabled>Primary (Disabled)</button>
+            </div>
+
+            <div class="comp-row-title">Secondary Button</div>
+            <div class="comp-row">
+              <button class="btn-ds secondary">Secondary (Default)</button>
+              <button class="btn-ds secondary" style="background-color: var(--surface-interactive); transform: translateY(-1px); box-shadow: var(--elev-1);">Secondary (Hover)</button>
+              <button class="btn-ds secondary" style="transform: translateY(1px); box-shadow: none;">Secondary (Pressed)</button>
+              <button class="btn-ds secondary" disabled>Secondary (Disabled)</button>
+            </div>
+
+            <div class="comp-row-title">Tertiary & Ghost Variants</div>
+            <div class="comp-row">
+              <button class="btn-ds tertiary">Tertiary (Default)</button>
+              <button class="btn-ds ghost">Ghost (Default)</button>
+              <button class="btn-ds destructive">Destructive</button>
+              <a href="#" style="color: var(--text-link); font-weight: 500; font-size: 14px; text-decoration: underline; padding: var(--space-2, 8px);">Link Action</a>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Inputs & Forms -->
+      <section id="inputs" class="spec-section">
+        <div class="sec-header">
+          <h2 class="sec-title">Inputs & Forms</h2>
+          <p class="sec-desc">
+            Stacked label-above-input form controls covering validation, disabled states, selects, search, and dropzone layouts.
+          </p>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-head"><span class="comp-name">Specimens</span></div>
+          <div class="comp-body">
+            
+            <div class="grid-2" style="margin-bottom: 24px;">
+              <!-- Default Text Field -->
+              <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-input" placeholder="e.g. Kapil Dev" />
+                <span class="form-help">Enter your full legal name as per ID.</span>
+              </div>
+              <!-- Error Text Field -->
+              <div class="form-group">
+                <label class="form-label">Email Address <span style="color: var(--state-error);">*</span></label>
+                <input type="email" class="form-input error" value="kapil@invalid-email" />
+                <span class="form-error">Please enter a valid email address.</span>
+              </div>
+              <!-- Focus / Active Text Field -->
+              <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-input" value="kapil_dev" style="border-color: var(--border-focus); box-shadow: var(--shadow-focus-ring);" />
+                <span class="form-help">This username is available.</span>
+              </div>
+              <!-- Disabled Text Field -->
+              <div class="form-group">
+                <label class="form-label">Organization ID</label>
+                <input type="text" class="form-input" value="ORG-98371-PRISM" disabled />
+                <span class="form-help">Unique ID generated on registration.</span>
+              </div>
+            </div>
+
+            <!-- Custom Form Elements (Select, Textarea, Search) -->
+            <div class="grid-2" style="margin-bottom: 24px;">
+              <div class="form-group">
+                <label class="form-label">Role Profile</label>
+                <div class="mock-select">
+                  <select class="form-input" style="-webkit-appearance:none; -moz-appearance:none; appearance:none;">
+                    <option>General Partner (GP)</option>
+                    <option>Limited Partner (LP)</option>
+                    <option>Investment Associate</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Covering Pitch Letter</label>
+                <textarea class="form-input form-textarea" placeholder="Briefly describe your venture..."></textarea>
+              </div>
+            </div>
+
+            <!-- Upload Dropzone Specimen -->
+            <div class="comp-row-title" style="margin-top: 24px;">File Upload Dropzone</div>
+            <div class="dropzone" style="margin-bottom: 24px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-muted); margin-bottom: 8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+              <div class="dropzone-title">Upload pitch deck files</div>
+              <div class="dropzone-desc">Drag & drop files here, or click to browse. Max size 25MB (PDF, DOCX).</div>
+            </div>
+
+            <!-- Date Selection & Toggles (DateRangePicker, Switch, Radio) -->
+            <div class="comp-row-title" style="margin-top: 24px;">Date Selection & Toggles</div>
+            <div class="grid-2" style="margin-bottom: 24px;">
+              <!-- Date Range Field -->
+              <div class="form-group">
+                <label class="form-label">Investment Window</label>
+                <div class="form-input" style="display: flex; align-items: center; gap: 8px; cursor: pointer; user-select: none;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" style="color: var(--text-muted);"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                  <span>May 10, 2026 - May 24, 2026</span>
+                </div>
+                <span class="form-help">Selected active pipeline round date range.</span>
+              </div>
+              
+              <!-- Switch & Radio stack -->
+              <div style="display: flex; gap: var(--space-6, 24px); align-items: flex-start;">
+                <!-- Switch -->
+                <div class="form-group" style="max-width: 140px;">
+                  <label class="form-label">Enable Notifications</label>
+                  <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                    <!-- Mock Switch Toggled ON -->
+                    <div style="width: 36px; height: 20px; background-color: var(--color-gray-900); border-radius: 10px; position: relative; cursor: pointer;">
+                      <div style="width: 16px; height: 16px; background-color: white; border-radius: 50%; position: absolute; right: 2px; top: 2px; transition: right 0.1s;"></div>
+                    </div>
+                    <!-- Mock Switch Toggled OFF -->
+                    <div style="width: 36px; height: 20px; background-color: var(--border-default); border-radius: 10px; position: relative; cursor: pointer;">
+                      <div style="width: 16px; height: 16px; background-color: white; border-radius: 50%; position: absolute; left: 2px; top: 2px; transition: left 0.1s;"></div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Radio stack -->
+                <div class="form-group">
+                  <label class="form-label">Security Tier</label>
+                  <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 4px;">
+                    <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-secondary); cursor: pointer;">
+                      <div style="width: 14px; height: 14px; border: 1.5px solid var(--color-gray-900); border-radius: 50%; display: flex; align-items: center; justify-content: center;"><div style="width: 6px; height: 6px; background-color: var(--color-gray-900); border-radius: 50%;"></div></div>
+                      <span>Standard GP</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-secondary); cursor: pointer;">
+                      <div style="width: 14px; height: 14px; border: 1.5px solid var(--border-default); border-radius: 50%;"></div>
+                      <span>Read-only LP</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Standalone Calendar spec -->
+            <div class="comp-row-title" style="margin-top: 24px;">Standalone Calendar Grid Spec (Range Highlight)</div>
+            <div style="display: flex; gap: 24px; flex-wrap: wrap;">
+              <!-- Calendar UI Mockup -->
+              <div style="width: 252px; padding: 12px; font-family: var(--font-sans); background: white; border-radius: var(--radius-md, 12px); border: 1px solid var(--border-subtle); box-shadow: var(--elev-2);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+                  <span style="font-size:12px; font-weight:600; color:var(--text-secondary); cursor:pointer;">←</span>
+                  <span style="font-size:12px; font-weight:600; color:var(--text-primary);">May 2026</span>
+                  <span style="font-size:12px; font-weight:600; color:var(--text-secondary); cursor:pointer;">→</span>
+                </div>
+                <div style="display:grid; grid-template-columns: repeat(7, 1fr); text-align:center; font-size: 10px; font-weight:600; color:var(--text-muted); margin-bottom: 4px;">
+                  <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+                </div>
+                <div style="display:grid; grid-template-columns: repeat(7, 1fr); row-gap: 2px; text-align:center; font-size: 12px;">
+                  <span style="color:var(--text-disabled);">26</span><span style="color:var(--text-disabled);">27</span><span style="color:var(--text-disabled);">28</span><span style="color:var(--text-disabled);">29</span><span style="color:var(--text-disabled);">30</span><span>1</span><span>2</span>
+                  <span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span>
+                  <span style="background-color: var(--surface-selected); border-radius: 50% 0 0 50%; display: flex; align-items: center; justify-content: center; height: 32px;"><span style="background-color: var(--color-gray-900); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600;">10</span></span>
+                  <span style="background-color: var(--surface-selected); display: flex; align-items: center; justify-content: center; height: 32px;">11</span>
+                  <span style="background-color: var(--surface-selected); display: flex; align-items: center; justify-content: center; height: 32px;">12</span>
+                  <span style="background-color: var(--surface-selected); display: flex; align-items: center; justify-content: center; height: 32px;">13</span>
+                  <span style="background-color: var(--surface-selected); display: flex; align-items: center; justify-content: center; height: 32px;">14</span>
+                  <span style="background-color: var(--surface-selected); display: flex; align-items: center; justify-content: center; height: 32px;">15</span>
+                  <span style="background-color: var(--surface-selected); display: flex; align-items: center; justify-content: center; height: 32px;">16</span>
+                  <span style="background-color: var(--surface-selected); display: flex; align-items: center; justify-content: center; height: 32px;">17</span>
+                  <span style="background-color: var(--surface-selected); display: flex; align-items: center; justify-content: center; height: 32px;">18</span>
+                  <span style="background-color: var(--surface-selected); display: flex; align-items: center; justify-content: center; height: 32px;">19</span>
+                  <span style="background-color: var(--surface-selected); display: flex; align-items: center; justify-content: center; height: 32px;">20</span>
+                  <span style="background-color: var(--surface-selected); display: flex; align-items: center; justify-content: center; height: 32px;">21</span>
+                  <span style="background-color: var(--surface-selected); display: flex; align-items: center; justify-content: center; height: 32px;">22</span>
+                  <span style="background-color: var(--surface-selected); display: flex; align-items: center; justify-content: center; height: 32px;">23</span>
+                  <span style="background-color: var(--surface-selected); border-radius: 0 50% 50% 0; display: flex; align-items: center; justify-content: center; height: 32px;"><span style="background-color: var(--color-gray-900); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600;">24</span></span>
+                  <span>25</span><span>26</span><span>27</span><span>28</span><span>29</span><span>30</span>
+                </div>
+              </div>
+              <div style="flex-grow: 1; min-width: 240px; display: flex; flex-direction: column; justify-content: center; gap: 8px;">
+                <div style="font-size:12px; color: var(--text-muted); line-height: 1.4;">
+                  Standard popover monthly calendar grid demonstrating day bounds. Clicking on days toggles <code>from</code> and <code>to</code> anchors, drawing the range highlight using active neutral selection tints.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Navigation UI -->
+      <section id="navigation" class="spec-section">
+        <div class="sec-header">
+          <h2 class="sec-title">Navigation UI</h2>
+          <p class="sec-desc">
+            Breadcrumbs, pagination, horizontal tabs, and header components that structure layouts cleanly.
+          </p>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-head"><span class="comp-name">Specimens</span></div>
+          <div class="comp-body">
+            
+            <!-- Breadcrumbs -->
+            <div class="comp-row-title">Breadcrumbs</div>
+            <div class="comp-row">
+              <nav class="mock-breadcrumbs">
+                <a href="#">Dealflow</a>
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                <a href="#">Active Pipelines</a>
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                <span style="color: var(--text-primary);">Aurelia Health</span>
+              </nav>
+            </div>
+
+            <!-- Tabs -->
+            <div class="comp-row-title" style="margin-top:24px;">Tabs (Underline Motif)</div>
+            <div class="comp-row">
+              <nav class="mock-tabs" style="width: 100%;">
+                <span class="mock-tab active">Deal Overview</span>
+                <span class="mock-tab">Financial Logs</span>
+                <span class="mock-tab">Contacts Feed</span>
+                <span class="mock-tab">Document Vault</span>
+              </nav>
+            </div>
+
+            <!-- Pagination -->
+            <div class="comp-row-title" style="margin-top:24px;">Pagination Controls</div>
+            <div class="comp-row" style="margin-bottom: 24px;">
+              <div class="mock-pagination">
+                <a href="#" class="page-btn"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></a>
+                <a href="#" class="page-btn active">1</a>
+                <a href="#" class="page-btn">2</a>
+                <a href="#" class="page-btn">3</a>
+                <a href="#" class="page-btn">4</a>
+                <a href="#" class="page-btn"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
+              </div>
+            </div>
+
+            <!-- Footer Specimen -->
+            <div class="comp-row-title" style="margin-top:24px;">Platform Brand Footer</div>
+            <footer style="width: 100%; padding: var(--space-6, 24px) var(--space-4, 16px); background-color: var(--surface-secondary, #F5F7F9); border: 1px solid var(--border-subtle, #E8ECEF); border-radius: var(--radius-md, 12px); font-family: var(--font-sans); display: flex; flex-direction: column; gap: var(--space-4, 16px);">
+              <div style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+                <div>
+                  <div style="display: flex; align-items: center; gap: 6px; font-weight: 600; font-size: 13px; color: var(--text-primary);">
+                    <span style="width:6px; height:6px; background-color:var(--accent-primary); border-radius:50%;"></span>
+                    Prism
+                  </div>
+                  <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px; max-width: 200px; line-height: 1.4;">
+                    Connecting and enabling the venture capital ecosystem in India. Designed with premium operational simplicity.
+                  </div>
+                </div>
+                <div style="display: flex; gap: 32px;">
+                  <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <span style="font-size: 10px; font-weight: 600; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.04em;">Platform</span>
+                    <a href="#" style="font-size: 12px; color: var(--text-secondary); text-decoration: none; hover:underline;">Pipelines</a>
+                    <a href="#" style="font-size: 12px; color: var(--text-secondary); text-decoration: none; hover:underline;">Analytics</a>
+                  </div>
+                  <div style="display: flex; flex-direction: column; gap: 6px;">
+                    <span style="font-size: 10px; font-weight: 600; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.04em;">Legal</span>
+                    <a href="#" style="font-size: 12px; color: var(--text-secondary); text-decoration: none; hover:underline;">Privacy</a>
+                    <a href="#" style="font-size: 12px; color: var(--text-secondary); text-decoration: none; hover:underline;">Terms</a>
+                  </div>
+                </div>
+              </div>
+              <div style="border-top: 1px solid var(--border-subtle, #E8ECEF); padding-top: var(--space-2, 8px); display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted);">
+                <span>© 2026 Indian VCs. All rights reserved.</span>
+                <span>v1.0.0</span>
+              </div>
+            </footer>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Data Display -->
+      <section id="datadisplay" class="spec-section">
+        <div class="sec-header">
+          <h2 class="sec-title">Data Display</h2>
+          <p class="sec-desc">
+            Tables, metrics, badges, and area charts rendering workspace statistics cleanly.
+          </p>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-head"><span class="comp-name">Specimens</span></div>
+          <div class="comp-body">
+            
+            <!-- Table Specimen -->
+            <div class="comp-row-title">Data Table</div>
+            <div class="table-container" style="margin-bottom: 24px;">
+              <table class="ds-table">
+                <thead>
+                  <tr>
+                    <th style="width:24px;"><input type="checkbox" /></th>
+                    <th>Portfolio Company</th>
+                    <th>Current Round</th>
+                    <th>Funding Total</th>
+                    <th>Status Badge</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="checkbox" checked /></td>
+                    <td><strong>Aurelia Health</strong></td>
+                    <td>Series A</td>
+                    <td>$4.8M</td>
+                    <td><span class="badge-ds success">Active</span></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" /></td>
+                    <td><strong>Banyan Finance</strong></td>
+                    <td>Seed</td>
+                    <td>$1.2M</td>
+                    <td><span class="badge-ds warning">Pending</span></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" /></td>
+                    <td><strong>Coral Logistics</strong></td>
+                    <td>Series B</td>
+                    <td>$12.5M</td>
+                    <td><span class="badge-ds info">On Hold</span></td>
+                  </tr>
+                  <tr>
+                    <td><input type="checkbox" /></td>
+                    <td><strong>Zenith AI Systems</strong></td>
+                    <td>Pre-Seed</td>
+                    <td>$450K</td>
+                    <td><span class="badge-ds error">Declined</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- KPI Cards & Badges -->
+            <div class="comp-row-title">Stat Card & Badges</div>
+            <div class="comp-row" style="align-items: stretch; margin-bottom: 24px;">
+              <div class="stat-card">
+                <div class="stat-label">TOTAL CAPITAL DEPLOYED</div>
+                <div class="stat-val">$24.8M</div>
+                <span class="stat-badge up">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+                  +18.4%
+                </span>
+              </div>
+              <div class="card" style="flex-grow:1; display:flex; flex-direction:column; justify-content:center; gap: 8px;">
+                <div>
+                  <span class="badge-ds success">Success</span>
+                  <span class="badge-ds warning">Warning</span>
+                  <span class="badge-ds error">Error</span>
+                  <span class="badge-ds info">Info</span>
+                  <span class="badge-ds neutral">Neutral Tag</span>
+                </div>
+                <div style="font-size:12px; color: var(--text-muted); line-height: 1.4;">
+                  Standard tags and status badges rendering with correct light background contrast and semantic border boundaries.
+                </div>
+              </div>
+            </div>
+
+            <!-- Visual SVG Chart -->
+            <div class="comp-row-title">Area Metric Chart</div>
+            <svg class="chart-svg" viewBox="0 0 480 180" aria-hidden="true" style="display:block; margin-bottom: 24px;">
+              <!-- Grids -->
+              <g stroke="var(--border-subtle)" stroke-width="1">
+                <line x1="20" y1="20"  x2="460" y2="20"/>
+                <line x1="20" y1="65"  x2="460" y2="65"/>
+                <line x1="20" y1="110" x2="460" y2="110"/>
+                <line x1="20" y1="155" x2="460" y2="155"/>
+              </g>
+              <!-- Areas and Lines -->
+              <path d="M20,130 L100,105 L180,120 L260,70 L340,85 L420,40 L460,35 L460,155 L20,155 Z" fill="rgba(200, 16, 46, 0.04)"></path>
+              <polyline fill="none" stroke="var(--accent-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        points="20,130 100,105 180,120 260,70 340,85 420,40 460,35" />
+              <!-- Dots -->
+              <g fill="var(--accent-primary)">
+                <circle cx="20"   cy="130" r="3"/><circle cx="100"  cy="105" r="3"/>
+                <circle cx="180"  cy="120" r="3"/><circle cx="260"  cy="70"  r="3"/>
+                <circle cx="340"  cy="85"  r="3"/><circle cx="420"  cy="40"  r="3"/>
+                <circle cx="460"  cy="35"  r="3"/>
+              </g>
+            </svg>
+
+            <!-- Workflow Stage Indicator Specimen -->
+            <div class="comp-row-title" style="margin-top:24px;">Workflow Stage Indicator (Stepper Options)</div>
+            <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 12px 0;">We support two finalized presentation variants for pipeline stages. Click any step on either bar to interact.</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 24px; font-family: var(--font-sans); margin-bottom: 24px;">
+              
+              <!-- Option A: Capsule Segment Slider -->
+              <div>
+                <div style="font-size: 10px; font-weight:600; text-transform: uppercase; letter-spacing:0.04em; color:var(--text-muted); margin-bottom:8px;">Option A: Capsule Segment Slider (Native-app feel)</div>
+                <div id="stepper-variant-capsule" style="width: 100%; background: var(--surface-secondary); border: 1px solid var(--border-subtle); border-radius: 32px; display: flex; padding: 4px; position: relative; user-select: none;">
+                  <!-- Capsule Step 1 -->
+                  <div class="step-capsule-item" data-index="0" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 12px; border-radius: 24px; cursor: pointer; transition: all 0.25s ease; position: relative; z-index: 2; background: transparent;">
+                    <span class="step-capsule-check" style="color: var(--state-success); font-weight: bold; font-size: 11px;">✓</span>
+                    <span class="step-capsule-title" style="font-size: 11px; font-weight: 600; color: var(--text-secondary); transition: color 0.2s;">Screening</span>
+                  </div>
+                  <!-- Capsule Step 2 -->
+                  <div class="step-capsule-item" data-index="1" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 12px; border-radius: 24px; cursor: pointer; transition: all 0.25s ease; position: relative; z-index: 2; background: transparent;">
+                    <span class="step-capsule-check" style="color: var(--state-success); font-weight: bold; font-size: 11px;">✓</span>
+                    <span class="step-capsule-title" style="font-size: 11px; font-weight: 600; color: var(--text-secondary); transition: color 0.2s;">GP Review</span>
+                  </div>
+                  <!-- Capsule Step 3 -->
+                  <div class="step-capsule-item" data-index="2" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 12px; border-radius: 24px; cursor: pointer; transition: all 0.25s ease; position: relative; z-index: 2; background: white; border: 1px solid var(--border-subtle); box-shadow: var(--shadow-sm);">
+                    <span class="step-capsule-check" style="display:none; color: var(--state-success); font-weight: bold; font-size: 11px;">✓</span>
+                    <span class="step-capsule-dot" style="display:inline-block; h:6px; w:6px; background-color: var(--color-gray-900); border-radius: 50%; height: 6px; width: 6px;"></span>
+                    <span class="step-capsule-title" style="font-size: 11px; font-weight: 600; color: var(--text-primary); transition: color 0.2s;">Diligence</span>
+                  </div>
+                  <!-- Capsule Step 4 -->
+                  <div class="step-capsule-item" data-index="3" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 12px; border-radius: 24px; cursor: pointer; transition: all 0.25s ease; position: relative; z-index: 2; background: transparent;">
+                    <span class="step-capsule-check" style="display:none; color: var(--state-success); font-weight: bold; font-size: 11px;">✓</span>
+                    <span class="step-capsule-title" style="font-size: 11px; font-weight: 500; color: var(--text-muted); transition: color 0.2s;">Term Sheet</span>
+                  </div>
+                  <!-- Capsule Step 5 -->
+                  <div class="step-capsule-item" data-index="4" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 12px; border-radius: 24px; cursor: pointer; transition: all 0.25s ease; position: relative; z-index: 2; background: transparent;">
+                    <span class="step-capsule-check" style="display:none; color: var(--state-success); font-weight: bold; font-size: 11px;">✓</span>
+                    <span class="step-capsule-title" style="font-size: 11px; font-weight: 500; color: var(--text-muted); transition: color 0.2s;">Closed Won</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Option B: Standard Circular Stepper -->
+              <div>
+                <div style="font-size: 10px; font-weight:600; text-transform: uppercase; letter-spacing:0.04em; color:var(--text-muted); margin-bottom:8px;">Option B: Standard Circular Stepper (Classic operational style - line bounded to step centers)</div>
+                <div id="stepper-variant-bubble" style="width: 100%; padding: 16px 0; border: 1px solid var(--border-subtle); border-radius: 12px; background: white; display: flex; justify-content: space-between; position: relative; user-select: none;">
+                  <!-- Constrained Connecting Line (starts EXACTLY at Step 1 center and ends EXACTLY at Step 5 center) -->
+                  <div style="position: absolute; top: 30px; left: 10%; right: 10%; height: 1.5px; background-color: var(--border-default); z-index: 1;">
+                    <div id="bubble-progress-line" style="width: 50%; height: 100%; background-color: var(--state-success); transition: width var(--duration-normal) var(--ease-default);"></div>
+                  </div>
+                  
+                  <!-- Bubble Step 1 -->
+                  <div class="step-bubble-item" data-index="0" style="display: flex; flex-direction: column; align-items: center; z-index: 2; flex: 1; position: relative; cursor: pointer;">
+                    <div class="step-bubble-circle" style="height: 26px; width: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 11px; font-weight: 600; transition: all var(--duration-fast); background-color: #E4F1EC; border: 1.5px solid #A8D2BD; color: var(--state-success);">✓</div>
+                    <span class="step-bubble-title" style="font-size: 11px; font-weight: 600; color: var(--text-primary); margin-top: 6px; transition: color var(--duration-fast);">Screening</span>
+                  </div>
+                  <!-- Bubble Step 2 -->
+                  <div class="step-bubble-item" data-index="1" style="display: flex; flex-direction: column; align-items: center; z-index: 2; flex: 1; position: relative; cursor: pointer;">
+                    <div class="step-bubble-circle" style="height: 26px; width: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 11px; font-weight: 600; transition: all var(--duration-fast); background-color: #E4F1EC; border: 1.5px solid #A8D2BD; color: var(--state-success);">✓</div>
+                    <span class="step-bubble-title" style="font-size: 11px; font-weight: 600; color: var(--text-primary); margin-top: 6px; transition: color var(--duration-fast);">GP Review</span>
+                  </div>
+                  <!-- Bubble Step 3 -->
+                  <div class="step-bubble-item" data-index="2" style="display: flex; flex-direction: column; align-items: center; z-index: 2; flex: 1; position: relative; cursor: pointer;">
+                    <div class="step-bubble-circle" style="height: 26px; width: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 11px; font-weight: 600; transition: all var(--duration-fast); background-color: var(--color-gray-900); border: 1.5px solid var(--color-gray-900); color: white; box-shadow: var(--shadow-sm);">
+                      <div class="pulse-bubble"></div>
+                      3
+                    </div>
+                    <span class="step-bubble-title" style="font-size: 11px; font-weight: 600; color: var(--text-primary); margin-top: 6px; transition: color var(--duration-fast);">Diligence</span>
+                  </div>
+                  <!-- Bubble Step 4 -->
+                  <div class="step-bubble-item" data-index="3" style="display: flex; flex-direction: column; align-items: center; z-index: 2; flex: 1; position: relative; cursor: pointer;">
+                    <div class="step-bubble-circle" style="height: 26px; width: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 11px; font-weight: 500; transition: all var(--duration-fast); background-color: white; border: 1.5px solid var(--border-default); color: var(--text-muted);">4</div>
+                    <span class="step-bubble-title" style="font-size: 11px; font-weight: 500; color: var(--text-muted); margin-top: 6px; transition: color var(--duration-fast);">Term Sheet</span>
+                  </div>
+                  <!-- Bubble Step 5 -->
+                  <div class="step-bubble-item" data-index="4" style="display: flex; flex-direction: column; align-items: center; z-index: 2; flex: 1; position: relative; cursor: pointer;">
+                    <div class="step-bubble-circle" style="height: 26px; width: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 11px; font-weight: 500; transition: all var(--duration-fast); background-color: white; border: 1.5px solid var(--border-default); color: var(--text-muted);">5</div>
+                    <span class="step-bubble-title" style="font-size: 11px; font-weight: 500; color: var(--text-muted); margin-top: 6px; transition: color var(--duration-fast);">Closed Won</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Document Catalog Layout Specimen -->
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:24px; margin-bottom:12px;">
+              <div class="comp-row-title" style="margin:0;">Document Catalog Listing</div>
+              <!-- View Switcher Tabs -->
+              <div style="display:flex; gap:2px; padding:2px; background-color:var(--surface-secondary); border: 1.5px solid var(--border-subtle); border-radius:6px; font-family:var(--font-sans);">
+                <button id="doc-view-list-btn" class="page-btn active" style="width:auto; height:24px; font-size:11px; padding:0 8px; border:0; border-radius:4px; font-weight:600; cursor:pointer;">List View</button>
+                <button id="doc-view-grid-btn" class="page-btn" style="width:auto; height:24px; font-size:11px; padding:0 8px; border:0; border-radius:4px; font-weight:500; cursor:pointer;">Grid View</button>
+              </div>
+            </div>
+
+            <!-- List View Container -->
+            <div id="doc-catalog-list" style="width: 100%; display: flex; flex-direction: column; gap: 8px; font-family: var(--font-sans);">
+              <!-- Row 1: PDF -->
+              <div class="doc-row-item" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border: 1px solid var(--border-subtle); border-radius: 8px; background: white; transition: all var(--duration-fast); cursor: pointer; user-select: none;">
+                <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+                  <input type="checkbox" class="doc-row-checkbox" style="cursor:pointer;" />
+                  <div style="width: 36px; height: 36px; border-radius: 6px; background-color: var(--surface-secondary); border: 1px solid var(--border-subtle); color: var(--text-secondary); display: flex; align-items: center; justify-content: center;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                  </div>
+                  <div style="min-width: 0;">
+                    <div style="font-size: 13px; font-weight: 600; color: var(--text-primary); text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">Aurelia_PitchDeck_v2.pdf</div>
+                    <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">4.8 MB • Updated 2 hours ago by KD</div>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 6px;">
+                  <button class="page-btn" style="width:28px; height:28px; cursor: pointer;">↓</button>
+                  <button class="page-btn" style="width:28px; height:28px; cursor: pointer;">⋯</button>
+                </div>
+              </div>
+
+              <!-- Row 2: XLSX -->
+              <div class="doc-row-item" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border: 1px solid var(--border-subtle); border-radius: 8px; background: white; transition: all var(--duration-fast); cursor: pointer; user-select: none;">
+                <div style="display: flex; align-items: center; gap: 12px; min-width: 0;">
+                  <input type="checkbox" class="doc-row-checkbox" style="cursor:pointer;" />
+                  <div style="width: 36px; height: 36px; border-radius: 6px; background-color: var(--surface-secondary); border: 1px solid var(--border-subtle); color: var(--text-secondary); display: flex; align-items: center; justify-content: center;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                  </div>
+                  <div style="min-width: 0;">
+                    <div style="font-size: 13px; font-weight: 600; color: var(--text-primary); text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">Financial_Projections_CapTable.xlsx</div>
+                    <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">1.2 MB • Updated yesterday by GP</div>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 6px;">
+                  <button class="page-btn" style="width:28px; height:28px; cursor: pointer;">↓</button>
+                  <button class="page-btn" style="width:28px; height:28px; cursor: pointer;">⋯</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Grid View Container (hidden by default) -->
+            <div id="doc-catalog-grid" class="grid-3" style="width: 100%; font-family: var(--font-sans); display: none;">
+              <!-- Card 1: PDF -->
+              <div class="doc-grid-item" style="display: flex; flex-direction: column; justify-content: space-between; padding: var(--space-4, 16px); border: 1px solid var(--border-subtle); border-radius: 12px; background: white; transition: all var(--duration-fast); cursor: pointer; position: relative; min-height: 140px; box-shadow: var(--elev-1);">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                  <div style="width: 32px; height: 32px; border-radius: 6px; background-color: var(--surface-secondary); border: 1px solid var(--border-subtle); color: var(--text-secondary); display: flex; align-items: center; justify-content: center;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                  </div>
+                  <input type="checkbox" class="doc-grid-checkbox" style="cursor:pointer;" />
+                </div>
+                <div style="margin-top: 16px;">
+                  <div style="font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.3; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">Aurelia_PitchDeck_v2.pdf</div>
+                  <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">4.8 MB • 2 hrs ago</div>
+                </div>
+              </div>
+
+              <!-- Card 2: XLSX -->
+              <div class="doc-grid-item" style="display: flex; flex-direction: column; justify-content: space-between; padding: var(--space-4, 16px); border: 1px solid var(--border-subtle); border-radius: 12px; background: white; transition: all var(--duration-fast); cursor: pointer; position: relative; min-height: 140px; box-shadow: var(--elev-1);">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                  <div style="width: 32px; height: 32px; border-radius: 6px; background-color: var(--surface-secondary); border: 1px solid var(--border-subtle); color: var(--text-secondary); display: flex; align-items: center; justify-content: center;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                  </div>
+                  <input type="checkbox" class="doc-grid-checkbox" style="cursor:pointer;" />
+                </div>
+                <div style="margin-top: 16px;">
+                  <div style="font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.3; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">Financial_Projections.xlsx</div>
+                  <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">1.2 MB • Yesterday</div>
+                </div>
+              </div>
+
+              <!-- Card 3: PPTX -->
+              <div class="doc-grid-item" style="display: flex; flex-direction: column; justify-content: space-between; padding: var(--space-4, 16px); border: 1px solid var(--border-subtle); border-radius: 12px; background: white; transition: all var(--duration-fast); cursor: pointer; position: relative; min-height: 140px; box-shadow: var(--elev-1);">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                  <div style="width: 32px; height: 32px; border-radius: 6px; background-color: var(--surface-secondary); border: 1px solid var(--border-subtle); color: var(--text-secondary); display: flex; align-items: center; justify-content: center;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                  </div>
+                  <input type="checkbox" class="doc-grid-checkbox" style="cursor:pointer;" />
+                </div>
+                <div style="margin-top: 16px;">
+                  <div style="font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.3; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">GP_AnnualMeeting_2026.pptx</div>
+                  <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">8.4 MB • 3 days ago</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Overlay Systems -->
+      <section id="overlays" class="spec-section">
+        <div class="sec-header">
+          <h2 class="sec-title">Overlay Systems</h2>
+          <p class="sec-desc">
+            Dropdown menus, popover containers, and inline tooltip prompts.
+          </p>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-head"><span class="comp-name">Specimens</span></div>
+          <div class="comp-body">
+            
+            <div class="grid-2">
+              <!-- Dropdown Menu -->
+              <div>
+                <div class="comp-row-title">Dropdown Context Menu</div>
+                <div class="mock-menu" style="margin-bottom: 24px;">
+                  <div class="menu-item"><span>Edit company</span><span style="color:var(--text-muted); font-size:11px;">⌘E</span></div>
+                  <div class="menu-item"><span>Manage files</span><span style="color:var(--text-muted); font-size:11px;">⌘F</span></div>
+                  <div class="menu-item" style="border-top:1px solid var(--border-subtle); color:var(--state-error);"><span>Delete record</span><span style="color:var(--text-muted); font-size:11px;">⌫</span></div>
+                </div>
+              </div>
+              <!-- Popover Card -->
+              <div>
+                <div class="comp-row-title">Hover Popover Info</div>
+                <div class="mock-popover" style="margin-bottom: 24px;">
+                  <div style="font-weight:600; font-size:14px; margin-bottom: 4px; color:var(--text-primary);">Aurelia Health GP</div>
+                  <div style="font-size:12px; color:var(--text-muted); line-height:1.4; margin-bottom: 12px;">
+                    GP profile for managing capital calls. Email configured for verification.
+                  </div>
+                  <button class="btn-ds secondary" style="height:28px; font-size:12px; padding: 0 10px; border-radius:6px; cursor: pointer;">View details</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <!-- Tooltip Specimen -->
+              <div>
+                <div class="comp-row-title">Inline Hover Tooltip Prompt</div>
+                <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 24px;">
+                  <button class="btn-ds secondary" style="height: 32px; font-size: 12px; cursor: pointer;">Hover target</button>
+                  <!-- Mock Tooltip Bubble -->
+                  <div style="background-color: var(--color-gray-900, #1C1F24); color: white; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-family: var(--font-sans); position: relative; box-shadow: var(--elev-3);">
+                    Capital deployment limit for Seed Round.
+                    <!-- Arrow -->
+                    <div style="position: absolute; left: -4px; top: 50%; transform: translateY(-50%) rotate(45deg); width: 8px; height: 8px; background-color: var(--color-gray-900, #1C1F24);"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Command Palette Overlay Mockup -->
+              <div>
+                <div class="comp-row-title">Command Palette Search Dialog</div>
+                <div style="width: 100%; max-width: 420px; background-color: white; border: 1px solid var(--border-default); border-radius: var(--radius-md, 12px); box-shadow: var(--elev-4); overflow: hidden; font-family: var(--font-sans); margin-bottom: 24px;">
+                  <div style="display:flex; align-items:center; gap: 8px; padding: 10px 12px; border-bottom: 1px solid var(--border-subtle);">
+                    <span style="font-size:12px;">🔍</span>
+                    <input type="text" placeholder="Search commands, pipelines..." style="border:0; outline:none; font-size:12px; flex-grow:1; width:100%;" value="aure" readonly />
+                    <span style="font-size: 9px; padding: 2px 4px; background-color: var(--surface-secondary); border-radius: 4px; border:1px solid var(--border-default); color:var(--text-muted); font-family: monospace;">ESC</span>
+                  </div>
+                  <div style="padding: 4px 0;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding: 6px 12px; background-color: var(--surface-interactive); cursor:pointer;">
+                      <span style="font-size:12px; font-weight:500; color:var(--text-primary);">📂 Go to Aurelia Health deal</span>
+                      <span style="font-size:10px; color:var(--text-muted);">⌘1</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding: 6px 12px; cursor:pointer;">
+                      <span style="font-size:12px; font-weight:500; color:var(--text-primary);">👤 Search for Kapil Dev</span>
+                      <span style="font-size:10px; color:var(--text-muted);">⌘2</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Feedback UI -->
+      <section id="feedback" class="spec-section">
+        <div class="sec-header">
+          <h2 class="sec-title">Feedback UI</h2>
+          <p class="sec-desc">
+            Banners, alert overlays, loading skeletons, and empty state containers that guide users during operations.
+          </p>
+        </div>
+
+        <div class="comp-card">
+          <div class="comp-head"><span class="comp-name">Specimens</span></div>
+          <div class="comp-body">
+            
+            <!-- Banner Alerts -->
+            <div class="comp-row-title">Banner Alerts</div>
+            <div style="display: flex; flex-direction: column; gap: var(--space-3, 12px); margin-bottom: 32px;">
+              <div class="banner-alert success">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; margin-top:2px;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <div><strong>Capital Call succeeded</strong> · Funds have been requested successfully from General Partners.</div>
+              </div>
+              <div class="banner-alert info">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; margin-top:2px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                <div><strong>System Maintenance</strong> · Scheduled updates on active channels tomorrow at 02:00 IST.</div>
+              </div>
+            </div>
+
+            <!-- Collaboration Comments Thread -->
+            <div class="comp-row-title">Collaboration Comment Thread</div>
+            <div style="width: 100%; display: flex; flex-direction: column; gap: 12px; font-family: var(--font-sans); margin-bottom: 32px;">
+              <!-- Parent Comment -->
+              <div style="display: flex; gap: 12px; align-items: flex-start;">
+                <div style="width: 32px; height: 32px; border-radius: 50%; background-color: var(--surface-secondary, #F5F7F9); border: 1px solid var(--border-default, #D2D8DE); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--text-secondary, #444B55); flex-shrink: 0;">
+                  KD
+                </div>
+                <div style="flex-grow: 1; padding: 12px; border: 1px solid var(--border-subtle, #E8ECEF); border-radius: 8px; background: white; box-shadow: var(--elev-1);">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 13px; font-weight: 600; color: var(--text-primary, #1C1F24);">Kapil Dev</span>
+                    <span style="font-size: 11px; color: var(--text-muted, #69707C);">2 hours ago</span>
+                  </div>
+                  <p style="font-size: 13px; color: var(--text-secondary, #444B55); margin-top: 6px; line-height: 1.4;">
+                    I've reviewed the updated projections file. The Series A target allocation looks aligned, but we need LP sign-off on the capital call timelines.
+                  </p>
+                </div>
+              </div>
+              
+              <!-- Child Nested Reply -->
+              <div style="display: flex; gap: 12px; align-items: flex-start; margin-left: 44px; position: relative;">
+                <!-- Thread line -->
+                <div style="position: absolute; left: -22px; top: -14px; bottom: 16px; width: 1.5px; border-left: 1.5px solid var(--border-subtle, #E8ECEF);"></div>
+                
+                <div style="width: 28px; height: 28px; border-radius: 50%; background-color: var(--surface-secondary, #F5F7F9); border: 1px solid var(--border-default, #D2D8DE); display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 600; color: var(--text-secondary, #444B55); flex-shrink: 0;">
+                  GP
+                </div>
+                <div style="flex-grow: 1; padding: 10px 12px; border: 1px solid var(--border-subtle, #E8ECEF); border-radius: 8px; background: white; box-shadow: var(--elev-1);">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 12px; font-weight: 600; color: var(--text-primary, #1C1F24);">General Partner</span>
+                    <span style="font-size: 11px; color: var(--text-muted, #69707C);">1 hour ago</span>
+                  </div>
+                  <p style="font-size: 12px; color: var(--text-secondary, #444B55); margin-top: 4px; line-height: 1.4;">
+                    Agreed. Let's trigger the DocuSign template first thing tomorrow.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Toast Notification and RichTextEditor -->
+            <div class="grid-2" style="margin-bottom: 32px;">
+              <!-- Toast Notification Specimen -->
+              <div>
+                <div class="comp-row-title">Toast Feedback Notification</div>
+                <div style="width: 100%; max-width: 320px; padding: 12px 16px; background-color: var(--surface-raised, #FFFFFF); border: 1px solid var(--border-subtle, #E8ECEF); border-left: 3px solid var(--state-success, #72766D); border-radius: 6px; box-shadow: var(--elev-3); display: flex; align-items: center; gap: 10px; font-family: var(--font-sans);">
+                  <span style="color: var(--state-success); font-weight: bold; font-size: 16px;">✓</span>
+                  <div style="font-size: 12px;">
+                    <div style="font-weight: 600; color: var(--text-primary);">Changes saved</div>
+                    <div style="color: var(--text-muted); margin-top: 2px;">Your profile updates were synced.</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Rich Text Editor Specimen -->
+              <div>
+                <div class="comp-row-title">Inline Rich Text Editor Panel</div>
+                <div style="width: 100%; border: 1px solid var(--border-default, #D2D8DE); border-radius: 8px; background-color: white; overflow: hidden; font-family: var(--font-sans);">
+                  <div style="display: flex; gap: 4px; padding: 6px; background-color: var(--surface-secondary); border-bottom: 1px solid var(--border-subtle);">
+                    <button class="page-btn" style="width: 24px; height: 24px; font-weight: bold; font-size: 10px; cursor: pointer;">B</button>
+                    <button class="page-btn" style="width: 24px; height: 24px; font-style: italic; font-size: 10px; cursor: pointer;">I</button>
+                    <button class="page-btn" style="width: 24px; height: 24px; text-decoration: underline; font-size: 10px; cursor: pointer;">U</button>
+                    <span style="width: 1px; background-color: var(--border-subtle); margin: 2px 4px;"></span>
+                    <button class="page-btn" style="width: 24px; height: 24px; font-size: 9px; cursor: pointer;">H1</button>
+                    <button class="page-btn" style="width: 24px; height: 24px; font-size: 9px; cursor: pointer;">H2</button>
+                    <button class="page-btn" style="width: 32px; height: 24px; font-size: 9px; cursor: pointer;">List</button>
+                  </div>
+                  <div style="padding: 12px; min-height: 70px; font-size: 12px; color: var(--text-secondary); outline: none;">
+                    <strong>Next Steps for GP Approval:</strong>
+                    <ul style="margin: 4px 0 0 16px; padding: 0;">
+                      <li>Verify compliance document certifications.</li>
+                      <li>Dispatch capital calls to LP pool.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pulse Skeletons & Empty state -->
+            <div class="grid-2">
+              <div>
+                <div class="comp-row-title">Pulsing Loading Skeletons</div>
+                <div class="skeleton-loader">
+                  <div class="sk-box" style="width: 140px; height: 16px;"></div>
+                  <div class="sk-box" style="width: 100%; height: 40px; border-radius: 8px;"></div>
+                  <div class="sk-box" style="width: 80%; height: 14px;"></div>
+                </div>
+              </div>
+              <div>
+                <div class="comp-row-title">Empty State Layout</div>
+                <div class="empty-state">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-muted);"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+                  <div class="empty-title">No transactions uploaded</div>
+                  <div class="empty-desc">Get started by creating your first deal pipeline tracking transaction record.</div>
+                  <button class="btn-ds primary">Add transaction</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const sections = document.querySelectorAll('.spec-section');
+    const navLinks = document.querySelectorAll('.sidebar .nav-link');
+    
+    // Intersection Observer to highlight sidebar link on scroll
+    const observerOptions = {
+      root: null, // Viewport
+      rootMargin: '-10% 0px -75% 0px', // Trigger when section occupies the upper part of the viewport
+      threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          const correspondingLink = document.querySelector(`.sidebar .nav-link[href="#${id}"]`);
+          
+          if (correspondingLink) {
+            navLinks.forEach((link) => link.classList.remove('active'));
+            correspondingLink.classList.add('active');
+            
+            // Scroll the active link into sidebar view if needed
+            correspondingLink.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach((section) => observer.observe(section));
+
+    // Smooth click handler to prevent flickering & offset positioning
+    navLinks.forEach((link) => {
+      link.addEventListener('click', (e) => {
+        const targetId = link.getAttribute('href');
+        if (!targetId.startsWith('#')) return; // Allow normal navigation for non-anchor links
+        
+        e.preventDefault();
+        const targetSection = document.querySelector(targetId);
+        
+        if (targetSection) {
+          // Temporarily disconnect observer to prevent jump highlights during click-scrolling
+          sections.forEach((s) => observer.unobserve(s));
+          
+          navLinks.forEach((l) => l.classList.remove('active'));
+          link.classList.add('active');
+
+          const offsetTop = targetSection.getBoundingClientRect().top + window.scrollY - 32;
+          
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth'
+          });
+
+          // Re-observe after scroll completes
+          setTimeout(() => {
+            sections.forEach((s) => observer.observe(s));
+          }, 800);
+        }
+      });
+    });
+
+    // ───────── Synced Stepper Options Interactivity ─────────
+    const stepNames = ["Screening", "GP Review", "Diligence", "Term Sheet", "Closed Won"];
+    
+    const cardStepper = document.getElementById('stepper-variant-card');
+    const capsuleStepper = document.getElementById('stepper-variant-capsule');
+    const dotStepper = document.getElementById('stepper-variant-dot');
+    const chevronStepper = document.getElementById('stepper-variant-chevron');
+    const bubbleStepper = document.getElementById('stepper-variant-bubble');
+
+    function syncSteppers(activeIndex) {
+      // 1. Update Card Stepper
+      if (cardStepper) {
+        const items = cardStepper.querySelectorAll('.step-card-item');
+        items.forEach((item, idx) => {
+          const bubble = item.querySelector('.step-card-bubble');
+          const title = item.querySelector('.step-card-title');
+          
+          if (idx < activeIndex) {
+            item.style.background = 'transparent';
+            item.style.borderColor = 'transparent';
+            item.style.boxShadow = 'none';
+            item.style.transform = 'none';
+            bubble.style.backgroundColor = '#E4F1EC';
+            bubble.style.borderColor = '#A8D2BD';
+            bubble.style.color = 'var(--state-success)';
+            bubble.innerHTML = '✓';
+            title.style.color = 'var(--text-primary)';
+          } else if (idx === activeIndex) {
+            item.style.background = 'white';
+            item.style.borderColor = 'var(--color-gray-900)';
+            item.style.boxShadow = 'var(--shadow-sm)';
+            item.style.transform = 'translateY(-2px)';
+            bubble.style.backgroundColor = 'var(--color-gray-900)';
+            bubble.style.borderColor = 'var(--color-gray-900)';
+            bubble.style.color = 'white';
+            bubble.innerHTML = `${idx + 1}`;
+            title.style.color = 'var(--text-primary)';
+          } else {
+            item.style.background = 'transparent';
+            item.style.borderColor = 'transparent';
+            item.style.boxShadow = 'none';
+            item.style.transform = 'none';
+            bubble.style.backgroundColor = 'white';
+            bubble.style.borderColor = 'var(--border-default)';
+            bubble.style.color = 'var(--text-muted)';
+            bubble.innerHTML = `${idx + 1}`;
+            title.style.color = 'var(--text-muted)';
+          }
+        });
+      }
+
+      // 2. Update Capsule Stepper
+      if (capsuleStepper) {
+        const items = capsuleStepper.querySelectorAll('.step-capsule-item');
+        items.forEach((item, idx) => {
+          const check = item.querySelector('.step-capsule-check');
+          const dot = item.querySelector('.step-capsule-dot');
+          const title = item.querySelector('.step-capsule-title');
+          
+          if (idx < activeIndex) {
+            item.style.background = 'transparent';
+            item.style.border = 'none';
+            item.style.boxShadow = 'none';
+            if (check) check.style.display = 'inline';
+            if (dot) dot.style.display = 'none';
+            title.style.color = 'var(--text-secondary)';
+          } else if (idx === activeIndex) {
+            item.style.background = 'white';
+            item.style.border = '1px solid var(--border-subtle)';
+            item.style.boxShadow = 'var(--shadow-sm)';
+            if (check) check.style.display = 'none';
+            if (dot) dot.style.display = 'inline-block';
+            title.style.color = 'var(--text-primary)';
+          } else {
+            item.style.background = 'transparent';
+            item.style.border = 'none';
+            item.style.boxShadow = 'none';
+            if (check) check.style.display = 'none';
+            if (dot) dot.style.display = 'none';
+            title.style.color = 'var(--text-muted)';
+          }
+        });
+      }
+
+      // 3. Update Dot Stepper
+      if (dotStepper) {
+        const items = dotStepper.querySelectorAll('.step-dot-item');
+        const line = document.getElementById('dot-progress-line');
+        if (line) {
+          line.style.width = `${(activeIndex / (items.length - 1)) * 100}%`;
+        }
+        items.forEach((item, idx) => {
+          const bubble = item.querySelector('.step-dot-bubble');
+          const core = item.querySelector('.step-dot-core');
+          const title = item.querySelector('.step-dot-title');
+          
+          // Remove existing pulse rings
+          const existingPulse = bubble.querySelector('.pulse-glow');
+          if (existingPulse) existingPulse.remove();
+
+          if (idx < activeIndex) {
+            bubble.style.backgroundColor = 'transparent';
+            core.style.backgroundColor = 'var(--state-success)';
+            title.style.color = 'var(--text-primary)';
+          } else if (idx === activeIndex) {
+            bubble.style.backgroundColor = 'rgba(28, 31, 36, 0.08)';
+            core.style.backgroundColor = 'var(--color-gray-900)';
+            title.style.color = 'var(--text-primary)';
+            
+            // Add pulse ring
+            const pulse = document.createElement('div');
+            pulse.className = 'pulse-glow';
+            bubble.appendChild(pulse);
+          } else {
+            bubble.style.backgroundColor = 'transparent';
+            core.style.backgroundColor = 'var(--border-default)';
+            title.style.color = 'var(--text-muted)';
+          }
+        });
+      }
+
+      // 4. Update Chevron Stepper
+      if (chevronStepper) {
+        const items = chevronStepper.querySelectorAll('.step-chevron-item');
+        items.forEach((item, idx) => {
+          if (idx < activeIndex) {
+            item.style.background = '#E4F1EC';
+            item.style.color = 'var(--state-success)';
+            item.style.fontWeight = 'normal';
+            item.style.boxShadow = 'none';
+            item.innerHTML = `<span style="font-size:11px; font-weight:bold;">✓</span> <span class="step-chevron-title" style="font-size: 11px; font-weight: 600;">${stepNames[idx]}</span>`;
+          } else if (idx === activeIndex) {
+            item.style.background = 'var(--color-gray-900)';
+            item.style.color = 'white';
+            item.style.fontWeight = 'bold';
+            item.style.boxShadow = 'var(--shadow-sm)';
+            item.innerHTML = `<span class="step-chevron-title" style="font-size: 11px; font-weight: 600;">${stepNames[idx]}</span>`;
+          } else {
+            item.style.background = 'transparent';
+            item.style.color = 'var(--text-muted)';
+            item.style.fontWeight = 'normal';
+            item.style.boxShadow = 'none';
+            item.innerHTML = `<span class="step-chevron-title" style="font-size: 11px; font-weight: 500;">${stepNames[idx]}</span>`;
+          }
+        });
+      }
+
+      // 5. Update Bubble Stepper
+      if (bubbleStepper) {
+        const items = bubbleStepper.querySelectorAll('.step-bubble-item');
+        const line = document.getElementById('bubble-progress-line');
+        if (line) {
+          line.style.width = `${(activeIndex / (items.length - 1)) * 100}%`;
+        }
+        items.forEach((item, idx) => {
+          const circle = item.querySelector('.step-bubble-circle');
+          const title = item.querySelector('.step-bubble-title');
+          
+          // Remove existing pulse bubbles
+          const existingPulse = circle.querySelector('.pulse-bubble');
+          if (existingPulse) existingPulse.remove();
+
+          if (idx < activeIndex) {
+            circle.style.backgroundColor = '#E4F1EC';
+            circle.style.borderColor = '#A8D2BD';
+            circle.style.color = 'var(--state-success)';
+            circle.innerHTML = '✓';
+            title.style.color = 'var(--text-primary)';
+          } else if (idx === activeIndex) {
+            circle.style.backgroundColor = 'var(--color-gray-900)';
+            circle.style.borderColor = 'var(--color-gray-900)';
+            circle.style.color = 'white';
+            circle.innerHTML = `${idx + 1}`;
+            
+            // Add pulse circle ring
+            const pulse = document.createElement('div');
+            pulse.className = 'pulse-bubble';
+            circle.appendChild(pulse);
+            
+            title.style.color = 'var(--text-primary)';
+          } else {
+            circle.style.backgroundColor = 'white';
+            circle.style.borderColor = 'var(--border-default)';
+            circle.style.color = 'var(--text-muted)';
+            circle.innerHTML = `${idx + 1}`;
+            title.style.color = 'var(--text-muted)';
+          }
+        });
+      }
+    }
+
+    // Attach click listeners to all steps across variants
+    const stepCardItems = document.querySelectorAll('.step-card-item');
+    stepCardItems.forEach((item) => {
+      item.addEventListener('click', () => {
+        const idx = parseInt(item.getAttribute('data-index'), 10);
+        syncSteppers(idx);
+      });
+    });
+
+    const stepCapsuleItems = document.querySelectorAll('.step-capsule-item');
+    stepCapsuleItems.forEach((item) => {
+      item.addEventListener('click', () => {
+        const idx = parseInt(item.getAttribute('data-index'), 10);
+        syncSteppers(idx);
+      });
+    });
+
+    const stepDotItems = document.querySelectorAll('.step-dot-item');
+    stepDotItems.forEach((item) => {
+      item.addEventListener('click', () => {
+        const idx = parseInt(item.getAttribute('data-index'), 10);
+        syncSteppers(idx);
+      });
+    });
+
+    if (chevronStepper) {
+      chevronStepper.addEventListener('click', (e) => {
+        const item = e.target.closest('.step-chevron-item');
+        if (item) {
+          const idx = parseInt(item.getAttribute('data-index'), 10);
+          syncSteppers(idx);
+        }
+      });
+    }
+
+    const stepBubbleItems = document.querySelectorAll('.step-bubble-item');
+    stepBubbleItems.forEach((item) => {
+      item.addEventListener('click', () => {
+        const idx = parseInt(item.getAttribute('data-index'), 10);
+        syncSteppers(idx);
+      });
+    });
+
+    // ───────── Document Listing Interactivity & Switcher ─────────
+    const viewListBtn = document.getElementById('doc-view-list-btn');
+    const viewGridBtn = document.getElementById('doc-view-grid-btn');
+    const catalogList = document.getElementById('doc-catalog-list');
+    const catalogGrid = document.getElementById('doc-catalog-grid');
+
+    if (viewListBtn && viewGridBtn && catalogList && catalogGrid) {
+      viewListBtn.addEventListener('click', () => {
+        viewListBtn.classList.add('active');
+        viewGridBtn.classList.remove('active');
+        catalogList.style.display = 'flex';
+        catalogGrid.style.display = 'none';
+      });
+
+      viewGridBtn.addEventListener('click', () => {
+        viewGridBtn.classList.add('active');
+        viewListBtn.classList.remove('active');
+        catalogGrid.style.display = 'grid';
+        catalogList.style.display = 'none';
+      });
+    }
+
+    // Row selection toggle
+    const rowItems = document.querySelectorAll('.doc-row-item');
+    rowItems.forEach((row) => {
+      row.addEventListener('click', (e) => {
+        if (e.target.tagName === 'INPUT') return;
+        const checkbox = row.querySelector('.doc-row-checkbox');
+        if (checkbox) {
+          checkbox.checked = !checkbox.checked;
+          updateRowStyle(row, checkbox.checked);
+        }
+      });
+      
+      const checkbox = row.querySelector('.doc-row-checkbox');
+      if (checkbox) {
+        checkbox.addEventListener('change', () => {
+          updateRowStyle(row, checkbox.checked);
+        });
+      }
+    });
+
+    function updateRowStyle(row, isSelected) {
+      if (isSelected) {
+        row.style.backgroundColor = 'var(--surface-selected)';
+        row.style.borderColor = 'var(--border-strong)';
+      } else {
+        row.style.backgroundColor = 'white';
+        row.style.borderColor = 'var(--border-subtle)';
+      }
+    }
+
+    // Grid selection toggle
+    const gridItems = document.querySelectorAll('.doc-grid-item');
+    gridItems.forEach((card) => {
+      card.addEventListener('click', (e) => {
+        if (e.target.tagName === 'INPUT') return;
+        const checkbox = card.querySelector('.doc-grid-checkbox');
+        if (checkbox) {
+          checkbox.checked = !checkbox.checked;
+          updateCardStyle(card, checkbox.checked);
+        }
+      });
+
+      const checkbox = card.querySelector('.doc-grid-checkbox');
+      if (checkbox) {
+        checkbox.addEventListener('change', () => {
+          updateCardStyle(card, checkbox.checked);
+        });
+      }
+    });
+
+    function updateCardStyle(card, isSelected) {
+      if (isSelected) {
+        card.style.backgroundColor = 'var(--surface-selected)';
+        card.style.borderColor = 'var(--border-strong)';
+      } else {
+        card.style.backgroundColor = 'white';
+        card.style.borderColor = 'var(--border-subtle)';
+      }
+    }
+  });
+</script>
+</body>
+</html>
