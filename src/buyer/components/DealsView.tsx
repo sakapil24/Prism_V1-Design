@@ -215,9 +215,9 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                 </div>
 
                 {/* Right Column: Deal Details Card */}
-                <div className="md:col-span-1 flex flex-col gap-4">
+                <div className="md:col-span-1 flex flex-col gap-6 md:border-l md:border-neutral-200 md:pl-8">
                   <div className="p-5 bg-neutral-50/50 border border-neutral-200/80 rounded-2xl flex flex-col gap-4 sticky top-4 animate-fadeIn">
-                    <span className="text-[12px] font-bold text-neutral-450 uppercase tracking-wider block">Deal Details</span>
+                    <span className="text-[11px] font-bold text-neutral-450 uppercase tracking-wider block mb-3">Deal Details</span>
                     
                     <div className="flex flex-col gap-4">
                       <div>
@@ -298,8 +298,9 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
             </div>
           )}          {/* TAB 2: FOUNDER BENEFITS & USAGE EXAMPLES */}
           {activeTab === 'usage' && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Main Column: Use Cases */}
+            <div className="flex flex-col gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {/* Main Column: Use Cases */}
               <div className="md:col-span-2 flex flex-col gap-6">
                 <div className="flex flex-col gap-2">
                   <h3 className="text-[14px] font-bold text-neutral-800 uppercase tracking-wider">How founders benefit from {selectedDeal.vendorName}</h3>
@@ -360,18 +361,30 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                 </div>
               </div>
             </div>
-          )}
+          </div>
+        )}
 
           {/* TAB 3: REDEMPTION PROCESS (4 STEPS WITH SPECIFIC CTA BUTTONS & SELECTOR IN STEP 1) */}
           {activeTab === 'redemption' && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Main Column: 4 Stepper Steps with individual CTA buttons */}
-              <div className="md:col-span-2 flex flex-col gap-6 relative">
-                {/* Timeline connector line */}
-                <div className="absolute top-4 bottom-4 left-[15px] w-0.5 bg-neutral-200" />
+            <div className="flex flex-col gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {/* Main Column: 4 Stepper Steps with individual CTA buttons */}
+                <div className="md:col-span-2 flex flex-col gap-6">
+                  {/* Section header block */}
+                  <div className="flex flex-col gap-2">
+                    <h3 className="text-[14px] font-bold text-neutral-800 uppercase tracking-wider">Redemption Steps</h3>
+                    <p className="text-[14px] text-neutral-650 leading-relaxed font-normal">
+                      Follow the guided process below to choose a package, request relationship manager approval, and activate your coupon credits.
+                    </p>
+                  </div>
 
-                {/* Step 1: Claim Offer & Show Options */}
-                <div className="flex gap-4 relative z-10">
+                  {/* Stepper container with vertical timeline line */}
+                  <div className="flex flex-col gap-6 relative pt-6 border-t border-neutral-100">
+                    {/* Timeline connector line */}
+                    <div className="absolute top-10 bottom-6 left-[15px] w-0.5 bg-neutral-200" />
+
+                    {/* Step 1: Claim Offer & Show Options */}
+                    <div className="flex gap-4 relative z-10">
                   <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border text-[12px] font-bold ${
                     selectedDeal.status !== 'available'
                       ? 'bg-black border-black text-white'
@@ -433,7 +446,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                         {selectedDeal.status === 'available' ? (
                           <button
                             onClick={() => onClaimDeal(selectedDeal.id)}
-                            className="px-4 py-2 bg-black hover:bg-neutral-800 text-white font-bold text-[12px] rounded cursor-pointer transition-colors shadow-sm"
+                            className="px-4 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[12px] rounded cursor-pointer transition-colors shadow-sm"
                           >
                             Claim Voucher
                           </button>
@@ -518,7 +531,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                       {selectedDeal.status === 'approved' ? (
                         <button
                           onClick={() => onAdminAdvanceStatus(selectedDeal.id)}
-                          className="px-4 py-2 bg-black hover:bg-neutral-800 text-white font-bold text-[12px] rounded cursor-pointer transition-colors shadow-sm"
+                          className="px-4 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[12px] rounded cursor-pointer transition-colors shadow-sm"
                         >
                           Activate Credits
                         </button>
@@ -559,11 +572,12 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                 </div>
 
               </div>
+            </div>
 
-              {/* Sidebar Column: Resources & Support */}
-              <div className="md:col-span-1 flex flex-col gap-6 md:border-l md:border-neutral-200 md:pl-8">
-                <div className="flex flex-col gap-4">
-                  <span className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider block">Help & Resources</span>
+            {/* Sidebar Column: Resources & Support */}
+            <div className="md:col-span-1 flex flex-col gap-6 md:border-l md:border-neutral-200 md:pl-8">
+              <div className="flex flex-col gap-4">
+                <span className="text-[11px] font-bold text-neutral-450 uppercase tracking-wider block mb-3">Help & Resources</span>
                   
                   <div className="flex flex-col gap-3">
                     <a
@@ -595,7 +609,8 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                 </div>
               </div>
             </div>
-          )}
+          </div>
+        )}
 
         </div>
 

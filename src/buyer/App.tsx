@@ -298,7 +298,7 @@ export default function App() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
-              className={`flex items-center w-full hover:bg-[var(--surface-hover)] rounded-[var(--radius-lg)] cursor-pointer transition-all select-none focus:outline-none ${sidebarCollapsed ? "justify-center p-1" : "gap-2.5 p-2 text-left"}`}
+              className={`flex items-center w-full hover:bg-[var(--surface-hover)] rounded-[var(--radius-lg)] cursor-pointer transition-all select-none focus:outline-none ${sidebarCollapsed ? "justify-center p-1" : "gap-3.5 px-4 py-3 text-left"}`}
               title={sidebarCollapsed ? "Account Settings" : undefined}
             >
               <CompanyLogo src={startup.logo} name={startup.name} size="sm" className="!w-8 !h-8 !rounded-full border-neutral-300" />
@@ -336,7 +336,8 @@ export default function App() {
 
             {/* Group 2: Visualizer (text-only) */}
             <DropdownMenuItem asChild className="cursor-pointer text-[14px] font-semibold !h-auto px-4 py-3 flex items-center rounded-[8px] text-neutral-800 hover:bg-[#F7F7F7] focus:bg-[#F7F7F7] transition-colors">
-              <a href="./index.html" className="w-full text-left">
+              <a href="./index.html">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-neutral-800 shrink-0"><rect width="18" height="18" x="3" y="3" rx="2" /><path d="M9 3v18" /><path d="M15 3v18" /><path d="M3 9h18" /><path d="M3 15h18" /></svg>
                 Design Specs Visualizer
               </a>
             </DropdownMenuItem>
@@ -346,9 +347,10 @@ export default function App() {
             {/* Group 3: Logout (text-only) */}
             <DropdownMenuItem
               onClick={() => setIsLoggedIn(false)}
-              className="cursor-pointer text-[14px] font-semibold !h-auto px-4 py-3 flex items-center rounded-[8px] text-neutral-800 hover:bg-[#F7F7F7] focus:bg-[#F7F7F7] transition-colors"
+              className="cursor-pointer text-[14px] font-semibold !h-auto px-4 py-3 flex items-center gap-3.5 rounded-[8px] text-neutral-800 hover:bg-[#F7F7F7] focus:bg-[#F7F7F7] transition-colors"
             >
-              <span className="w-full text-left">Log out</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-neutral-800 shrink-0"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>
+              Log out
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -382,7 +384,7 @@ export default function App() {
       />
 
       {/* Main View Container */}
-      <div className="flex-1 overflow-y-auto p-4 lg:p-6 bg-white">
+      <div className="flex-1 overflow-y-auto p-4 lg:p-6 bg-white [scrollbar-gutter:stable]">
         {currentView === 'dashboard' && (
           <DashboardView
             startup={startup}
