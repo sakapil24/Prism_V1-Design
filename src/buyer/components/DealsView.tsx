@@ -296,13 +296,11 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
 
               </div>
             </div>
-          )}
-
-          {/* TAB 2: FOUNDER BENEFITS & USAGE EXAMPLES */}
+          )}          {/* TAB 2: FOUNDER BENEFITS & USAGE EXAMPLES */}
           {activeTab === 'usage' && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Main Column: Use Cases */}
-              <div className="lg:col-span-2 flex flex-col gap-6">
+              <div className="md:col-span-2 flex flex-col gap-6">
                 <div className="flex flex-col gap-2">
                   <h3 className="text-[14px] font-bold text-neutral-800 uppercase tracking-wider">How founders benefit from {selectedDeal.vendorName}</h3>
                   <p className="text-[14px] text-neutral-650 leading-relaxed font-normal">
@@ -317,7 +315,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                     <div className="w-6 h-6 rounded-full bg-neutral-100 flex items-center justify-center shrink-0 text-[11px] font-bold text-neutral-800 mt-0.5">1</div>
                     <div>
                       <span className="block text-[13.5px] font-bold text-neutral-800">MVP Sandbox & Rapid Prototyping</span>
-                      <span className="block text-[13px] text-neutral-500 mt-0.5 leading-normal font-normal">
+                      <span className="block text-[13px] text-neutral-550 mt-0.5 leading-normal font-normal">
                         Spin up database clusters, API hosting servers, and serverless computing workflows to test product concepts with zero burn.
                       </span>
                     </div>
@@ -327,7 +325,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                     <div className="w-6 h-6 rounded-full bg-neutral-100 flex items-center justify-center shrink-0 text-[11px] font-bold text-neutral-800 mt-0.5">2</div>
                     <div>
                       <span className="block text-[13.5px] font-bold text-neutral-800">Scaling Production Clusters</span>
-                      <span className="block text-[13px] text-neutral-500 mt-0.5 leading-normal font-normal">
+                      <span className="block text-[13px] text-neutral-550 mt-0.5 leading-normal font-normal">
                         Utilize higher bandwidth servers, redundant database replicas, and global CDNs to ensure uptime and speed as active users grow.
                       </span>
                     </div>
@@ -337,7 +335,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                     <div className="w-6 h-6 rounded-full bg-neutral-100 flex items-center justify-center shrink-0 text-[11px] font-bold text-neutral-800 mt-0.5">3</div>
                     <div>
                       <span className="block text-[13.5px] font-bold text-neutral-800">Team Workflows & Collaboration</span>
-                      <span className="block text-[13px] text-neutral-500 mt-0.5 leading-normal font-normal">
+                      <span className="block text-[13px] text-neutral-550 mt-0.5 leading-normal font-normal">
                         Consolidate engineering documentation, customer feedback pipelines, task management tracking, and messaging seats under one credit plan.
                       </span>
                     </div>
@@ -346,7 +344,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
               </div>
 
               {/* Sidebar Column: Quick Stats */}
-              <div className="flex flex-col gap-6 lg:border-l lg:border-neutral-200 lg:pl-8">
+              <div className="md:col-span-1 flex flex-col gap-6 md:border-l md:border-neutral-200 md:pl-8">
                 <div>
                   <span className="text-[11px] font-bold text-neutral-450 uppercase tracking-wider block mb-3">Startup Resource Impact</span>
                   <div className="flex flex-col gap-4 text-[13px]">
@@ -366,11 +364,11 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
 
           {/* TAB 3: REDEMPTION PROCESS (4 STEPS WITH SPECIFIC CTA BUTTONS & SELECTOR IN STEP 1) */}
           {activeTab === 'redemption' && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Main Column: 4 Stepper Steps with individual CTA buttons */}
-              <div className="lg:col-span-2 flex flex-col gap-6 relative pl-3.5">
+              <div className="md:col-span-2 flex flex-col gap-6 relative">
                 {/* Timeline connector line */}
-                <div className="absolute top-4 bottom-4 left-[27px] w-0.5 bg-neutral-200" />
+                <div className="absolute top-4 bottom-4 left-[15px] w-0.5 bg-neutral-200" />
 
                 {/* Step 1: Claim Offer & Show Options */}
                 <div className="flex gap-4 relative z-10">
@@ -563,7 +561,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
               </div>
 
               {/* Sidebar Column: Resources & Support */}
-              <div className="flex flex-col gap-6 lg:border-l lg:border-neutral-200 lg:pl-8">
+              <div className="md:col-span-1 flex flex-col gap-6 md:border-l md:border-neutral-200 md:pl-8">
                 <div className="flex flex-col gap-4">
                   <span className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider block">Help & Resources</span>
                   
