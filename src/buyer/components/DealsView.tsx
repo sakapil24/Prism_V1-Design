@@ -155,7 +155,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                 {selectedDeal.status === 'available' ? (
                   <button
                     onClick={() => setActiveTab('redemption')}
-                    className="px-5 py-2 bg-neutral-900 hover:bg-neutral-800 text-white font-bold text-[13px] rounded-lg cursor-pointer transition-all shadow-sm"
+                    className="px-5 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[13px] rounded-lg cursor-pointer transition-all shadow-sm"
                   >
                     Claim Deal
                   </button>
@@ -261,7 +261,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                     {selectedDeal.status === 'available' ? (
                       <button
                         onClick={() => setActiveTab('redemption')}
-                        className="px-5 py-2 bg-neutral-900 hover:bg-neutral-800 text-white font-bold text-[13px] rounded-lg cursor-pointer transition-all shadow-sm"
+                        className="px-5 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[13px] rounded-lg cursor-pointer transition-all shadow-sm"
                       >
                         Claim Deal
                       </button>
@@ -844,7 +844,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                       e.stopPropagation();
                       onClaimDeal(deal.id);
                     }}
-                    className="px-3 py-1 bg-black hover:bg-neutral-800 text-white font-bold text-[12px] rounded cursor-pointer transition-colors shadow-sm"
+                    className="px-3 py-1 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[12px] rounded cursor-pointer transition-colors shadow-sm"
                   >
                     Claim Deal
                   </button>
@@ -913,7 +913,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                         e.stopPropagation();
                         onClaimDeal(deal.id);
                       }}
-                      className="px-3 py-1 bg-black hover:bg-neutral-800 text-white font-bold text-[12px] rounded cursor-pointer transition-colors shadow-sm"
+                      className="px-3 py-1 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[12px] rounded cursor-pointer transition-colors shadow-sm"
                     >
                       Claim Deal
                     </button>
