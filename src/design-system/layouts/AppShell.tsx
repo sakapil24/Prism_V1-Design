@@ -49,7 +49,7 @@ const AppShell = React.forwardRef<HTMLDivElement, AppShellProps>(
         className={cn(
           'hidden lg:flex flex-col h-full bg-[var(--surface-sidebar)] border-r border-[var(--border-subtle)]',
           'transition-[width] duration-[200ms] ease-[var(--ease-default)]',
-          'overflow-hidden flex-shrink-0',
+          'overflow-visible relative flex-shrink-0',
           sidebarCollapsed ? 'w-[var(--sidebar-collapsed)]' : 'w-[var(--sidebar-width)]',
         )}
       >

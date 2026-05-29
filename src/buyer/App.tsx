@@ -68,7 +68,7 @@ export default function App() {
   }, [deals]);
 
   // Handle claiming a deal
-  const handleClaimDeal = (dealId: string) => {
+  const handleClaimDeal = (dealId: string, variationIndex: number = 0) => {
     const targetDeal = deals.find(d => d.id === dealId);
     if (!targetDeal) return;
 
@@ -82,7 +82,8 @@ export default function App() {
           ...d,
           status: 'claimed',
           claimCode,
-          claimedDate: dateStr
+          claimedDate: dateStr,
+          selectedVariationIndex: variationIndex
         };
       }
       return d;
@@ -143,10 +144,8 @@ export default function App() {
           strokeLinejoin="round"
           className="shrink-0"
         >
-          <rect x="3" y="3" width="7" height="9" rx="1" />
-          <rect x="14" y="3" width="7" height="5" rx="1" />
-          <rect x="14" y="12" width="7" height="9" rx="1" />
-          <rect x="3" y="16" width="7" height="5" rx="1" />
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
         </svg>
       )
     },
@@ -166,8 +165,8 @@ export default function App() {
           strokeLinejoin="round"
           className="shrink-0"
         >
-          <path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z" />
-          <path d="M7 7h.01" />
+          <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" />
+          <line x1="13" y1="5" x2="13" y2="19" />
         </svg>
       )
     },
@@ -187,11 +186,10 @@ export default function App() {
           strokeLinejoin="round"
           className="shrink-0"
         >
-          <rect x="4" y="2" width="16" height="20" rx="2" ry="2" />
-          <line x1="9" y1="22" x2="9" y2="16" />
-          <line x1="15" y1="22" x2="15" y2="16" />
-          <line x1="9" y1="16" x2="15" y2="16" />
-          <path d="M8 6h.01M16 6h.01M12 6h.01M12 10h.01M16 10h.01M8 10h.01M10 14h4" />
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
         </svg>
       )
     },
@@ -239,18 +237,17 @@ export default function App() {
 
   // Sidebar Layout node
   const sidebarContent = (
-    <Sidebar>
+    <Sidebar collapsed={sidebarCollapsed}>
       {/* Sidebar Header: Workspace selector at the top showing active team info */}
-      <SidebarHeader className="border-b border-[var(--border-subtle)] flex items-center justify-between">
-        <div className="flex items-center gap-2.5 min-w-0">
+      <SidebarHeader className={`border-b border-[var(--border-subtle)] flex items-center h-auto py-5 relative ${sidebarCollapsed ? "justify-center px-0" : "justify-between px-4"}`}>
+        <div className={`flex items-center min-w-0 ${sidebarCollapsed ? "justify-center w-full" : "gap-2.5"}`}>
           <CompanyLogo src="https://logos.hunter.io/accel.com" name="Accel India" size="sm" className="!w-7 !h-7 !rounded-[var(--radius-md)] border-neutral-300" />
           {!sidebarCollapsed && (
             <div className="min-w-0 flex-1">
               <span className="block text-[14px] font-extrabold text-[var(--text-primary)] truncate">
                 Accel India
               </span>
-              <div className="flex items-center gap-1.5 mt-0.5 min-w-0">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+              <div className="mt-0.5 min-w-0">
                 <span className="text-[11px] text-neutral-500 font-bold uppercase tracking-wider truncate">
                   Founder Network
                 </span>
@@ -262,7 +259,7 @@ export default function App() {
         {/* Toggle button */}
         <button
           onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-          className="hidden lg:flex w-5 h-5 items-center justify-center border border-[var(--border-subtle)] hover:bg-[var(--surface-hover)] rounded text-[var(--text-muted)] hover:text-black cursor-pointer transition-colors"
+          className="hidden lg:flex absolute right-[-10px] top-6 z-30 w-5 h-5 items-center justify-center bg-white border border-[var(--border-subtle)] hover:bg-[var(--surface-hover)] rounded-full text-[var(--text-muted)] hover:text-black cursor-pointer transition-colors shadow-sm"
           title={sidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
         >
           {sidebarCollapsed ? (
@@ -274,7 +271,7 @@ export default function App() {
       </SidebarHeader>
 
       {/* Main navigation list */}
-      <SidebarContent className="mt-3 px-3">
+      <SidebarContent className={`mt-6 ${sidebarCollapsed ? "px-2" : "px-3"}`}>
         <div className="flex flex-col gap-1.5">
           {navItems.map((item) => {
             const isActive = currentView === item.id;
@@ -297,11 +294,11 @@ export default function App() {
       </SidebarContent>
 
       {/* Sidebar Footer: User Account Widget dropdown with Ledger, Profile and Logout actions */}
-      <SidebarFooter className="border-t border-[var(--border-subtle)] py-3 px-3">
+      <SidebarFooter className={`border-t border-[var(--border-subtle)] py-3 ${sidebarCollapsed ? "px-2" : "px-3"}`}>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
-              className="flex items-center gap-2.5 w-full p-2 hover:bg-[var(--surface-hover)] rounded-[var(--radius-lg)] text-left cursor-pointer transition-all select-none focus:outline-none"
+              className={`flex items-center w-full hover:bg-[var(--surface-hover)] rounded-[var(--radius-lg)] cursor-pointer transition-all select-none focus:outline-none ${sidebarCollapsed ? "justify-center p-1" : "gap-2.5 p-2 text-left"}`}
               title={sidebarCollapsed ? "Account Settings" : undefined}
             >
               <CompanyLogo src={startup.logo} name={startup.name} size="sm" className="!w-8 !h-8 !rounded-full border-neutral-300" />
@@ -323,7 +320,7 @@ export default function App() {
             </button>
           </DropdownMenuTrigger>
           
-          <DropdownMenuContent side="right" align="end" className="w-64 p-2 flex flex-col gap-0.5 font-sans !rounded-[20px] shadow-[0_4px_24px_rgba(0,0,0,0.08),0_1px_8px_rgba(0,0,0,0.04)] border-0 bg-white">
+          <DropdownMenuContent side="right" align="end" className="w-64 p-2 flex flex-col gap-0.5 font-sans !rounded-[20px] shadow-[0_10px_32px_rgba(0,0,0,0.12),0_1px_8px_rgba(0,0,0,0.04)] border border-neutral-200/80 bg-white">
             {/* Group 1: Core Portal Actions */}
             <DropdownMenuItem onClick={() => setProfileOpen(true)} className="cursor-pointer text-[14px] font-semibold !h-auto px-4 py-3 flex items-center gap-3.5 rounded-[8px] text-neutral-800 hover:bg-[#F7F7F7] focus:bg-[#F7F7F7] transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-neutral-800 shrink-0"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
@@ -402,6 +399,8 @@ export default function App() {
             deals={deals}
             onClaimDeal={handleClaimDeal}
             onAdminAdvanceStatus={handleAdminAdvanceStatus}
+            initialSelectedDealId={focusedDealId}
+            onClearFocusedDeal={() => setFocusedDealId(null)}
           />
         )}
 

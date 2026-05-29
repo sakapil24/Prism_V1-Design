@@ -3,7 +3,7 @@ import { Startup, Deal, Vendor, ClaimAudit } from '../types';
 export const mockStartup: Startup = {
   id: 'startup-aurelia',
   name: 'Aurelia Health',
-  logo: 'https://logos.hunter.io/aurelia.io', // Restore the Aurelia framework logo as requested
+  logo: 'https://logo.clearbit.com/modernhealth.com', // Updated to premium modern health logo
   vcPartner: 'Accel India',
   tier: 'Growth Series A',
   domain: 'aureliahealth.ai',
@@ -35,7 +35,12 @@ export const mockDeals: Deal[] = [
     status: 'active',
     claimCode: 'PRISM-AWS-883A',
     claimedDate: '2026-03-01',
-    expiryDate: '2027-03-01'
+    expiryDate: '2027-03-01',
+    selectedVariationIndex: 0,
+    variations: [
+      { id: 'aws-5k', title: '$5,000 Cloud Credits', description: 'One-time cloud credits valid for up to 1 year.', value: '$5,000 Credits' },
+      { id: 'aws-10k-match', title: 'Up to $10,000 matched credits', description: 'Co-invest match for early growth startups.', value: '1:1 Matched Credits' }
+    ]
   },
   {
     id: 'deal-stripe',
@@ -56,7 +61,12 @@ export const mockDeals: Deal[] = [
     status: 'approved',
     claimCode: 'PRISM-STRIPE-771S',
     claimedDate: '2026-05-15',
-    expiryDate: '2027-05-15'
+    expiryDate: '2027-05-15',
+    selectedVariationIndex: 0,
+    variations: [
+      { id: 'stripe-20k', title: 'Fee-Free Processing up to $20,000', description: 'No fees on your first $20,000 in payment volume.', value: '$20,000 Fee Waiver' },
+      { id: 'stripe-100-atlas', title: 'Free Stripe Atlas Setup', description: 'Fully waive the $500 Stripe Atlas incorporation fee.', value: 'Atlas Fee Waiver' }
+    ]
   },
   {
     id: 'deal-notion',
@@ -76,7 +86,12 @@ export const mockDeals: Deal[] = [
     status: 'claimed',
     claimCode: 'PRISM-NOTION-992N',
     claimedDate: '2026-05-26',
-    expiryDate: '2027-05-26'
+    expiryDate: '2027-05-26',
+    selectedVariationIndex: 0,
+    variations: [
+      { id: 'notion-1k', title: '$1,000 Plus Plan Credits', description: 'Apply $1,000 in workspace billing credits.', value: '$1,000 Credits' },
+      { id: 'notion-ai-free', title: '6 Months of Free Notion AI', description: 'Free AI add-on for up to 20 seats.', value: '6mo Free AI' }
+    ]
   },
   {
     id: 'deal-retool',
@@ -93,7 +108,12 @@ export const mockDeals: Deal[] = [
       'Enter the code to apply $1,200 of credits to your Business or Team subscription.'
     ],
     longDescription: 'Retool makes it easy to build internal tools, database GUIs, and administrative dashboards. Connect to databases and APIs and build drag-and-drop components instantly. Credits can be used for any Retool Cloud team sizes.',
-    status: 'available'
+    status: 'available',
+    selectedVariationIndex: 0,
+    variations: [
+      { id: 'retool-1200', title: '$1,200 Developer Platform Credits', description: 'A one-time credit maxed out at any time. Ideal for self-serve sizing.', value: '$1,200 Credits' },
+      { id: 'retool-100-mo', title: '$100/month credit for 12 months', description: 'Monthly recurring credit applied directly to standard billing cycles.', value: '$100/mo for 12mo' }
+    ]
   },
   {
     id: 'deal-slack',

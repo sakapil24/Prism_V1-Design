@@ -42,7 +42,7 @@
   --surface-selected:     rgba(28, 31, 36, 0.06);  /* surface/selected (neutral cool selection) */
   --surface-overlay:      rgba(18, 20, 23, 0.48);  /* surface/overlay */
   --surface-page:         #FFFFFF;
-  --surface-sidebar:      var(--surface-secondary);
+  --surface-sidebar:      #F7F7F7;
   --surface-elevated:     var(--surface-raised);
   --surface-hover:        var(--surface-interactive);
   --surface-active:       rgba(28, 31, 36, 0.06);

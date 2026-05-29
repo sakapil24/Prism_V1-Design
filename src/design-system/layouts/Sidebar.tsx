@@ -1,12 +1,21 @@
 import * as React from 'react';
 import { cn } from '../utils/cn';
 
+/* ─── Sidebar Context ─── */
+const SidebarContext = React.createContext<{ collapsed: boolean }>({ collapsed: false });
+
+interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
+  collapsed?: boolean;
+}
+
 /* ─── Sidebar ─── */
-const Sidebar = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ className, children, ...props }, ref) => (
-    <div ref={ref} className={cn('flex flex-col h-full', className)} {...props}>
-      {children}
-    </div>
+const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
+  ({ className, children, collapsed = false, ...props }, ref) => (
+    <SidebarContext.Provider value={{ collapsed }}>
+      <div ref={ref} className={cn('flex flex-col h-full', className)} {...props}>
+        {children}
+      </div>
+    </SidebarContext.Provider>
   ),
 );
 Sidebar.displayName = 'Sidebar';
@@ -89,54 +98,60 @@ interface SidebarNavItemProps extends React.ButtonHTMLAttributes<HTMLButtonEleme
 }
 
 const SidebarNavItem = React.forwardRef<HTMLButtonElement, SidebarNavItemProps>(
-  ({ className, icon, active, expandable, expanded, badge, indent = 0, children, ...props }, ref) => (
-    <button
-      ref={ref}
-      data-active={active || undefined}
-      className={cn(
-        // Base
-        'group flex items-center gap-[10px] w-full py-2 px-3 rounded-[var(--radius-sm)]',
-        'text-[14px] font-medium text-[var(--text-primary)]',
-        'cursor-pointer select-none',
-        'transition-[background-color,opacity] duration-[160ms]',
-        // Padding with indent
-        indent === 1 && 'pl-7 pr-3',
-        indent === 2 && 'pl-10 pr-3',
-        // Hover
-        'hover:bg-[var(--surface-hover)] hover:text-[var(--text-primary)]',
-        // Active state
-        'data-[active]:bg-neutral-900 data-[active]:text-white data-[active]:font-semibold',
-        className,
-      )}
-      {...props}
-    >
-      {icon && (
-        <span className="flex-shrink-0 w-[18px] h-[18px] flex items-center justify-center text-[var(--icon-default)] group-data-[active]:text-white transition-colors duration-[160ms]">
-          {icon}
-        </span>
-      )}
-      <span className="flex-1 truncate text-left">{children}</span>
-      {badge && (
-        <span className="flex-shrink-0 text-[12px] text-[var(--text-faint)]">
-          {badge}
-        </span>
-      )}
-      {expandable && (
-        <svg
-          width="12"
-          height="12"
-          viewBox="0 0 12 12"
-          fill="currentColor"
-          className={cn(
-            'flex-shrink-0 text-[var(--icon-muted)] transition-transform duration-[160ms]',
-            expanded && 'rotate-90',
-          )}
-        >
-          <path d="M4.5 3L8 6L4.5 9" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-        </svg>
-      )}
-    </button>
-  ),
+  ({ className, icon, active, expandable, expanded, badge, indent = 0, children, ...props }, ref) => {
+    const { collapsed } = React.useContext(SidebarContext);
+    return (
+      <button
+        ref={ref}
+        data-active={active || undefined}
+        className={cn(
+          // Base
+          'group flex items-center w-full py-2 rounded-[var(--radius-sm)]',
+          collapsed ? 'justify-center px-2' : 'gap-[10px] px-3 text-[14px] font-medium text-[var(--text-primary)]',
+          'cursor-pointer select-none',
+          'transition-[background-color,opacity] duration-[160ms]',
+          // Padding with indent
+          !collapsed && indent === 1 && 'pl-7 pr-3',
+          !collapsed && indent === 2 && 'pl-10 pr-3',
+          // Hover
+          'hover:bg-[var(--surface-hover)] hover:text-[var(--text-primary)]',
+          // Active state
+          'data-[active]:bg-neutral-900 data-[active]:text-white data-[active]:font-semibold',
+          className,
+        )}
+        {...props}
+      >
+        {icon && (
+          <span className={cn(
+            "flex-shrink-0 flex items-center justify-center text-[var(--icon-default)] group-data-[active]:text-white transition-colors duration-[160ms]",
+            collapsed ? "w-6 h-6" : "w-[18px] h-[18px]"
+          )}>
+            {icon}
+          </span>
+        )}
+        {!collapsed && <span className="flex-1 truncate text-left">{children}</span>}
+        {!collapsed && badge && (
+          <span className="flex-shrink-0 text-[12px] text-[var(--text-faint)]">
+            {badge}
+          </span>
+        )}
+        {!collapsed && expandable && (
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="currentColor"
+            className={cn(
+              'flex-shrink-0 text-[var(--icon-muted)] transition-transform duration-[160ms]',
+              expanded && 'rotate-90',
+            )}
+          >
+            <path d="M4.5 3L8 6L4.5 9" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+          </svg>
+        )}
+      </button>
+    );
+  },
 );
 SidebarNavItem.displayName = 'SidebarNavItem';
 

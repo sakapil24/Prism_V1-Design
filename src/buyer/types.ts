@@ -15,6 +15,13 @@ export interface Startup {
 
 export type DealCategory = 'SaaS' | 'Infrastructure' | 'Operations' | 'Marketing';
 
+export interface DealVariation {
+  id: string;
+  title: string;
+  description: string;
+  value: string;
+}
+
 export interface Deal {
   id: string;
   title: string;
@@ -30,6 +37,8 @@ export interface Deal {
   claimCode?: string;
   claimedDate?: string;
   expiryDate?: string;
+  selectedVariationIndex?: number;
+  variations?: DealVariation[];
 }
 
 export type VendorCategory = 'Legal' | 'Design' | 'Finance' | 'Development' | 'Marketing';
