@@ -149,25 +149,6 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
               <p className="text-[14px] text-neutral-500 mt-2.5 leading-relaxed max-w-xl">
                 {selectedDeal.description}
               </p>
-
-              {/* Plain CTA button aligned right below the description */}
-              <div className="mt-3.5 flex items-center gap-3">
-                {selectedDeal.status === 'available' ? (
-                  <button
-                    onClick={() => setActiveTab('redemption')}
-                    className="px-5 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[13px] rounded-lg cursor-pointer transition-all shadow-sm"
-                  >
-                    Claim Deal
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => setActiveTab('redemption')}
-                    className="px-5 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[13px] rounded-lg cursor-pointer transition-all shadow-sm"
-                  >
-                    Claim Status & Redemption
-                  </button>
-                )}
-              </div>
             </div>
           </div>
         </div>
@@ -182,7 +163,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                 : 'text-neutral-600 hover:text-black hover:bg-neutral-50/50'
             }`}
           >
-            Overview & Trust
+            Overview
           </button>
           <button
             onClick={() => setActiveTab('usage')}
@@ -192,7 +173,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                 : 'text-neutral-600 hover:text-black hover:bg-neutral-50/50'
             }`}
           >
-            Usage Benefits
+            Benefits
           </button>
           <button
             onClick={() => setActiveTab('redemption')}
@@ -202,7 +183,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                 : 'text-neutral-600 hover:text-black hover:bg-neutral-50/50'
             }`}
           >
-            Redemption Process
+            Redemption
           </button>
         </div>
 
@@ -625,7 +606,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
   }
 
   return (
-    <div className="flex-1 flex flex-col gap-5 py-2">
+    <div className="flex-1 flex flex-col gap-5 py-2 max-w-6xl mx-auto w-full">
       {/* Global SVG gradients and filters for 3D shield */}
       <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
         <defs>

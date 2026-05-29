@@ -54,7 +54,7 @@ export function VendorsView({ vendors }: VendorsViewProps) {
   };
 
   return (
-    <div className="flex-1 flex flex-col gap-5 py-2">
+    <div className="flex-1 flex flex-col gap-5 py-2 max-w-6xl mx-auto w-full">
       {/* Page Header */}
       <div>
         <h1 className="text-xl font-bold text-[var(--text-primary)]">Trusted Partner Directory</h1>
