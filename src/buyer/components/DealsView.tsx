@@ -212,35 +212,38 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
           {/* TAB 1: OVERVIEW & TRUST */}
           {activeTab === 'overview' && (
             <div className="flex flex-col gap-6">
-              {/* Product Overview & Eligibility */}
-              <div className="flex flex-col gap-6">
-                
-                {/* Product Overview */}
-                <div className="flex flex-col gap-2">
-                  <h3 className="text-[14px] font-bold text-neutral-800 uppercase tracking-wider">Product Overview</h3>
-                  <p className="text-[14px] text-neutral-600 leading-relaxed font-normal">
-                    {selectedDeal.longDescription || selectedDeal.description}
-                  </p>
+              {/* Two Column Layout: Overview/Eligibility on Left, Deal Details Card on Right */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {/* Left Column: Overview and Eligibility */}
+                <div className="md:col-span-2 flex flex-col gap-6">
+                  {/* Product Overview */}
+                  <div className="flex flex-col gap-2">
+                    <h3 className="text-[14px] font-bold text-neutral-800 uppercase tracking-wider">Product Overview</h3>
+                    <p className="text-[14px] text-neutral-600 leading-relaxed font-normal">
+                      {selectedDeal.longDescription || selectedDeal.description}
+                    </p>
+                  </div>
+
+                  {/* Eligibility Requirements */}
+                  <div className="flex flex-col gap-2 pt-4 border-t border-neutral-100">
+                    <h3 className="text-[14px] font-bold text-neutral-800 uppercase tracking-wider">Eligibility Requirements</h3>
+                    <p className="text-[14px] text-neutral-600 leading-relaxed pl-1 font-normal">
+                      {selectedDeal.eligibilityCriteria}
+                    </p>
+                  </div>
                 </div>
 
-                {/* Eligibility criteria */}
-                <div className="flex flex-col gap-2 pt-4 border-t border-neutral-100">
-                  <h3 className="text-[14px] font-bold text-neutral-800 uppercase tracking-wider">Eligibility Requirements</h3>
-                  <p className="text-[14px] text-neutral-600 leading-relaxed pl-1 font-normal">
-                    {selectedDeal.eligibilityCriteria}
-                  </p>
-                </div>
-
-                {/* Deal Details Card */}
-                <div className="p-5 bg-neutral-50/50 border border-neutral-200/80 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-6 mt-2 animate-fadeIn">
-                  <div className="flex-1 flex flex-col gap-4">
+                {/* Right Column: Deal Details Card */}
+                <div className="md:col-span-1 flex flex-col gap-4">
+                  <div className="p-5 bg-neutral-50/50 border border-neutral-200/80 rounded-2xl flex flex-col gap-4 sticky top-4 animate-fadeIn">
                     <span className="text-[12px] font-bold text-neutral-450 uppercase tracking-wider block">Deal Details</span>
-                    <div className="flex flex-wrap items-start gap-8">
+                    
+                    <div className="flex flex-col gap-4">
                       <div>
                         <span className="text-[12px] font-semibold text-neutral-450 block mb-1">Category</span>
                         <Badge color={getCategoryColor(selectedDeal.category)} className="font-bold">{selectedDeal.category}</Badge>
                       </div>
-                      <div>
+                      <div className="pt-3 border-t border-neutral-100">
                         <span className="text-[12px] font-semibold text-neutral-450 block mb-1">Offer Value</span>
                         <span className="text-[20px] font-black text-neutral-900 leading-none">{activeValue}</span>
                         {/* Mini Accel Trust icon & text below value */}
@@ -255,27 +258,26 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                         </div>
                       </div>
                     </div>
-                  </div>
 
-                  <div className="shrink-0 self-start md:self-center">
-                    {selectedDeal.status === 'available' ? (
-                      <button
-                        onClick={() => setActiveTab('redemption')}
-                        className="px-5 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[13px] rounded-lg cursor-pointer transition-all shadow-sm"
-                      >
-                        Claim Deal
-                      </button>
-                    ) : (
-                      <button
-                        onClick={() => setActiveTab('redemption')}
-                        className="px-5 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[13px] rounded-lg cursor-pointer transition-all shadow-sm"
-                      >
-                        Claim Status & Redemption
-                      </button>
-                    )}
+                    <div className="mt-2">
+                      {selectedDeal.status === 'available' ? (
+                        <button
+                          onClick={() => setActiveTab('redemption')}
+                          className="w-full px-5 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[13px] rounded-lg cursor-pointer transition-all shadow-sm"
+                        >
+                          Claim Deal
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => setActiveTab('redemption')}
+                          className="w-full px-5 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[13px] rounded-lg cursor-pointer transition-all shadow-sm"
+                        >
+                          Claim Status & Redemption
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
-
               </div>
 
               {/* Consolidated Accel Trust Shield & Testimonials (Directly below eligibility) */}
