@@ -82,7 +82,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
       : selectedDeal.value;
 
     return (
-      <div className="flex-1 flex flex-col gap-6 py-2 animate-fadeIn font-sans select-none">
+      <div className="flex-1 flex flex-col gap-6 py-2 animate-fadeIn font-sans select-none max-w-4xl mx-auto w-full px-4 sm:px-8 lg:px-16">
         {/* Global SVG gradients and filters for 3D shield */}
         <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
           <defs>
