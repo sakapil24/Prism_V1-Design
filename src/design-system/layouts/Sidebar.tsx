@@ -106,13 +106,13 @@ const SidebarNavItem = React.forwardRef<HTMLButtonElement, SidebarNavItemProps>(
         data-active={active || undefined}
         className={cn(
           // Base
-          'group flex items-center w-full py-2 rounded-[var(--radius-sm)]',
-          collapsed ? 'justify-center px-2' : 'gap-[10px] px-3 text-[14px] font-medium text-[var(--text-primary)]',
-          'cursor-pointer select-none',
-          'transition-[background-color,opacity] duration-[160ms]',
+          'group flex items-center w-full rounded-[var(--radius-sm)] transition-[background-color,opacity] duration-[160ms] cursor-pointer select-none',
+          collapsed 
+            ? 'justify-center px-2 py-2' 
+            : 'gap-3.5 px-4 py-3 text-[14px] font-medium text-[var(--text-primary)]',
           // Padding with indent
-          !collapsed && indent === 1 && 'pl-7 pr-3',
-          !collapsed && indent === 2 && 'pl-10 pr-3',
+          !collapsed && indent === 1 && 'pl-8 pr-4',
+          !collapsed && indent === 2 && 'pl-12 pr-4',
           // Hover
           'hover:bg-[var(--surface-hover)] hover:text-[var(--text-primary)]',
           // Active state
