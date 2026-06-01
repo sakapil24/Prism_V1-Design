@@ -39,6 +39,7 @@ export interface Deal {
   expiryDate?: string;
   selectedVariationIndex?: number;
   variations?: DealVariation[];
+  isNew?: boolean;
 }
 
 export type VendorCategory = 'Legal' | 'Design' | 'Finance' | 'Development' | 'Marketing';

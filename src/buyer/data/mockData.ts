@@ -182,6 +182,119 @@ export const mockDeals: Deal[] = [
     ],
     longDescription: 'Get custom business emails with your domain name (you@yourcompany.com). Access Gmail, Drive, Calendar, Docs, Sheets, and Meet with extra security and admin controls.',
     status: 'available'
+  },
+  {
+    id: 'deal-chatprd',
+    title: '1 Year Free ChatPRD Pro',
+    vendorName: 'ChatPRD',
+    description: 'AI copilot to draft product requirements documents (PRDs) and automate product management workflows.',
+    value: '$180 Value',
+    category: 'SaaS',
+    logoUrl: 'https://logo.clearbit.com/chatprd.com',
+    eligibilityCriteria: 'Available to all Accel India portfolio startups subscribing to ChatPRD Pro.',
+    redemptionSteps: [
+      'Click "Claim Deal" to copy your partner voucher code.',
+      'Go to ChatPRD and log in or sign up.',
+      'Under account settings, upgrade to Pro and apply the code during payment setup.'
+    ],
+    longDescription: 'ChatPRD is an AI-powered assistant built specifically for Product Managers. It helps write high-quality PRDs, map features, brainstorm release plans, and automate tedious product documentation in seconds. Accel startups get 1 year of ChatPRD Pro completely free.',
+    status: 'claimed',
+    claimCode: 'PRISM-CHATPRD-921C',
+    claimedDate: '2026-05-28',
+    expiryDate: '2027-05-28'
+  },
+  {
+    id: 'deal-factory',
+    title: '1 Year Free Factory Pro',
+    vendorName: 'Factory',
+    description: 'Software development agent designed to automate production engineering work, code generation, and reviews.',
+    value: '$240 Value',
+    category: 'SaaS',
+    logoUrl: 'https://logo.clearbit.com/factory.ai',
+    eligibilityCriteria: 'Valid for first-time Factory customers in the Accel portfolio.',
+    redemptionSteps: [
+      'Claim the voucher code from your Portals dashboard.',
+      'Log into the Factory developer console.',
+      'Apply the code in your billing profile to waive all Pro subscription fees for 12 months.'
+    ],
+    longDescription: 'Factory introduces autonomous software development agents that integrate into your codebase, automatically generating code, writing tests, reviewing PRs, and maintaining package updates. Startups get a full year of Factory Pro free.',
+    status: 'claimed',
+    claimCode: 'PRISM-FACTORY-419F',
+    claimedDate: '2026-05-29',
+    expiryDate: '2027-05-29'
+  },
+  {
+    id: 'deal-framer',
+    title: '1 Year Free Framer Pro',
+    vendorName: 'Framer',
+    description: 'Design-first website builder to design, build, and publish high-performance marketing pages without engineering.',
+    value: '$360 Value',
+    category: 'SaaS',
+    logoUrl: 'https://logo.clearbit.com/framer.com',
+    eligibilityCriteria: 'Applicable to new Framer Pro workspace upgrades.',
+    redemptionSteps: [
+      'Claim your Framer voucher code.',
+      'Open your Framer team workspace settings and select the Pro Plan upgrade.',
+      'Paste the promo code at checkout to waive the cost for the first year.'
+    ],
+    longDescription: 'Framer is the design tool that publishes. It lets designers and marketers build state-of-the-art websites, landing pages, and blogs with stunning animations and absolute design control — all published with a single click. This voucher waives the Framer Pro annual fee.',
+    status: 'available'
+  },
+  {
+    id: 'deal-granola',
+    title: '1 Year Free Granola Business (10 seats)',
+    vendorName: 'Granola',
+    description: 'AI notepad that automatically transcribes and extracts insights from your video meetings.',
+    value: '$1,680 Value',
+    category: 'SaaS',
+    logoUrl: 'https://logo.clearbit.com/granola.so',
+    eligibilityCriteria: 'Available to all active portfolio teams up to 10 seats.',
+    redemptionSteps: [
+      'Claim the voucher to get your custom registration link.',
+      'Register your team domain on the Granola platform.',
+      'Apply code to get 10 free seats of Granola Business for a full year.'
+    ],
+    longDescription: 'Granola is an AI notepad built specifically for engineering and product teams. It runs silently in the background of your Zoom, Google Meet, or Slack Huddles, creating highly structured meeting logs, transcription summaries, and tracking item deliverables automatically. Startup package provides 10 free seats for 12 months.',
+    status: 'claimed',
+    claimCode: 'PRISM-GRANOLA-782G',
+    claimedDate: '2026-05-30',
+    expiryDate: '2027-05-30'
+  },
+  {
+    id: 'deal-gumloop',
+    title: '1 Year Free Gumloop Pro (20k credits/mo)',
+    vendorName: 'Gumloop',
+    description: 'No-code AI workflow builder to create and deploy AI agents across all your databases and apps.',
+    value: '$444 Value',
+    category: 'SaaS',
+    logoUrl: 'https://logo.clearbit.com/gumloop.com',
+    eligibilityCriteria: 'New Gumloop accounts sponsored by partner VC program.',
+    redemptionSteps: [
+      'Claim your voucher code.',
+      'Log into the Gumloop dashboard.',
+      'Enter code under billing to activate the Pro tier and add 20k recurring monthly credits.'
+    ],
+    longDescription: 'Gumloop is the drag-and-drop workspace for building advanced AI workflows and agents. Automate customer support, generate data reports, crawl web pages, and connect AI to your internal databases without writing code. This deal waives the Pro plan fee and credits your account with 20k monthly runs.',
+    status: 'available',
+    isNew: true
+  },
+  {
+    id: 'deal-intercom',
+    title: '1 Year Free Fin AI Agent + Intercom Advanced',
+    vendorName: 'Intercom',
+    description: 'Complete customer support suite with 5 free seats and $100/mo in Fin AI outcome credits.',
+    value: '$7,140 Value',
+    category: 'SaaS',
+    logoUrl: 'https://logo.clearbit.com/intercom.com',
+    eligibilityCriteria: 'Startups registered under Accel program with no prior Intercom subscriptions.',
+    redemptionSteps: [
+      'Generate code through Portals.',
+      'Register your company details on Intercom.',
+      'Submit the code on the payment page to receive 12 months free of Intercom Advanced plus Fin AI credits.'
+    ],
+    longDescription: 'Intercom helps companies deliver top-tier customer support. Scale your operations instantly using Fin, their advanced conversational AI agent. This exclusive startup deal includes 1 year free of Intercom Advanced (up to 5 seats) and $100/month in Fin AI outcome credits.',
+    status: 'available',
+    isNew: true
   }
 ];
 
@@ -313,6 +426,57 @@ export const mockAudits: ClaimAudit[] = [
         timestamp: '2026-05-26 09:30 AM',
         action: 'Claim Submitted',
         note: 'Awaiting portfolio manager authorization.'
+      }
+    ]
+  },
+  {
+    id: 'audit-chatprd',
+    dealId: 'deal-deal-chatprd',
+    dealTitle: '1 Year Free ChatPRD Pro',
+    vendorName: 'ChatPRD',
+    value: '$180 Value',
+    claimCode: 'PRISM-CHATPRD-921C',
+    claimedDate: '2026-05-28',
+    status: 'claimed',
+    auditLogs: [
+      {
+        timestamp: '2026-05-28 02:15 PM',
+        action: 'Claim Submitted',
+        note: 'Submitted by product lead.'
+      }
+    ]
+  },
+  {
+    id: 'audit-factory',
+    dealId: 'deal-deal-factory',
+    dealTitle: '1 Year Free Factory Pro',
+    vendorName: 'Factory',
+    value: '$240 Value',
+    claimCode: 'PRISM-FACTORY-419F',
+    claimedDate: '2026-05-29',
+    status: 'claimed',
+    auditLogs: [
+      {
+        timestamp: '2026-05-29 11:42 AM',
+        action: 'Claim Submitted',
+        note: 'Submitted by engineering ops manager.'
+      }
+    ]
+  },
+  {
+    id: 'audit-granola',
+    dealId: 'deal-deal-granola',
+    dealTitle: '1 Year Free Granola Business (10 seats)',
+    vendorName: 'Granola',
+    value: '$1,680 Value',
+    claimCode: 'PRISM-GRANOLA-782G',
+    claimedDate: '2026-05-30',
+    status: 'claimed',
+    auditLogs: [
+      {
+        timestamp: '2026-05-30 04:00 PM',
+        action: 'Claim Submitted',
+        note: 'Submitted by CEO.'
       }
     ]
   }

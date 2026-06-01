@@ -801,8 +801,13 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
             <Card
               key={deal.id}
               onClick={() => setSelectedDealId(deal.id)}
-              className="flex flex-col justify-between hover:shadow-[var(--shadow-md)] hover:-translate-y-0.5 transition-all cursor-pointer border border-[var(--border-subtle)] bg-white rounded-[12px] p-3"
+              className="relative flex flex-col justify-between hover:shadow-[var(--shadow-md)] hover:-translate-y-0.5 transition-all cursor-pointer border border-[var(--border-subtle)] bg-white rounded-[12px] p-3"
             >
+              {deal.isNew && (
+                <span className="absolute -top-1.5 -right-1.5 px-2.5 py-0.5 text-[10px] font-bold bg-[#D97706] text-white rounded-full uppercase tracking-wider shadow-sm select-none z-10">
+                  New
+                </span>
+              )}
               {/* Card Body */}
               <div className="flex-1 flex flex-col gap-3">
                 <div className="flex justify-between items-start gap-2">
@@ -864,8 +869,13 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
             <div
               key={deal.id}
               onClick={() => setSelectedDealId(deal.id)}
-              className="flex items-center justify-between p-3 border border-[var(--border-subtle)] hover:border-black rounded-[12px] bg-white hover:shadow-[0_2px_12px_rgba(0,0,0,0.04)] transition-all cursor-pointer"
+              className="relative flex items-center justify-between p-3 border border-[var(--border-subtle)] hover:border-black rounded-[12px] bg-white hover:shadow-[0_2px_12px_rgba(0,0,0,0.04)] transition-all cursor-pointer"
             >
+              {deal.isNew && (
+                <span className="absolute -top-1.5 -right-1.5 px-2.5 py-0.5 text-[10px] font-bold bg-[#D97706] text-white rounded-full uppercase tracking-wider shadow-sm select-none z-10">
+                  New
+                </span>
+              )}
               {/* Column 1: Logo + Vendor Name & Category */}
               <div className="w-1/4 min-w-[180px] flex items-center gap-3 shrink-0">
                 <CompanyLogo src={deal.logoUrl} name={deal.vendorName} size="sm" />

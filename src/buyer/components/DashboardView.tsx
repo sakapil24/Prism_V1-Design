@@ -177,8 +177,13 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
                 <Card
                   key={deal.id}
                   onClick={() => onViewDeal(deal.id)}
-                  className="flex flex-col justify-between p-3.5 border border-neutral-200 bg-white hover:border-black hover:shadow-sm cursor-pointer transition-all h-40"
+                  className="relative flex flex-col justify-between p-3.5 border border-neutral-200 bg-white hover:border-black hover:shadow-sm cursor-pointer transition-all h-40"
                 >
+                  {deal.isNew && (
+                    <span className="absolute -top-1.5 -right-1.5 px-2.5 py-0.5 text-[10px] font-bold bg-[#D97706] text-white rounded-full uppercase tracking-wider shadow-sm select-none z-10">
+                      New
+                    </span>
+                  )}
                   <div>
                     <div className="flex justify-between items-start gap-2 mb-2">
                       <CompanyLogo src={deal.logoUrl} name={deal.vendorName} size="sm" />
