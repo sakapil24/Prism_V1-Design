@@ -32,6 +32,26 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
   const [selectedOptionIndex, setSelectedOptionIndex] = React.useState<number>(0);
   const [activeTab, setActiveTab] = React.useState<'overview' | 'usage' | 'redemption'>('overview');
 
+  const getClaimButtonText = (deal: Deal): string => {
+    switch (deal.id) {
+      case 'deal-aws': return 'Get $5,000 credits';
+      case 'deal-stripe': return 'Get a $20,000 fee waiver';
+      case 'deal-notion': return 'Get $1,000 credits';
+      case 'deal-retool': return 'Get $1,200 credits';
+      case 'deal-slack': return 'Get a $500 discount';
+      case 'deal-vercel': return 'Get $1,000 credits';
+      case 'deal-hubspot': return 'Get 90% off';
+      case 'deal-google-workspace': return 'Get 1 year free';
+      case 'deal-chatprd': return 'Get $180 value';
+      case 'deal-factory': return 'Get $240 value';
+      case 'deal-framer': return 'Get $360 value';
+      case 'deal-granola': return 'Get $1,680 value';
+      case 'deal-gumloop': return 'Get $444 value';
+      case 'deal-intercom': return 'Get $7,140 value';
+      default: return `Get ${deal.value}`;
+    }
+  };
+
   const selectedDeal = deals.find(d => d.id === selectedDealId);
 
   React.useEffect(() => {
@@ -801,7 +821,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
             <Card
               key={deal.id}
               onClick={() => setSelectedDealId(deal.id)}
-              className="relative flex flex-col justify-between hover:shadow-[var(--shadow-md)] hover:-translate-y-0.5 transition-all cursor-pointer border border-[var(--border-subtle)] bg-white rounded-[12px] p-3"
+              className="relative flex flex-col justify-between hover:shadow-[var(--shadow-md)] hover:-translate-y-0.5 transition-all cursor-pointer border border-[var(--border-subtle)] bg-white rounded-[12px] p-3 pb-0 overflow-hidden"
             >
               {deal.isNew && (
                 <span className="absolute -top-1.5 -right-1.5 px-2.5 py-0.5 text-[10px] font-bold bg-[#D97706] text-white rounded-full uppercase tracking-wider shadow-sm select-none z-10">
@@ -826,27 +846,23 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                 </div>
               </div>
 
-              {/* Card Footer */}
-              <div className="flex justify-between items-center pt-3 border-t border-neutral-100 mt-3 shrink-0">
-                <span className="text-[14px] font-bold text-[var(--text-primary)]">
-                  {deal.variations && deal.variations.length > 1 ? `Up to ${deal.value}` : deal.value}
-                </span>
-
-                {deal.status === 'available' ? (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onClaimDeal(deal.id);
-                    }}
-                    className="px-3 py-1 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[12px] rounded cursor-pointer transition-colors shadow-sm flex items-center gap-1"
-                  >
-                    Claim
-                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><path d="m9 18 6-6-6-6"/></svg>
-                  </button>
-                ) : (
-                  <Badge color="amber">Claimed</Badge>
-                )}
-              </div>
+              {deal.status === 'available' ? (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onClaimDeal(deal.id);
+                  }}
+                  className="w-[calc(100%+24px)] mx-[-12px] mb-[-12px] mt-4 px-4 py-3 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[14px] transition-colors flex items-center justify-between rounded-t-none rounded-b-[11px]"
+                >
+                  <span>Claim: {getClaimButtonText(deal)}</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><path d="m9 18 6-6-6-6"/></svg>
+                </button>
+              ) : (
+                <div className="w-[calc(100%+24px)] mx-[-12px] mb-[-12px] mt-4 px-4 py-3 bg-amber-500 text-white font-bold text-[14px] flex items-center justify-between rounded-t-none rounded-b-[11px] select-none">
+                  <span>Claimed</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+              )}
             </Card>
           ))}
         </div>
@@ -883,13 +899,8 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                 </p>
               </div>
 
-              {/* Column 3: Value */}
-              <div className="w-32 shrink-0 text-left font-bold text-[var(--text-primary)] text-[14px] px-2">
-                {deal.variations && deal.variations.length > 1 ? `Up to ${deal.value}` : deal.value}
-              </div>
-
               {/* Column 4: Status Badge + Chevron Arrow */}
-              <div className="w-36 shrink-0 flex items-center justify-between pl-2">
+              <div className="w-72 shrink-0 flex items-center justify-end pl-2 gap-4">
                 <div>
                   {deal.status === 'available' ? (
                     <button
@@ -897,13 +908,16 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                         e.stopPropagation();
                         onClaimDeal(deal.id);
                       }}
-                      className="px-3 py-1 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[12px] rounded cursor-pointer transition-colors shadow-sm flex items-center gap-1"
+                      className="px-4 py-3 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[14px] rounded-lg cursor-pointer transition-colors shadow-sm flex items-center justify-between gap-2 min-w-[220px]"
                     >
-                      Claim
-                      <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><path d="m9 18 6-6-6-6"/></svg>
+                      <span>Claim: {getClaimButtonText(deal)}</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><path d="m9 18 6-6-6-6"/></svg>
                     </button>
                   ) : (
-                    <Badge color="amber">Claimed</Badge>
+                    <div className="px-4 py-3 bg-amber-500 text-white font-bold text-[14px] rounded-lg flex items-center justify-center gap-1.5 min-w-[220px] select-none">
+                      <span>Claimed</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
                   )}
                 </div>
 
