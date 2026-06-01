@@ -40,6 +40,11 @@ export interface Deal {
   selectedVariationIndex?: number;
   variations?: DealVariation[];
   isNew?: boolean;
+  websiteUrl?: string;
+  supportContact?: string;
+  programDetailsUrl?: string;
+  githubUrl?: string;
+  usageMetric?: string;
 }
 
 export type VendorCategory = 'Legal' | 'Design' | 'Finance' | 'Development' | 'Marketing';

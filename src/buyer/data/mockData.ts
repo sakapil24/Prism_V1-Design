@@ -40,7 +40,12 @@ export const mockDeals: Deal[] = [
     variations: [
       { id: 'aws-5k', title: '$5,000 Cloud Credits', description: 'One-time cloud credits valid for up to 1 year.', value: '$5,000 Credits' },
       { id: 'aws-10k-match', title: 'Up to $10,000 matched credits', description: 'Co-invest match for early growth startups.', value: '1:1 Matched Credits' }
-    ]
+    ],
+    websiteUrl: 'https://aws.amazon.com',
+    supportContact: 'aws-startups@amazon.com',
+    programDetailsUrl: 'https://aws.amazon.com/startups/activate/',
+    githubUrl: 'https://github.com/aws/aws-cli',
+    usageMetric: 'Used by 84% of portfolio companies this batch'
   },
   {
     id: 'deal-stripe',
@@ -66,7 +71,12 @@ export const mockDeals: Deal[] = [
     variations: [
       { id: 'stripe-20k', title: 'Fee-Free Processing up to $20,000', description: 'No fees on your first $20,000 in payment volume.', value: '$20,000 Fee Waiver' },
       { id: 'stripe-100-atlas', title: 'Free Stripe Atlas Setup', description: 'Fully waive the $500 Stripe Atlas incorporation fee.', value: 'Atlas Fee Waiver' }
-    ]
+    ],
+    websiteUrl: 'https://stripe.com',
+    supportContact: 'startup-ops@stripe.com',
+    programDetailsUrl: 'https://stripe.com/partners/startups',
+    githubUrl: 'https://github.com/stripe/stripe-node',
+    usageMetric: 'Processed $1.2M fee-free volume last month'
   },
   {
     id: 'deal-notion',
@@ -91,7 +101,12 @@ export const mockDeals: Deal[] = [
     variations: [
       { id: 'notion-1k', title: '$1,000 Plus Plan Credits', description: 'Apply $1,000 in workspace billing credits.', value: '$1,000 Credits' },
       { id: 'notion-ai-free', title: '6 Months of Free Notion AI', description: 'Free AI add-on for up to 20 seats.', value: '6mo Free AI' }
-    ]
+    ],
+    websiteUrl: 'https://notion.so',
+    supportContact: 'startups-help@makenotion.com',
+    programDetailsUrl: 'https://www.notion.so/startups',
+    githubUrl: 'https://github.com/makenotion/notion-sdk-js',
+    usageMetric: 'Active on 48 team workspaces in this fund'
   },
   {
     id: 'deal-retool',
@@ -113,7 +128,12 @@ export const mockDeals: Deal[] = [
     variations: [
       { id: 'retool-1200', title: '$1,200 Developer Platform Credits', description: 'A one-time credit maxed out at any time. Ideal for self-serve sizing.', value: '$1,200 Credits' },
       { id: 'retool-100-mo', title: '$100/month credit for 12 months', description: 'Monthly recurring credit applied directly to standard billing cycles.', value: '$100/mo for 12mo' }
-    ]
+    ],
+    websiteUrl: 'https://retool.com',
+    supportContact: 'partnerships@retool.com',
+    programDetailsUrl: 'https://retool.com/startups',
+    githubUrl: 'https://github.com/tryretool/retool-cli',
+    usageMetric: 'Saved 120+ developer hours on internal tools'
   },
   {
     id: 'deal-slack',
@@ -130,7 +150,12 @@ export const mockDeals: Deal[] = [
       'Enter code at checkout to deduct $500 from your annual payment.'
     ],
     longDescription: 'Slack brings all your communication together, integrating with the tools you use daily. Pro and Business plans offer unlimited history, screen sharing, huddles, and external channels (Slack Connect).',
-    status: 'available'
+    status: 'available',
+    websiteUrl: 'https://slack.com',
+    supportContact: 'startups@slack-corp.com',
+    programDetailsUrl: 'https://slack.com/solutions/startups',
+    githubUrl: 'https://github.com/slackapi/bolt-js',
+    usageMetric: 'Connected 32 Accel startups on Slack Connect'
   },
   {
     id: 'deal-vercel',
@@ -147,7 +172,12 @@ export const mockDeals: Deal[] = [
       'Paste code to apply $1,000 credits to your team account.'
     ],
     longDescription: 'Vercel is the platform for frontend developers, providing speed and reliability. Deploy Next.js, React, or Vue apps with zero configuration. Credits cover team seats, bandwidth, and serverless executions.',
-    status: 'available'
+    status: 'available',
+    websiteUrl: 'https://vercel.com',
+    supportContact: 'startups@vercel.com',
+    programDetailsUrl: 'https://vercel.com/startups',
+    githubUrl: 'https://github.com/vercel/vercel',
+    usageMetric: 'Hosts 18 production frontend deployments'
   },
   {
     id: 'deal-hubspot',
@@ -164,7 +194,12 @@ export const mockDeals: Deal[] = [
       'Upon HubSpot team verification, the 90% discount applies to your custom onboarding quote.'
     ],
     longDescription: 'HubSpot offers a complete CRM platform with marketing, sales, customer service, and content management software. This deal provides a 90% discount in your first year, 50% in your second, and 30% ongoing.',
-    status: 'available'
+    status: 'available',
+    websiteUrl: 'https://hubspot.com',
+    supportContact: 'startups@hubspot.com',
+    programDetailsUrl: 'https://www.hubspot.com/startups',
+    githubUrl: 'https://github.com/HubSpot/hubspot-api-nodejs',
+    usageMetric: 'Used by 24 sales and marketing growth teams'
   },
   {
     id: 'deal-google-workspace',
@@ -181,7 +216,12 @@ export const mockDeals: Deal[] = [
       'Create your tenant on Google Workspace and apply code during payment setup.'
     ],
     longDescription: 'Get custom business emails with your domain name (you@yourcompany.com). Access Gmail, Drive, Calendar, Docs, Sheets, and Meet with extra security and admin controls.',
-    status: 'available'
+    status: 'available',
+    websiteUrl: 'https://workspace.google.com',
+    supportContact: 'workspace-partners@google.com',
+    programDetailsUrl: 'https://workspace.google.com/solutions/startups/',
+    githubUrl: 'https://github.com/googleapis/google-api-nodejs-client',
+    usageMetric: 'Pre-configured for 14 early stage teams'
   },
   {
     id: 'deal-chatprd',
@@ -201,7 +241,12 @@ export const mockDeals: Deal[] = [
     status: 'claimed',
     claimCode: 'PRISM-CHATPRD-921C',
     claimedDate: '2026-05-28',
-    expiryDate: '2027-05-28'
+    expiryDate: '2027-05-28',
+    websiteUrl: 'https://chatprd.com',
+    supportContact: 'help@chatprd.com',
+    programDetailsUrl: 'https://www.chatprd.com/pricing',
+    githubUrl: 'https://github.com/chatprd/chatprd-sdk',
+    usageMetric: 'Used by 15 product teams to draft 80+ PRDs'
   },
   {
     id: 'deal-factory',
@@ -221,7 +266,12 @@ export const mockDeals: Deal[] = [
     status: 'claimed',
     claimCode: 'PRISM-FACTORY-419F',
     claimedDate: '2026-05-29',
-    expiryDate: '2027-05-29'
+    expiryDate: '2027-05-29',
+    websiteUrl: 'https://factory.ai',
+    supportContact: 'support@factory.ai',
+    programDetailsUrl: 'https://www.factory.com/startups',
+    githubUrl: 'https://github.com/factory-ai/factory-sdk',
+    usageMetric: 'Automated 200+ PR reviews for 9 startups'
   },
   {
     id: 'deal-framer',
@@ -238,7 +288,12 @@ export const mockDeals: Deal[] = [
       'Paste the promo code at checkout to waive the cost for the first year.'
     ],
     longDescription: 'Framer is the design tool that publishes. It lets designers and marketers build state-of-the-art websites, landing pages, and blogs with stunning animations and absolute design control — all published with a single click. This voucher waives the Framer Pro annual fee.',
-    status: 'available'
+    status: 'available',
+    websiteUrl: 'https://framer.com',
+    supportContact: 'startups@framer.com',
+    programDetailsUrl: 'https://www.framer.com/startups',
+    githubUrl: 'https://github.com/framer/framer-motion',
+    usageMetric: 'Powered 28 stunning landing page launches'
   },
   {
     id: 'deal-granola',
@@ -258,7 +313,12 @@ export const mockDeals: Deal[] = [
     status: 'claimed',
     claimCode: 'PRISM-GRANOLA-782G',
     claimedDate: '2026-05-30',
-    expiryDate: '2027-05-30'
+    expiryDate: '2027-05-30',
+    websiteUrl: 'https://granola.so',
+    supportContact: 'support@granola.so',
+    programDetailsUrl: 'https://www.granola.so/blog',
+    githubUrl: 'https://github.com/granola-so/granola-sdk',
+    usageMetric: 'Generated meeting summaries for 12 teams'
   },
   {
     id: 'deal-gumloop',
@@ -276,7 +336,12 @@ export const mockDeals: Deal[] = [
     ],
     longDescription: 'Gumloop is the drag-and-drop workspace for building advanced AI workflows and agents. Automate customer support, generate data reports, crawl web pages, and connect AI to your internal databases without writing code. This deal waives the Pro plan fee and credits your account with 20k monthly runs.',
     status: 'available',
-    isNew: true
+    isNew: true,
+    websiteUrl: 'https://gumloop.com',
+    supportContact: 'support@gumloop.com',
+    programDetailsUrl: 'https://www.gumloop.com/docs',
+    githubUrl: 'https://github.com/gumloop/gumloop-sdk',
+    usageMetric: 'Automated 1,200+ data workflows this week'
   },
   {
     id: 'deal-intercom',
@@ -294,7 +359,12 @@ export const mockDeals: Deal[] = [
     ],
     longDescription: 'Intercom helps companies deliver top-tier customer support. Scale your operations instantly using Fin, their advanced conversational AI agent. This exclusive startup deal includes 1 year free of Intercom Advanced (up to 5 seats) and $100/month in Fin AI outcome credits.',
     status: 'available',
-    isNew: true
+    isNew: true,
+    websiteUrl: 'https://intercom.com',
+    supportContact: 'startups@intercom.io',
+    programDetailsUrl: 'https://www.intercom.com/early-stage',
+    githubUrl: 'https://github.com/intercom/intercom-node',
+    usageMetric: 'Resolved 4,500+ customer chats automatically'
   }
 ];
 
