@@ -187,7 +187,6 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
                   <div>
                     <div className="flex justify-between items-start gap-2 mb-2">
                       <CompanyLogo src={deal.logoUrl} name={deal.vendorName} size="sm" />
-                      <Badge color="gray" className="h-4 text-[14px] px-1.5">{deal.category}</Badge>
                     </div>
                     <h3 className="text-[14px] font-bold text-[var(--text-primary)] block truncate">
                       {deal.vendorName} Credits
@@ -206,9 +205,9 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
                         e.stopPropagation();
                         onClaimDeal(deal.id);
                       }}
-                      className="px-2.5 py-1 text-white bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] font-bold text-[14px] rounded cursor-pointer transition-colors"
+                      className="px-3 py-1 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[12px] rounded cursor-pointer transition-colors shadow-sm"
                     >
-                      Claim Perk
+                      Press Claim
                     </button>
                   </div>
                 </Card>

@@ -812,7 +812,6 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
               <div className="flex-1 flex flex-col gap-3">
                 <div className="flex justify-between items-start gap-2">
                   <CompanyLogo src={deal.logoUrl} name={deal.vendorName} size="lg" />
-                  <Badge color={getCategoryColor(deal.category)}>{deal.category}</Badge>
                 </div>
                 <div>
                   <h3 className="text-[14px] font-bold text-[var(--text-primary)] leading-snug">
@@ -847,17 +846,10 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                     }}
                     className="px-3 py-1 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[12px] rounded cursor-pointer transition-colors shadow-sm"
                   >
-                    Claim Deal
+                    Press Claim
                   </button>
                 ) : (
-                  <div>
-                    {(deal.status === 'claimed' || deal.status === 'approved') && (
-                      <Badge color="amber">Claimed</Badge>
-                    )}
-                    {deal.status === 'active' && (
-                      <Badge color="green">Active</Badge>
-                    )}
-                  </div>
+                  <Badge color="amber">Claimed</Badge>
                 )}
               </div>
             </Card>
@@ -876,16 +868,13 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                   New
                 </span>
               )}
-              {/* Column 1: Logo + Vendor Name & Category */}
+              {/* Column 1: Logo + Vendor Name */}
               <div className="w-1/4 min-w-[180px] flex items-center gap-3 shrink-0">
                 <CompanyLogo src={deal.logoUrl} name={deal.vendorName} size="sm" />
                 <div className="min-w-0">
                   <h3 className="text-[14px] font-bold text-[var(--text-primary)] truncate">
                     {deal.vendorName}
                   </h3>
-                  <div className="mt-0.5">
-                    <Badge color={getCategoryColor(deal.category)} className="h-4 text-[11px] px-1.5 font-bold uppercase tracking-wider">{deal.category}</Badge>
-                  </div>
                 </div>
               </div>
 
@@ -921,17 +910,10 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                       }}
                       className="px-3 py-1 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[12px] rounded cursor-pointer transition-colors shadow-sm"
                     >
-                      Claim Deal
+                      Press Claim
                     </button>
                   ) : (
-                    <div>
-                      {(deal.status === 'claimed' || deal.status === 'approved') && (
-                        <Badge color="amber">Claimed</Badge>
-                      )}
-                      {deal.status === 'active' && (
-                        <Badge color="green">Active</Badge>
-                      )}
-                    </div>
+                    <Badge color="amber">Claimed</Badge>
                   )}
                 </div>
 
