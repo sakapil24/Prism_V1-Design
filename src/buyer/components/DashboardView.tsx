@@ -205,9 +205,10 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
                         e.stopPropagation();
                         onClaimDeal(deal.id);
                       }}
-                      className="px-3 py-1 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[12px] rounded cursor-pointer transition-colors shadow-sm"
+                      className="px-3 py-1 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[12px] rounded cursor-pointer transition-colors shadow-sm flex items-center gap-1"
                     >
-                      Press Claim
+                      Claim
+                      <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><path d="m9 18 6-6-6-6"/></svg>
                     </button>
                   </div>
                 </Card>

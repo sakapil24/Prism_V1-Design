@@ -828,14 +828,8 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
 
               {/* Card Footer */}
               <div className="flex justify-between items-center pt-3 border-t border-neutral-100 mt-3 shrink-0">
-                <span className="text-[14px] font-bold text-[var(--text-primary)] flex items-center gap-1.5">
-                  <span>{deal.variations && deal.variations.length > 1 ? `Up to ${deal.value}` : deal.value}</span>
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" className="shrink-0 drop-shadow-sm inline-block">
-                    <g filter="url(#shadow3d)">
-                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="url(#shield3dGrad)" />
-                      <path d="m9 11 2 2 4-4" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </g>
-                  </svg>
+                <span className="text-[14px] font-bold text-[var(--text-primary)]">
+                  {deal.variations && deal.variations.length > 1 ? `Up to ${deal.value}` : deal.value}
                 </span>
 
                 {deal.status === 'available' ? (
@@ -844,9 +838,10 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                       e.stopPropagation();
                       onClaimDeal(deal.id);
                     }}
-                    className="px-3 py-1 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[12px] rounded cursor-pointer transition-colors shadow-sm"
+                    className="px-3 py-1 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[12px] rounded cursor-pointer transition-colors shadow-sm flex items-center gap-1"
                   >
-                    Press Claim
+                    Claim
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><path d="m9 18 6-6-6-6"/></svg>
                   </button>
                 ) : (
                   <Badge color="amber">Claimed</Badge>
@@ -889,14 +884,8 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
               </div>
 
               {/* Column 3: Value */}
-              <div className="w-32 shrink-0 text-left font-bold text-[var(--text-primary)] text-[14px] px-2 flex items-center gap-1.5">
-                <span>{deal.variations && deal.variations.length > 1 ? `Up to ${deal.value}` : deal.value}</span>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" className="shrink-0 drop-shadow-sm inline-block">
-                  <g filter="url(#shadow3d)">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="url(#shield3dGrad)" />
-                    <path d="m9 11 2 2 4-4" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </g>
-                </svg>
+              <div className="w-32 shrink-0 text-left font-bold text-[var(--text-primary)] text-[14px] px-2">
+                {deal.variations && deal.variations.length > 1 ? `Up to ${deal.value}` : deal.value}
               </div>
 
               {/* Column 4: Status Badge + Chevron Arrow */}
@@ -908,9 +897,10 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                         e.stopPropagation();
                         onClaimDeal(deal.id);
                       }}
-                      className="px-3 py-1 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[12px] rounded cursor-pointer transition-colors shadow-sm"
+                      className="px-3 py-1 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[12px] rounded cursor-pointer transition-colors shadow-sm flex items-center gap-1"
                     >
-                      Press Claim
+                      Claim
+                      <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><path d="m9 18 6-6-6-6"/></svg>
                     </button>
                   ) : (
                     <Badge color="amber">Claimed</Badge>
