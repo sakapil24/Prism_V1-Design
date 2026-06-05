@@ -23,6 +23,7 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
   const totalPerkValue = 31000; // Mock total cap of benefits
   const remainingPerks = totalPerkValue - startup.savingsTotal;
   const savingPercentage = Math.round((startup.savingsTotal / totalPerkValue) * 100);
+  const unclaimedDealsCount = deals.filter(d => d.status === 'available').length;
 
   const getStepsForDeal = (deal: Deal): StageStep[] => {
     const isClaimed = deal.status === 'claimed';
@@ -73,45 +74,72 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
         </div>
       </div>
 
-      {/* Value Summary Perks Meter */}
-      <Card className="border border-[var(--border-subtle)] bg-white shadow-sm overflow-hidden animate-slideInUp stagger-1">
-        <div className="p-5 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white">
-          <div className="flex-1">
-            <span className="text-[14px] font-bold text-[var(--text-muted)] uppercase tracking-wider block">
-              Venture Perks Utilization
+      {/* Value Summary Perks Meter - 4-Column KPI Grid */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 animate-slideInUp stagger-1">
+        <Card className="!bg-white border border-[var(--border-subtle)] p-5 flex flex-col justify-between h-36 shadow-sm">
+          <div>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+              Claimed Savings
             </span>
-            <div className="flex gap-4 items-baseline mt-1.5">
-              <span className="text-3xl font-extrabold text-[var(--text-primary)]">
-                ${startup.savingsTotal.toLocaleString()}
-              </span>
-              <span className="text-[14px] text-neutral-500 font-medium">Claimed Savings</span>
-              <span className="text-neutral-300">|</span>
-              <span className="text-xl font-bold text-neutral-600">
-                ${remainingPerks.toLocaleString()}
-              </span>
-              <span className="text-[14px] text-neutral-500 font-medium">Remaining Credits</span>
-            </div>
-            
-            {/* Custom styled progress bar */}
-            <div className="w-full bg-neutral-200 h-2.5 rounded-full mt-4 overflow-hidden relative">
-              <div
-                className="bg-black h-full transition-all duration-700 ease-out"
-                style={{ width: `${savingPercentage}%` }}
-              />
-            </div>
-            <div className="flex justify-between text-[14px] text-neutral-500 font-semibold mt-1.5">
-              <span>{savingPercentage}% claimed</span>
-              <span>Total Sponsor Pool: ${totalPerkValue.toLocaleString()}</span>
+            <div className="text-2xl font-extrabold text-[var(--text-primary)] mt-2">
+              ${startup.savingsTotal.toLocaleString()}
             </div>
           </div>
-          <button
-            onClick={() => onNavigate('deals')}
-            className="px-4 py-2 bg-black hover:bg-neutral-800 text-white font-bold text-[14px] rounded-[var(--radius-lg)] cursor-pointer shrink-0 transition-all self-start md:self-center shadow-sm"
-          >
-            Explore All Credits
-          </button>
-        </div>
-      </Card>
+          <div className="flex">
+            <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-bold border rounded uppercase tracking-wider bg-[#E1ECF7] text-[#2D5DA0] border-[#B0C8E2]">
+              {savingPercentage}% of pool
+            </span>
+          </div>
+        </Card>
+
+        <Card className="!bg-white border border-[var(--border-subtle)] p-5 flex flex-col justify-between h-36 shadow-sm">
+          <div>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+              Unclaimed Credits Pool
+            </span>
+            <div className="text-2xl font-extrabold text-[var(--text-primary)] mt-2">
+              ${remainingPerks.toLocaleString()}
+            </div>
+          </div>
+          <div className="flex">
+            <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-bold border rounded uppercase tracking-wider bg-[var(--surface-secondary)] text-[var(--text-secondary)] border-[var(--border-subtle)]">
+              {unclaimedDealsCount} {unclaimedDealsCount === 1 ? 'deal' : 'deals'} left
+            </span>
+          </div>
+        </Card>
+
+        <Card className="!bg-white border border-[var(--border-subtle)] p-5 flex flex-col justify-between h-36 shadow-sm">
+          <div>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+              Active Utilizations
+            </span>
+            <div className="text-2xl font-extrabold text-[var(--text-primary)] mt-2">
+              {startup.utilizationsCount} {startup.utilizationsCount === 1 ? 'Tool' : 'Tools'}
+            </div>
+          </div>
+          <div className="flex">
+            <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-bold border rounded uppercase tracking-wider bg-[#E4F1EC] text-[#1F8056] border-[#A8D2BD]">
+              ✓ ACTIVE
+            </span>
+          </div>
+        </Card>
+
+        <Card className="!bg-white border border-[var(--border-subtle)] p-5 flex flex-col justify-between h-36 shadow-sm">
+          <div>
+            <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+              Awaiting VC Review
+            </span>
+            <div className="text-2xl font-extrabold text-[var(--text-primary)] mt-2">
+              {startup.activeClaimsCount} {startup.activeClaimsCount === 1 ? 'Request' : 'Requests'}
+            </div>
+          </div>
+          <div className="flex">
+            <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-bold border rounded uppercase tracking-wider bg-[#F8EDD2] text-[#B27316] border-[#E0C285]">
+              PENDING REVIEW
+            </span>
+          </div>
+        </Card>
+      </div>
 
       {/* Main Grid: Live Trackers + recommended Deals */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -177,7 +205,7 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
                 <Card
                   key={deal.id}
                   onClick={() => onViewDeal(deal.id)}
-                  className="relative flex flex-col justify-between p-3.5 border border-neutral-200 bg-white hover:border-black hover:shadow-sm cursor-pointer transition-all h-40"
+                  className="relative flex flex-col justify-between hover:shadow-[var(--shadow-md)] hover:-translate-y-0.5 transition-all cursor-pointer border border-[var(--border-subtle)] !bg-white rounded-[12px] p-4 h-48"
                 >
                   {deal.isNew && (
                     <span className="absolute -top-1.5 -right-1.5 px-2.5 py-0.5 text-[10px] font-bold bg-[#D97706] text-white rounded-full uppercase tracking-wider shadow-sm select-none z-10">
@@ -185,30 +213,42 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
                     </span>
                   )}
                   <div>
-                    <div className="flex justify-between items-start gap-2 mb-2">
-                      <CompanyLogo src={deal.logoUrl} name={deal.vendorName} size="sm" />
+                    <div className="flex justify-between items-start gap-2">
+                      <CompanyLogo src={deal.logoUrl} name={deal.vendorName} className="!w-12 !h-12 shrink-0" />
                     </div>
-                    <h3 className="text-[14px] font-bold text-[var(--text-primary)] block truncate">
-                      {deal.vendorName} Credits
-                    </h3>
-                    <p className="text-[14px] font-bold text-emerald-700 mt-0.5">
-                      {deal.value}
-                    </p>
-                    <p className="text-[14px] text-[var(--text-muted)] line-clamp-2 mt-1.5 leading-snug">
-                      {deal.description}
-                    </p>
+                    <div className="mt-2.5">
+                      <h3 className="text-[16px] font-extrabold text-[var(--text-primary)] leading-none mt-1.5">
+                        {deal.vendorName}
+                      </h3>
+                      <p className="text-[14px] text-[var(--text-muted)] mt-2 line-clamp-2 leading-relaxed">
+                        {deal.description}
+                      </p>
+                    </div>
                   </div>
                   
-                  <div className="flex justify-end pt-2 border-t border-neutral-100 mt-2">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onClaimDeal(deal.id);
-                      }}
-                      className="px-5 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[14px] rounded-full cursor-pointer transition-colors shadow-sm text-center"
-                    >
-                      <span>Claim</span>
-                    </button>
+                  <div className="flex justify-between items-center pt-3 border-t border-neutral-100 mt-3 shrink-0">
+                    <span className="text-[14px] font-bold text-[var(--text-primary)]">
+                      {deal.value}
+                    </span>
+
+                    {deal.isLocked ? (
+                      <span className="px-4 py-1.5 bg-neutral-100 text-neutral-405 border border-neutral-200 text-xs font-bold rounded-full flex items-center gap-1 shadow-inner select-none shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="shrink-0"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        <span>Locked</span>
+                      </span>
+                    ) : deal.status === 'available' ? (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onClaimDeal(deal.id);
+                        }}
+                        className="px-5 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[14px] rounded-full cursor-pointer transition-colors shadow-sm text-center"
+                      >
+                        <span>Claim</span>
+                      </button>
+                    ) : (
+                      <Badge color="amber" className="px-5 py-2 !rounded-full !h-auto font-bold text-[14px]">Claimed</Badge>
+                    )}
                   </div>
                 </Card>
               ))}

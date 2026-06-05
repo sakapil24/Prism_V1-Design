@@ -241,7 +241,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen w-full flex flex-col bg-white">
+    <div className="min-h-screen w-full flex flex-col bg-[var(--surface-secondary)]">
       {/* Premium Top Navigation Bar */}
       <header className="w-full border-b border-neutral-200 bg-white shrink-0 select-none">
         <div className="w-full px-4 lg:px-6 h-16 flex items-center justify-between">
@@ -364,7 +364,7 @@ export default function App() {
       </div>
 
       {/* Main View Container */}
-      <div className="flex-1 p-4 lg:p-6 bg-white">
+      <div className="flex-1 p-4 lg:p-6 bg-[var(--surface-secondary)]">
         {currentView === 'dashboard' && (
           <DashboardView
             startup={startup}
