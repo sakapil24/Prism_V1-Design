@@ -1519,13 +1519,13 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                 <div className="flex-1 flex flex-col gap-3">
                   {isRowLayout ? (
                     <>
-                      <div className="flex items-center gap-3.5">
+                      <div className="flex items-center gap-3">
                         <CompanyLogo
                           src={deal.logoUrl}
                           name={deal.vendorName}
-                          className="!w-14 !h-14 shrink-0"
+                          className="!w-12 !h-12 shrink-0"
                         />
-                        <h3 className="text-[17px] font-extrabold text-[var(--text-primary)] leading-none">
+                        <h3 className="text-[20px] font-extrabold text-[var(--text-primary)] leading-none">
                           {deal.vendorName}
                         </h3>
                       </div>
@@ -1539,11 +1539,11 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                         <CompanyLogo
                           src={deal.logoUrl}
                           name={deal.vendorName}
-                          className="!w-14 !h-14 shrink-0"
+                          className="!w-12 !h-12 shrink-0"
                         />
                       </div>
                       <div>
-                        <h3 className="text-[17px] font-extrabold text-[var(--text-primary)] leading-none">
+                        <h3 className="text-[20px] font-extrabold text-[var(--text-primary)] leading-none">
                           {deal.vendorName}
                         </h3>
                         <p className="text-[14px] text-[var(--text-muted)] mt-2 line-clamp-2 leading-relaxed">
