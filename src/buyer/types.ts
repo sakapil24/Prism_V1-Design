@@ -46,6 +46,12 @@ export interface Deal {
   githubUrl?: string;
   usageMetric?: string;
   isLocked?: boolean;
+  screenshots?: DealScreenshot[];
+}
+
+export interface DealScreenshot {
+  url: string;
+  caption: string;
 }
 
 export type VendorCategory = 'Legal' | 'Design' | 'Finance' | 'Development' | 'Marketing';

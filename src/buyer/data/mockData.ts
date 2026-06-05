@@ -45,7 +45,11 @@ export const mockDeals: Deal[] = [
     supportContact: 'aws-startups@amazon.com',
     programDetailsUrl: 'https://aws.amazon.com/startups/activate/',
     githubUrl: 'https://github.com/aws/aws-cli',
-    usageMetric: 'Used by 84% of portfolio companies this batch'
+    usageMetric: 'Used by 84% of portfolio companies this batch',
+    screenshots: [
+      { url: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80', caption: 'AWS Compute & Cost Explorer dashboard showing monthly infrastructure usage' },
+      { url: 'https://images.unsplash.com/photo-1607799279861-4dd421887fb3?auto=format&fit=crop&w=1200&q=80', caption: 'AWS Cloud Console architecture and serverless resource monitoring' }
+    ]
   },
   {
     id: 'deal-stripe',
@@ -76,7 +80,11 @@ export const mockDeals: Deal[] = [
     supportContact: 'startup-ops@stripe.com',
     programDetailsUrl: 'https://stripe.com/partners/startups',
     githubUrl: 'https://github.com/stripe/stripe-node',
-    usageMetric: 'Processed $1.2M fee-free volume last month'
+    usageMetric: 'Processed $1.2M fee-free volume last month',
+    screenshots: [
+      { url: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=1200&q=80', caption: 'Stripe Payments and transactions ledger dashboard' },
+      { url: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80', caption: 'Stripe Customer Subscription billing and MRR graph analytics' }
+    ]
   },
   {
     id: 'deal-notion',
@@ -106,7 +114,11 @@ export const mockDeals: Deal[] = [
     supportContact: 'startups-help@makenotion.com',
     programDetailsUrl: 'https://www.notion.so/startups',
     githubUrl: 'https://github.com/makenotion/notion-sdk-js',
-    usageMetric: 'Active on 48 team workspaces in this fund'
+    usageMetric: 'Active on 48 team workspaces in this fund',
+    screenshots: [
+      { url: 'https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?auto=format&fit=crop&w=1200&q=80', caption: 'Notion Workspace wiki and collaborative project documentation' },
+      { url: 'https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=1200&q=80', caption: 'Notion Sprint planning and engineering project board view' }
+    ]
   },
   {
     id: 'deal-retool',
@@ -133,7 +145,10 @@ export const mockDeals: Deal[] = [
     supportContact: 'partnerships@retool.com',
     programDetailsUrl: 'https://retool.com/startups',
     githubUrl: 'https://github.com/tryretool/retool-cli',
-    usageMetric: 'Saved 120+ developer hours on internal tools'
+    usageMetric: 'Saved 120+ developer hours on internal tools',
+    screenshots: [
+      { url: 'https://images.unsplash.com/photo-1618401471353-b98aedd07871?auto=format&fit=crop&w=1200&q=80', caption: 'Retool IDE drag-and-drop designer UI for building internal admin tools' }
+    ]
   },
   {
     id: 'deal-slack',
@@ -155,7 +170,11 @@ export const mockDeals: Deal[] = [
     supportContact: 'startups@slack-corp.com',
     programDetailsUrl: 'https://slack.com/solutions/startups',
     githubUrl: 'https://github.com/slackapi/bolt-js',
-    usageMetric: 'Connected 32 Accel startups on Slack Connect'
+    usageMetric: 'Connected 32 Accel startups on Slack Connect',
+    screenshots: [
+      { url: 'https://cdn.prod.website-files.com/60473d8edc329c41a58f1151/6819ca163934dd62ddbd483e_664dc94e4c8b36c2f2d35a8e_slack-promo-code.jpeg', caption: 'FounderPass Slack Partner Promo: 25% Off Pro & Business+ Tiers' },
+      { url: 'https://cdn.prod.website-files.com/60473d8edc329c41a58f1151/6792288be964fc2e6e9492aa_664f09883ca55052d28631e7_slack-coupon.jpeg', caption: 'Slack billing console showing coupon code applied successfully for 12 months' }
+    ]
   },
   {
     id: 'deal-vercel',
@@ -177,7 +196,10 @@ export const mockDeals: Deal[] = [
     supportContact: 'startups@vercel.com',
     programDetailsUrl: 'https://vercel.com/startups',
     githubUrl: 'https://github.com/vercel/vercel',
-    usageMetric: 'Hosts 18 production frontend deployments'
+    usageMetric: 'Hosts 18 production frontend deployments',
+    screenshots: [
+      { url: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80', caption: 'Vercel Deployment panel with branch previews and serverless execution logs' }
+    ]
   },
   {
     id: 'deal-hubspot',

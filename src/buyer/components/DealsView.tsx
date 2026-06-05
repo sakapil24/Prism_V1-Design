@@ -288,8 +288,15 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
   const [searchQuery, setSearchQuery] = React.useState('');
   const [selectedCategory, setSelectedCategory] = React.useState<DealCategory | 'All'>('All');
   const [viewMode, setViewMode] = React.useState<'grid' | 'list'>('grid');
-  const [gridCols, setGridCols] = React.useState<1 | '1-row' | 2 | '2-row' | 3>(3);
+  const [gridCols, setGridCols] = React.useState<1 | '1-row' | 2 | '2-row' | 3>('2-row');
   const [selectedDealId, setSelectedDealId] = React.useState<string | null>(null);
+  const [activeScreenshotIdx, setActiveScreenshotIdx] = React.useState<number>(0);
+  const [lightboxOpen, setLightboxOpen] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    setActiveScreenshotIdx(0);
+    setLightboxOpen(false);
+  }, [selectedDealId]);
   const [filtersExpanded, setFiltersExpanded] = React.useState(false);
   const [searchExpanded, setSearchExpanded] = React.useState(false);
   const searchInputRef = React.useRef<HTMLInputElement>(null);
@@ -808,6 +815,112 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                           </a>
                         </div>
                       )}
+
+                      {/* Product Screenshots Gallery */}
+                      {selectedDeal.screenshots && selectedDeal.screenshots.length > 0 && (
+                        <div className="mt-4 flex flex-col gap-3.5">
+                          <span className="text-[12px] font-extrabold text-neutral-500 uppercase tracking-wider select-none">
+                            Product Screenshots
+                          </span>
+                          
+                          {/* Browser Window Mockup */}
+                          <div className="border border-neutral-200 bg-white rounded-xl overflow-hidden shadow-sm relative group flex flex-col">
+                            {/* Browser Window Header */}
+                            <div className="flex items-center justify-between px-4 py-2 border-b border-neutral-100 bg-neutral-50/50 select-none">
+                              {/* Left: Window Controls */}
+                              <div className="flex items-center gap-1.5 shrink-0">
+                                <span className="w-2.5 h-2.5 rounded-full bg-red-400/90 border border-red-500/10" />
+                                <span className="w-2.5 h-2.5 rounded-full bg-amber-400/90 border border-amber-500/10" />
+                                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400/90 border border-emerald-500/10" />
+                              </div>
+                              
+                              {/* Center: Fake Address Bar */}
+                              <div className="flex-1 max-w-xs md:max-w-md mx-4 bg-white border border-neutral-200 rounded px-2 py-0.5 text-center text-[10.5px] text-neutral-500 font-medium truncate select-none shadow-sm">
+                                {selectedDeal.websiteUrl?.replace('https://', '') || 'workspace.app'}
+                              </div>
+                              
+                              {/* Right: Counter */}
+                              <div className="w-12 shrink-0 flex justify-end">
+                                <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wide">
+                                  {activeScreenshotIdx + 1} / {selectedDeal.screenshots.length}
+                                </span>
+                              </div>
+                            </div>
+                            
+                            {/* Browser Body / Image Display */}
+                            <div 
+                              onClick={() => setLightboxOpen(true)}
+                              className="relative aspect-[16/10] w-full bg-neutral-900 cursor-zoom-in overflow-hidden flex items-center justify-center group/img"
+                            >
+                              <img
+                                src={selectedDeal.screenshots[activeScreenshotIdx].url}
+                                alt={selectedDeal.screenshots[activeScreenshotIdx].caption}
+                                className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover/img:scale-[1.01]"
+                              />
+                              
+                              {/* Navigation Arrows */}
+                              {selectedDeal.screenshots.length > 1 && (
+                                <>
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setActiveScreenshotIdx((prev) => (prev === 0 ? selectedDeal.screenshots!.length - 1 : prev - 1));
+                                    }}
+                                    className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 border border-neutral-200 shadow flex items-center justify-center cursor-pointer text-neutral-800 hover:bg-white hover:text-black opacity-0 group-hover:opacity-100 transition-all duration-200"
+                                    title="Previous screenshot"
+                                  >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                                  </button>
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setActiveScreenshotIdx((prev) => (prev === selectedDeal.screenshots!.length - 1 ? 0 : prev + 1));
+                                    }}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 border border-neutral-200 shadow flex items-center justify-center cursor-pointer text-neutral-800 hover:bg-white hover:text-black opacity-0 group-hover:opacity-100 transition-all duration-200"
+                                    title="Next screenshot"
+                                  >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                                  </button>
+                                </>
+                              )}
+                              
+                              {/* Click to Zoom Hint Overlay */}
+                              <div className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 hover:opacity-100 duration-200 select-none">
+                                <span className="px-3 py-1 bg-black/80 text-white font-bold text-[10px] rounded-full shadow-lg flex items-center gap-1 border border-white/10 tracking-wide uppercase">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M8 11h6"/><path d="M11 8v6"/></svg>
+                                  <span>Click to Zoom</span>
+                                </span>
+                              </div>
+                            </div>
+                            
+                            {/* Caption Bar */}
+                            <div className="bg-neutral-50 px-4 py-2.5 border-t border-neutral-100 flex items-start gap-2">
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-neutral-500 shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                              <span className="text-[12.5px] text-neutral-700 leading-normal font-medium">
+                                {selectedDeal.screenshots[activeScreenshotIdx].caption}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Dots indicator at the bottom */}
+                          {selectedDeal.screenshots.length > 1 && (
+                            <div className="flex justify-center items-center gap-1.5 mt-1 select-none">
+                              {selectedDeal.screenshots.map((_, idx) => (
+                                <button
+                                  key={idx}
+                                  onClick={() => setActiveScreenshotIdx(idx)}
+                                  className={`w-2 h-2 rounded-full cursor-pointer transition-all duration-200 border-none p-0 ${
+                                    activeScreenshotIdx === idx
+                                      ? 'bg-black scale-110'
+                                      : 'bg-neutral-300 hover:bg-neutral-400'
+                                  }`}
+                                  aria-label={`Go to screenshot ${idx + 1}`}
+                                />
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
 
                     {/* Section 2: Integrations & Automations */}
@@ -1181,6 +1294,63 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
         </Modal>
 
         {renderRedemptionModal()}
+
+        {/* Lightbox Modal for Screenshots */}
+        {selectedDeal.screenshots && selectedDeal.screenshots.length > 0 && (
+          <Modal open={lightboxOpen} onOpenChange={setLightboxOpen}>
+            <ModalContent className="max-w-6xl border border-neutral-800 bg-neutral-950 text-white rounded-2xl p-0 overflow-hidden shadow-2xl relative">
+              {/* Image Container */}
+              <div className="relative w-full h-[75vh] bg-black flex items-center justify-center select-none">
+                <img
+                  src={selectedDeal.screenshots[activeScreenshotIdx].url}
+                  alt={selectedDeal.screenshots[activeScreenshotIdx].caption}
+                  className="max-w-full max-h-full object-contain animate-fadeIn"
+                />
+                
+                {/* Full Screen Nav Arrows (overlay style) */}
+                {selectedDeal.screenshots.length > 1 && (
+                  <>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveScreenshotIdx((prev) => (prev === 0 ? selectedDeal.screenshots!.length - 1 : prev - 1));
+                      }}
+                      className="absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center cursor-pointer text-white transition-all shadow-lg"
+                      title="Previous screenshot"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveScreenshotIdx((prev) => (prev === selectedDeal.screenshots!.length - 1 ? 0 : prev + 1));
+                      }}
+                      className="absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center cursor-pointer text-white transition-all shadow-lg"
+                      title="Next screenshot"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                    </button>
+                  </>
+                )}
+              </div>
+              
+              {/* Caption/Control Bar at the bottom */}
+              <div className="bg-neutral-900 border-t border-neutral-800 px-6 py-4 flex items-center justify-between gap-4 select-none">
+                <div className="flex-1">
+                  <span className="text-[11px] text-neutral-400 block uppercase tracking-wider font-bold">Screenshot {activeScreenshotIdx + 1} of {selectedDeal.screenshots.length}</span>
+                  <span className="text-[13.5px] text-white block mt-1 font-medium">{selectedDeal.screenshots[activeScreenshotIdx].caption}</span>
+                </div>
+                
+                <button
+                  onClick={() => setLightboxOpen(false)}
+                  className="px-4 py-2 bg-neutral-800 hover:bg-neutral-700 text-white border border-neutral-700 rounded-lg text-xs font-bold cursor-pointer transition-colors shadow-sm"
+                >
+                  Close Preview
+                </button>
+              </div>
+            </ModalContent>
+          </Modal>
+        )}
       </div>
     );
   }
@@ -1296,68 +1466,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
             </svg>
           </button>
 
-          {/* Column layout switcher (only for Grid view) */}
-          {viewMode === 'grid' && (
-            <div className="flex items-center gap-1 p-1 bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] select-none">
-              {([1, '1-row', 2, '2-row', 3] as const).map((cols) => (
-                <button
-                  key={cols}
-                  onClick={() => setGridCols(cols)}
-                  className={`px-2.5 py-1 text-xs font-bold rounded-[8px] cursor-pointer transition-all duration-150 ${
-                    gridCols === cols
-                      ? 'bg-black text-white shadow-sm font-extrabold'
-                      : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] font-semibold'
-                  }`}
-                >
-                  {cols === '1-row'
-                    ? '1 Col (Row)'
-                    : cols === '2-row'
-                    ? '2 Cols (Row)'
-                    : `${cols} Col${cols > 1 ? 's' : ''}`}
-                </button>
-              ))}
-            </div>
-          )}
 
-          {/* View mode toggle */}
-          <div className="flex items-center gap-1 p-1 bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)]">
-            <button
-              onClick={() => setViewMode('grid')}
-              className={`p-1.5 rounded-[8px] cursor-pointer transition-all duration-150 ${
-                viewMode === 'grid'
-                  ? 'bg-black text-white shadow-sm'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-              }`}
-              title="Grid view"
-              aria-label="Grid view"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
-                <rect width="7" height="7" x="3" y="3" rx="1" />
-                <rect width="7" height="7" x="14" y="3" rx="1" />
-                <rect width="7" height="7" x="14" y="14" rx="1" />
-                <rect width="7" height="7" x="3" y="14" rx="1" />
-              </svg>
-            </button>
-            <button
-              onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded-[8px] cursor-pointer transition-all duration-150 ${
-                viewMode === 'list'
-                  ? 'bg-black text-white shadow-sm'
-                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
-              }`}
-              title="List view"
-              aria-label="List view"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
-                <line x1="8" x2="21" y1="6" y2="6" />
-                <line x1="8" x2="21" y1="12" y2="12" />
-                <line x1="8" x2="21" y1="18" y2="18" />
-                <line x1="3" x2="3.01" y1="6" y2="6" />
-                <line x1="3" x2="3.01" y1="12" y2="12" />
-                <line x1="3" x2="3.01" y1="18" y2="18" />
-              </svg>
-            </button>
-          </div>
         </div>
       </div>
 
