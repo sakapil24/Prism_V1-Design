@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '../../design-system/components';
+import { Card } from '../../design-system/components';
 import { Badge } from '../../design-system/components';
-import { StageIndicator, StageStep } from '../../design-system/components';
 import { Startup, Deal, ClaimAudit } from '../types';
 import { CompanyLogo } from './CompanyLogo';
+import { mockVendors } from '../data/mockData';
 
 interface DashboardViewProps {
   startup: Startup;
@@ -25,32 +25,7 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
   const savingPercentage = Math.round((startup.savingsTotal / totalPerkValue) * 100);
   const unclaimedDealsCount = deals.filter(d => d.status === 'available').length;
 
-  const getStepsForDeal = (deal: Deal): StageStep[] => {
-    const isClaimed = deal.status === 'claimed';
-    const isApproved = deal.status === 'approved';
-    const isActive = deal.status === 'active';
-
-    return [
-      {
-        id: '1',
-        title: 'Claimed',
-        description: deal.claimedDate ? `Req: ${deal.claimedDate}` : 'Voucher requested',
-        status: 'complete',
-      },
-      {
-        id: '2',
-        title: 'Approved',
-        description: isClaimed ? 'Pending VC review' : 'VC Approved',
-        status: isClaimed ? 'pending' : isApproved ? 'active' : 'complete',
-      },
-      {
-        id: '3',
-        title: 'Active',
-        description: isActive ? 'Redeemed' : 'Awaiting code entry',
-        status: isActive ? 'complete' : 'pending',
-      },
-    ];
-  };
+  // Bubble stepper helper removed - transitioned to simplified Redeemed List
 
   return (
     <div className="flex-1 flex flex-col gap-6 max-w-6xl mx-auto py-2">
@@ -145,15 +120,15 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left 2 Cols: Redemption Tracker & recommended Perks */}
         <div className="lg:col-span-2 flex flex-col gap-6 animate-slideInUp stagger-2">
-          {/* Active Redemption Status Trackers */}
+          {/* Redeemed So Far */}
           <div className="flex flex-col gap-3">
             <h2 className="text-[13px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
-              Active Redemption status
+              Redeemed So Far
             </h2>
             <div className="flex flex-col gap-4">
               {claimedDeals.length === 0 ? (
-                <Card className="p-8 text-center text-[var(--text-muted)] border border-dashed border-neutral-300 bg-white">
-                  <p className="text-[14px]">You have no active claims. Get started below or explore the marketplace.</p>
+                <Card className="p-8 text-center text-[var(--text-muted)] border border-dashed border-neutral-300 bg-white rounded-[12px]">
+                  <p className="text-[14px]">You have no active or claimed credits yet. Claim recommended credits below to get started.</p>
                 </Card>
               ) : (
                 claimedDeals.map((deal) => {
@@ -162,31 +137,53 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
                   const isActive = deal.status === 'active';
 
                   return (
-                    <Card key={deal.id} className="p-4 border border-[var(--border-subtle)] bg-white hover:shadow-sm transition-all">
-                      <div className="flex justify-between items-start gap-4 mb-4">
-                        <div className="flex items-center gap-3">
-                          <CompanyLogo src={deal.logoUrl} name={deal.vendorName} size="sm" />
-                          <div>
-                            <h3 className="text-[14px] font-extrabold text-[var(--text-primary)]">
-                              {deal.vendorName} — {deal.title}
-                            </h3>
-                            <p className="text-[14px] text-[var(--text-muted)] font-medium">
-                              Value: <span className="font-semibold">{deal.value}</span>
-                            </p>
-                          </div>
+                    <Card key={deal.id} className="p-4 border border-[var(--border-subtle)] bg-white hover:shadow-sm transition-all rounded-[12px] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                      <div className="flex items-center gap-3.5">
+                        <CompanyLogo src={deal.logoUrl} name={deal.vendorName} className="!w-12 !h-12 shrink-0" />
+                        <div>
+                          <h3 className="text-[14px] font-extrabold text-[var(--text-primary)] leading-snug">
+                            {deal.vendorName} — {deal.title}
+                          </h3>
+                          <p className="text-[13px] text-[var(--text-muted)] mt-1 font-medium">
+                            Value: <span className="font-semibold text-neutral-800">{deal.value}</span>
+                            {deal.claimedDate && ` • Claimed on ${deal.claimedDate}`}
+                          </p>
                         </div>
-
-                        {(isClaimed || isApproved) && <Badge color="amber">Claimed</Badge>}
-                        {isActive && <Badge color="green">Active</Badge>}
                       </div>
 
-                      {/* Redesigned neutral grey/black Stepper */}
-                      <div className="px-2 pt-2.5 pb-1 border border-neutral-200/50 bg-white rounded-xl">
-                        <StageIndicator
-                          steps={getStepsForDeal(deal)}
-                          variant="bubble"
-                          orientation="horizontal"
-                        />
+                      <div className="flex items-center gap-2.5 shrink-0 self-end sm:self-auto">
+                        {deal.claimCode && (
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(deal.claimCode || '');
+                              alert('Voucher coupon code copied to clipboard!');
+                            }}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[var(--surface-secondary)] hover:bg-neutral-100 text-neutral-900 border border-[var(--border-subtle)] rounded-lg cursor-pointer transition-all group font-mono text-[12px] font-bold shadow-sm"
+                            title="Copy coupon code"
+                          >
+                            <span>{deal.claimCode}</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-neutral-450 group-hover:text-black transition-colors shrink-0">
+                              <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+                              <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+                            </svg>
+                          </button>
+                        )}
+                        
+                        {isClaimed && (
+                          <span className="inline-flex items-center px-2.5 py-1 text-[10px] font-bold border rounded uppercase tracking-wider bg-[#F8EDD2] text-[#B27316] border-[#E0C285]">
+                            Awaiting Review
+                          </span>
+                        )}
+                        {isApproved && (
+                          <span className="inline-flex items-center px-2.5 py-1 text-[10px] font-bold border rounded uppercase tracking-wider bg-[#E1ECF7] text-[#2D5DA0] border-[#B0C8E2]">
+                            Approved
+                          </span>
+                        )}
+                        {isActive && (
+                          <span className="inline-flex items-center px-2.5 py-1 text-[10px] font-bold border rounded uppercase tracking-wider bg-[#E4F1EC] text-[#1F8056] border-[#A8D2BD]">
+                            ✓ Active
+                          </span>
+                        )}
                       </div>
                     </Card>
                   );
@@ -282,30 +279,47 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
             </Card>
           </div>
 
-          {/* Service Directory shortcut */}
+          {/* Recommended Service Partners */}
           <div className="flex flex-col gap-3">
             <h2 className="text-[13px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
-              Vetted service providers
+              Recommended Service Partners
             </h2>
-            <Card className="p-4 border border-[var(--border-subtle)] bg-white flex flex-col justify-between h-44">
-              <div>
-                <span className="text-[14px] font-extrabold text-neutral-400 uppercase tracking-widest block mb-1">
-                  Trusted Agencies
-                </span>
-                <h3 className="text-[14px] font-bold text-[var(--text-primary)] mb-2">
-                  Legal & Design Partners
-                </h3>
-                <p className="text-[14px] text-[var(--text-muted)] leading-relaxed line-clamp-3">
-                  Quickly connect with curated local agencies (like Obvious for UI/UX or Cyril Amarchand Mangaldas for corporate filing) vetted by our partner team.
-                </p>
-              </div>
+            <div className="flex flex-col gap-3.5">
+              {mockVendors.filter(v => v.vcTrusted).slice(0, 3).map((vendor) => (
+                <Card key={vendor.id} className="p-3.5 border border-[var(--border-subtle)] bg-white rounded-[12px] flex items-center justify-between gap-3 shadow-sm hover:shadow-md transition-all">
+                  <div className="flex items-center gap-3">
+                    <CompanyLogo src={vendor.logoUrl} name={vendor.name} className="!w-10 !h-10 shrink-0" />
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-[13.5px] font-extrabold text-[var(--text-primary)] leading-none">
+                          {vendor.name}
+                        </h3>
+                        <span className="inline-flex items-center px-1.5 py-0.5 text-[8.5px] font-bold border rounded uppercase tracking-wider bg-emerald-50 text-emerald-800 border-emerald-200 gap-0.5 select-none shrink-0 scale-95 origin-left">
+                          <svg width="8" height="8" viewBox="0 0 24 24" fill="none" className="shrink-0">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="#10B981" />
+                            <path d="m9 11 2 2 4-4" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                          <span>Verified</span>
+                        </span>
+                      </div>
+                      <p className="text-[11.5px] font-bold text-neutral-500 mt-1">
+                        {vendor.category}
+                      </p>
+                      <p className="text-[12.5px] text-[var(--text-muted)] mt-1.5 line-clamp-1 leading-normal max-w-[180px]">
+                        {vendor.description}
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+              
               <button
                 onClick={() => onNavigate('vendors')}
-                className="w-full py-1.5 border border-black hover:bg-neutral-50 text-black font-bold text-[14px] rounded transition-colors cursor-pointer mt-3"
+                className="w-full py-2 bg-white hover:bg-neutral-50 border border-black text-black font-extrabold text-[13px] rounded-lg transition-colors cursor-pointer mt-1 text-center shadow-sm"
               >
-                Browse Service Directory
+                Browse Full Directory
               </button>
-            </Card>
+            </div>
           </div>
         </div>
       </div>
