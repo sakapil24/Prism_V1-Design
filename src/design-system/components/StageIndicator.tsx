@@ -295,17 +295,17 @@ export function StageIndicator({
               )}
             >
               <div className="flex justify-between items-center">
-                <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase">Step {index + 1}</span>
+                <span className="text-[10px] font-bold text-[var(--text-muted)]">Step {index + 1}</span>
                 <span
                   className={cn(
-                    'text-[9px] px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider',
+                    'text-[9px] px-1.5 py-0.5 rounded-full font-bold',
                     isComplete && 'bg-[#E4F1EC] text-[var(--state-success)]',
                     isActive && 'bg-[rgba(28,31,36,0.06)] text-[var(--text-primary)]',
                     step.status === 'pending' && 'bg-[var(--surface-secondary)] text-[var(--text-muted)]',
                     isError && 'bg-[#FBE5E1] text-[var(--state-error)]'
                   )}
                 >
-                  {step.status}
+                  {step.status.charAt(0).toUpperCase() + step.status.slice(1)}
                 </span>
               </div>
               <div className="flex flex-col">

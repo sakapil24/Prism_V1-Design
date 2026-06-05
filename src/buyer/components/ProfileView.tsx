@@ -24,27 +24,27 @@ export function StartupProfileModal({ startup, open, onOpenChange }: StartupProf
         <ModalBody className="py-5 flex flex-col gap-4 text-[14px]">
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col gap-1 p-2.5 bg-neutral-50 rounded border border-neutral-100">
-              <span className="text-[14px] text-[var(--text-muted)] font-bold uppercase">Company Name</span>
+              <span className="text-[14px] text-[var(--text-muted)] font-bold">Company Name</span>
               <span className="font-semibold text-neutral-800">{startup.name}</span>
             </div>
             <div className="flex flex-col gap-1 p-2.5 bg-neutral-50 rounded border border-neutral-100">
-              <span className="text-[14px] text-[var(--text-muted)] font-bold uppercase">VC Portfolio Partner</span>
+              <span className="text-[14px] text-[var(--text-muted)] font-bold">VC Portfolio Partner</span>
               <span className="font-semibold text-neutral-800">{startup.vcPartner}</span>
             </div>
             <div className="flex flex-col gap-1 p-2.5 bg-neutral-50 rounded border border-neutral-100">
-              <span className="text-[14px] text-[var(--text-muted)] font-bold uppercase">Domain URL</span>
+              <span className="text-[14px] text-[var(--text-muted)] font-bold">Domain URL</span>
               <span className="font-semibold text-neutral-800">{startup.domain}</span>
             </div>
             <div className="flex flex-col gap-1 p-2.5 bg-neutral-50 rounded border border-neutral-100">
-              <span className="text-[14px] text-[var(--text-muted)] font-bold uppercase">Primary Admin Contact</span>
+              <span className="text-[14px] text-[var(--text-muted)] font-bold">Primary Admin Contact</span>
               <span className="font-semibold text-neutral-800">{startup.contactEmail}</span>
             </div>
             <div className="flex flex-col gap-1 p-2.5 bg-neutral-50 rounded border border-neutral-100">
-              <span className="text-[14px] text-[var(--text-muted)] font-bold uppercase">Startup Tier</span>
+              <span className="text-[14px] text-[var(--text-muted)] font-bold">Startup Tier</span>
               <span className="font-semibold text-neutral-800">{startup.tier}</span>
             </div>
             <div className="flex flex-col gap-1 p-2.5 bg-neutral-50 rounded border border-neutral-100">
-              <span className="text-[14px] text-[var(--text-muted)] font-bold uppercase">Active Team Members</span>
+              <span className="text-[14px] text-[var(--text-muted)] font-bold">Active Team Members</span>
               <span className="font-semibold text-neutral-800">{startup.employees} Employees</span>
             </div>
           </div>
@@ -158,17 +158,15 @@ export function RedemptionLedgerModal({ deals, audits, open, onOpenChange }: Red
               <Table>
                 <TableHeader className="bg-neutral-50">
                   <TableRow>
-                    <TableHead className="w-[120px] text-[14px] font-bold uppercase tracking-wider text-[var(--text-muted)] py-2 px-3">Provider</TableHead>
-                    <TableHead className="text-[14px] font-bold uppercase tracking-wider text-[var(--text-muted)] py-2 px-3">Value</TableHead>
-                    <TableHead className="w-[120px] text-[14px] font-bold uppercase tracking-wider text-[var(--text-muted)] py-2 px-3">Code</TableHead>
-                    <TableHead className="w-[100px] text-[14px] font-bold uppercase tracking-wider text-[var(--text-muted)] py-2 px-3">Status</TableHead>
-                    <TableHead className="w-[80px] text-[14px] font-bold uppercase tracking-wider text-[var(--text-muted)] py-2 px-3 text-right">Action</TableHead>
+                    <TableHead className="w-[150px] text-[14px] font-bold text-[var(--text-muted)] py-2 px-3">Company</TableHead>
+                    <TableHead className="text-[14px] font-bold text-[var(--text-muted)] py-2 px-3">Value</TableHead>
+                    <TableHead className="w-[120px] text-[14px] font-bold text-[var(--text-muted)] py-2 px-3">Status</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {syncedAudits.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={5} className="text-center py-6 text-[14px] text-[var(--text-muted)]">
+                      <TableCell colSpan={3} className="text-center py-6 text-[14px] text-[var(--text-muted)]">
                         No vouchers claimed yet.
                       </TableCell>
                     </TableRow>
@@ -176,7 +174,8 @@ export function RedemptionLedgerModal({ deals, audits, open, onOpenChange }: Red
                     syncedAudits.map((audit) => (
                       <TableRow
                         key={audit.id}
-                        className={`border-t border-[var(--border-subtle)] transition-colors hover:bg-[var(--surface-hover)] ${
+                        onClick={() => setSelectedAuditId(audit.id)}
+                        className={`border-t border-[var(--border-subtle)] transition-colors hover:bg-[var(--surface-hover)] cursor-pointer ${
                           selectedAuditId === audit.id ? 'bg-[var(--surface-secondary)]/50 font-bold' : ''
                         }`}
                       >
@@ -187,23 +186,9 @@ export function RedemptionLedgerModal({ deals, audits, open, onOpenChange }: Red
                           {audit.value}
                         </TableCell>
                         <TableCell className="py-2.5 px-3 text-[14px]">
-                          <code className="bg-neutral-100 px-1 py-0.5 rounded font-mono text-[14px] text-neutral-900">
-                            {audit.claimCode}
-                          </code>
-                        </TableCell>
-                        <TableCell className="py-2.5 px-3 text-[14px]">
                           <Badge color={getStatusBadgeColor(audit.status)} className="h-4 text-[14px] px-1.5">
                             {getStatusLabel(audit.status)}
                           </Badge>
-                        </TableCell>
-                        <TableCell className="py-2.5 px-3 text-right">
-                          <button
-                            type="button"
-                            onClick={() => setSelectedAuditId(audit.id)}
-                            className="px-2 py-0.5 text-[14px] font-bold border border-neutral-300 hover:border-black rounded cursor-pointer transition-colors"
-                          >
-                            Logs
-                          </button>
                         </TableCell>
                       </TableRow>
                     ))
@@ -218,7 +203,7 @@ export function RedemptionLedgerModal({ deals, audits, open, onOpenChange }: Red
             {activeAudit ? (
               <div className="flex flex-col gap-3.5">
                 <div>
-                  <h4 className="text-[14px] font-bold text-neutral-500 uppercase tracking-wider">
+                  <h4 className="text-[13px] font-bold text-neutral-500">
                     Redemption Audit Logs
                   </h4>
                   <p className="text-[14px] font-bold text-neutral-900 mt-0.5">

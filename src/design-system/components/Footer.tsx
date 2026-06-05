@@ -82,7 +82,7 @@ export function Footer({
         <div className="col-span-3 grid grid-cols-3 gap-6">
           {columns.map((column, index) => (
             <div key={`${column.title}-${index}`} className="flex flex-col gap-3">
-              <span className="text-[var(--text-xs)] font-[var(--font-semibold)] text-[var(--text-primary)] uppercase tracking-[var(--tracking-eyebrow)]">
+              <span className="text-[var(--text-xs)] font-[var(--font-semibold)] text-[var(--text-primary)]">
                 {column.title}
               </span>
               <ul className="flex flex-col gap-2">

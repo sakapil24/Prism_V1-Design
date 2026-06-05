@@ -41,9 +41,9 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
 
       {/* 2. Four KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 animate-slideInUp stagger-1">
-        <Card className="!bg-white border border-[var(--border-subtle)] p-5 flex flex-col justify-between h-36 shadow-sm">
+        <Card className="!bg-white border border-[var(--border-subtle)] p-5 flex flex-col justify-between h-full shadow-sm rounded-xl">
           <div>
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+            <span className="text-[11.5px] font-bold text-[var(--text-muted)]">
               Claimed Savings
             </span>
             <div className="text-2xl font-extrabold text-[var(--text-primary)] mt-2">
@@ -51,15 +51,15 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
             </div>
           </div>
           <div className="flex">
-            <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-bold border rounded uppercase tracking-wider bg-[#E1ECF7] text-[#2D5DA0] border-[#B0C8E2]">
-              {savingPercentage}% of pool
+            <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-bold border rounded bg-[#E1ECF7] text-[#2D5DA0] border-[#B0C8E2]">
+              {savingPercentage}% of Pool
             </span>
           </div>
         </Card>
 
-        <Card className="!bg-white border border-[var(--border-subtle)] p-5 flex flex-col justify-between h-36 shadow-sm">
+        <Card className="!bg-white border border-[var(--border-subtle)] p-5 flex flex-col justify-between h-full shadow-sm rounded-xl">
           <div>
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+            <span className="text-[11.5px] font-bold text-[var(--text-muted)]">
               Unclaimed Credits Pool
             </span>
             <div className="text-2xl font-extrabold text-[var(--text-primary)] mt-2">
@@ -67,15 +67,15 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
             </div>
           </div>
           <div className="flex">
-            <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-bold border rounded uppercase tracking-wider bg-[var(--surface-secondary)] text-[var(--text-secondary)] border-[var(--border-subtle)]">
-              {unclaimedDealsCount} {unclaimedDealsCount === 1 ? 'deal' : 'deals'} left
+            <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-bold border rounded bg-[var(--surface-secondary)] text-[var(--text-secondary)] border-[var(--border-subtle)]">
+              {unclaimedDealsCount} {unclaimedDealsCount === 1 ? 'Deal' : 'Deals'} Left
             </span>
           </div>
         </Card>
 
-        <Card className="!bg-white border border-[var(--border-subtle)] p-5 flex flex-col justify-between h-36 shadow-sm">
+        <Card className="!bg-white border border-[var(--border-subtle)] p-5 flex flex-col justify-between h-full shadow-sm rounded-xl">
           <div>
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+            <span className="text-[11.5px] font-bold text-[var(--text-muted)]">
               Active Utilizations
             </span>
             <div className="text-2xl font-extrabold text-[var(--text-primary)] mt-2">
@@ -83,15 +83,15 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
             </div>
           </div>
           <div className="flex">
-            <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-bold border rounded uppercase tracking-wider bg-[#E4F1EC] text-[#1F8056] border-[#A8D2BD]">
-              ✓ ACTIVE
+            <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-bold border rounded bg-[#E4F1EC] text-[#1F8056] border-[#A8D2BD]">
+              ✓ Active
             </span>
           </div>
         </Card>
 
-        <Card className="!bg-white border border-[var(--border-subtle)] p-5 flex flex-col justify-between h-36 shadow-sm">
+        <Card className="!bg-white border border-[var(--border-subtle)] p-5 flex flex-col justify-between h-full shadow-sm rounded-xl">
           <div>
-            <span className="text-[11px] font-bold uppercase tracking-wider text-[var(--text-muted)]">
+            <span className="text-[11.5px] font-bold text-[var(--text-muted)]">
               Awaiting VC Review
             </span>
             <div className="text-2xl font-extrabold text-[var(--text-primary)] mt-2">
@@ -99,8 +99,8 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
             </div>
           </div>
           <div className="flex">
-            <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-bold border rounded uppercase tracking-wider bg-[#F8EDD2] text-[#B27316] border-[#E0C285]">
-              PENDING REVIEW
+            <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-bold border rounded bg-[#F8EDD2] text-[#B27316] border-[#E0C285]">
+              Pending Review
             </span>
           </div>
         </Card>
@@ -109,7 +109,7 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
       {/* 3. Recommended Credits Section */}
       <div className="flex flex-col gap-4 animate-slideInUp stagger-2">
         <div>
-          <h2 className="text-[16px] font-bold text-[var(--text-primary)] uppercase tracking-wide">
+          <h2 className="text-[16px] font-bold text-[var(--text-primary)]">
             Recommended Credits to Claim
           </h2>
           <p className="text-[13.5px] text-[var(--text-muted)] mt-1 font-normal leading-relaxed">
@@ -122,29 +122,29 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
             <Card
               key={deal.id}
               onClick={() => onViewDeal(deal.id)}
-              className="relative flex flex-col justify-between hover:shadow-[var(--shadow-md)] hover:-translate-y-0.5 transition-all cursor-pointer border border-[var(--border-subtle)] !bg-white rounded-[12px] p-4 h-48"
+              className="relative flex flex-col justify-between hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer border border-[var(--border-subtle)] bg-white rounded-xl p-5 h-full"
             >
               {deal.isNew && (
-                <span className="absolute -top-1.5 -right-1.5 px-2.5 py-0.5 text-[10px] font-bold bg-[#D97706] text-white rounded-full uppercase tracking-wider shadow-sm select-none z-10">
+                <span className="absolute -top-1.5 -right-1.5 px-2.5 py-0.5 text-[10px] font-bold bg-[#D97706] text-white rounded-full shadow-sm select-none z-10">
                   New
                 </span>
               )}
-              <div>
+              <div className="flex-1 flex flex-col">
                 <div className="flex justify-between items-start gap-2">
-                  <CompanyLogo src={deal.logoUrl} name={deal.vendorName} className="!w-12 !h-12 shrink-0" />
+                  <CompanyLogo src={deal.logoUrl} name={deal.vendorName} className="!w-12 !h-12 shrink-0 bg-white p-1 border border-neutral-100 shadow-sm rounded-lg" />
                 </div>
-                <div className="mt-2.5">
-                  <h3 className="text-[16px] font-extrabold text-[var(--text-primary)] leading-none mt-1.5">
+                <div className="mt-3">
+                  <h3 className="text-[15px] font-extrabold text-neutral-900 leading-tight">
                     {deal.vendorName}
                   </h3>
-                  <p className="text-[14px] text-[var(--text-muted)] mt-2 line-clamp-2 leading-relaxed">
+                  <p className="text-[13px] text-neutral-600 mt-2 line-clamp-2 leading-relaxed font-normal">
                     {deal.description}
                   </p>
                 </div>
               </div>
               
               <div className="flex justify-between items-center pt-3 border-t border-neutral-100 mt-3 shrink-0">
-                <span className="text-[14px] font-bold text-[var(--text-primary)]">
+                <span className="text-[14px] font-bold text-neutral-900">
                   {deal.value}
                 </span>
 
@@ -159,12 +159,12 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
                       e.stopPropagation();
                       onClaimDeal(deal.id);
                     }}
-                    className="px-5 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[14px] rounded-full cursor-pointer transition-colors shadow-sm text-center"
+                    className="px-5 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[13.5px] rounded-full cursor-pointer transition-colors shadow-sm text-center border-none"
                   >
                     <span>Claim</span>
                   </button>
                 ) : (
-                  <Badge color="amber" className="px-5 py-2 !rounded-full !h-auto font-bold text-[14px]">Claimed</Badge>
+                  <Badge color="amber" className="px-5 py-2 !rounded-full !h-auto font-bold text-[13.5px]">Claimed</Badge>
                 )}
               </div>
             </Card>
@@ -175,7 +175,7 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
       {/* 4. Recommended Service Partners Section */}
       <div className="flex flex-col gap-4 animate-slideInUp stagger-3">
         <div>
-          <h2 className="text-[16px] font-bold text-[var(--text-primary)] uppercase tracking-wide">
+          <h2 className="text-[16px] font-bold text-[var(--text-primary)]">
             Recommended Service Partners
           </h2>
           <p className="text-[13.5px] text-[var(--text-muted)] mt-1 font-normal leading-relaxed">
@@ -185,14 +185,15 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {mockVendors.filter(v => v.vcTrusted).slice(0, 3).map((vendor) => (
-            <Card key={vendor.id} className="p-4 border border-[var(--border-subtle)] bg-white rounded-[12px] flex items-start gap-3.5 shadow-sm hover:shadow-md transition-all">
-              <CompanyLogo src={vendor.logoUrl} name={vendor.name} className="!w-10 !h-10 shrink-0 mt-0.5" />
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <h3 className="text-[14px] font-extrabold text-[var(--text-primary)] leading-none">
-                    {vendor.name}
-                  </h3>
-                  <span className="inline-flex items-center px-1.5 py-0.5 text-[8px] font-bold border rounded uppercase tracking-wider bg-emerald-50 text-emerald-800 border-emerald-200 gap-0.5 select-none shrink-0 scale-90 origin-left">
+            <Card
+              key={vendor.id}
+              onClick={() => onNavigate('vendors')}
+              className="relative flex flex-col justify-between hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer border border-[var(--border-subtle)] bg-white rounded-xl p-5 h-full"
+            >
+              <div className="flex-1 flex flex-col">
+                <div className="flex justify-between items-start gap-2">
+                  <CompanyLogo src={vendor.logoUrl} name={vendor.name} className="!w-12 !h-12 shrink-0 bg-white p-1 border border-neutral-100 shadow-sm rounded-lg" />
+                  <span className="inline-flex items-center px-1.5 py-0.5 text-[8.5px] font-bold border rounded bg-[#E4F1EC] text-[#1F8056] border-[#A8D2BD] gap-0.5 select-none shrink-0">
                     <svg width="8" height="8" viewBox="0 0 24 24" fill="none" className="shrink-0">
                       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="#10B981" />
                       <path d="m9 11 2 2 4-4" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
@@ -200,12 +201,23 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
                     <span>Verified</span>
                   </span>
                 </div>
-                <p className="text-[11px] font-bold text-neutral-500 mt-1">
+                <div className="mt-3">
+                  <h3 className="text-[15px] font-extrabold text-neutral-900 leading-tight">
+                    {vendor.name}
+                  </h3>
+                  <p className="text-[13px] text-neutral-600 mt-2 line-clamp-2 leading-relaxed font-normal">
+                    {vendor.description}
+                  </p>
+                </div>
+              </div>
+              
+              <div className="flex justify-between items-center pt-3 border-t border-neutral-100 mt-3 shrink-0">
+                <span className="text-[12.5px] font-bold text-neutral-500">
                   {vendor.category}
-                </p>
-                <p className="text-[12.5px] text-[var(--text-muted)] mt-2 line-clamp-2 leading-relaxed">
-                  {vendor.description}
-                </p>
+                </span>
+                <span className="text-[12.5px] font-bold text-neutral-900 hover:text-[#C8102E] transition-colors">
+                  View Profile →
+                </span>
               </div>
             </Card>
           ))}
@@ -214,7 +226,7 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
         <div className="flex justify-center mt-1">
           <button
             onClick={() => onNavigate('vendors')}
-            className="px-6 py-2 bg-white hover:bg-neutral-50 border border-neutral-300 hover:border-black text-black font-extrabold text-[12.5px] rounded-lg transition-colors cursor-pointer text-center shadow-sm"
+            className="px-6 py-2 bg-white hover:bg-neutral-50 border border-[var(--border-subtle)] hover:border-black text-black font-extrabold text-[12.5px] rounded-lg transition-colors cursor-pointer text-center shadow-sm"
           >
             Browse Full Partner Directory
           </button>
@@ -224,7 +236,7 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
       {/* 5. Claimed Deals Ledger Table */}
       <div className="flex flex-col gap-4 animate-slideInUp mt-2">
         <div>
-          <h2 className="text-[16px] font-bold text-[var(--text-primary)] uppercase tracking-wide">
+          <h2 className="text-[16px] font-bold text-[var(--text-primary)]">
             Claimed Benefits Ledger
           </h2>
           <p className="text-[13.5px] text-[var(--text-muted)] mt-1 font-normal leading-relaxed">
@@ -236,17 +248,16 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
           <table className="w-full text-left border-collapse text-[13px]">
             <thead>
               <tr className="bg-neutral-50 border-b border-neutral-200 font-bold text-neutral-800 select-none">
-                <th className="p-4 pl-6">Vendor</th>
+                <th className="p-4 pl-6">Company</th>
                 <th className="p-4">Value</th>
                 <th className="p-4">Claimed Date</th>
-                <th className="p-4">Status</th>
-                <th className="p-4 pr-6 text-right">Actions / Coupon Code</th>
+                <th className="p-4 pr-6">Status</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-neutral-100 font-medium text-[var(--text-primary)]">
               {claimedDeals.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="p-8 text-center text-[var(--text-muted)] italic">
+                  <td colSpan={4} className="p-8 text-center text-[var(--text-muted)] italic">
                     You have not claimed any benefits yet.
                   </td>
                 </tr>
@@ -261,10 +272,7 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
                       <td className="p-4 pl-6">
                         <div className="flex items-center gap-3">
                           <CompanyLogo src={deal.logoUrl} name={deal.vendorName} className="!w-9 !h-9 p-0.5 border border-neutral-100 bg-white rounded-lg shadow-sm" />
-                          <div>
-                            <span className="block font-bold text-neutral-900 leading-none">{deal.vendorName}</span>
-                            <span className="block text-[11.5px] text-neutral-500 font-normal mt-1">{deal.title}</span>
-                          </div>
+                          <span className="font-bold text-neutral-900 leading-none">{deal.vendorName}</span>
                         </div>
                       </td>
                       <td className="p-4 font-bold text-neutral-900">
@@ -273,41 +281,21 @@ export function DashboardView({ startup, deals, audits, onNavigate, onClaimDeal,
                       <td className="p-4 text-neutral-500 font-normal">
                         {deal.claimedDate || '—'}
                       </td>
-                      <td className="p-4">
+                      <td className="p-4 pr-6">
                         {isClaimed && (
-                          <span className="inline-flex px-2 py-0.5 text-[9.5px] font-extrabold border rounded bg-[#F8EDD2] text-[#B27316] border-[#E0C285] uppercase tracking-wide">
+                          <span className="inline-flex px-2 py-0.5 text-[9.5px] font-extrabold border rounded bg-[#F8EDD2] text-[#B27316] border-[#E0C285]">
                             Awaiting Review
                           </span>
                         )}
                         {isApproved && (
-                          <span className="inline-flex px-2 py-0.5 text-[9.5px] font-extrabold border rounded bg-[#E1ECF7] text-[#2D5DA0] border-[#B0C8E2] uppercase tracking-wide">
+                          <span className="inline-flex px-2 py-0.5 text-[9.5px] font-extrabold border rounded bg-[#E1ECF7] text-[#2D5DA0] border-[#B0C8E2]">
                             Approved
                           </span>
                         )}
                         {isActive && (
-                          <span className="inline-flex px-2 py-0.5 text-[9.5px] font-extrabold border rounded bg-[#E4F1EC] text-[#1F8056] border-[#A8D2BD] uppercase tracking-wide">
+                          <span className="inline-flex px-2 py-0.5 text-[9.5px] font-extrabold border rounded bg-[#E4F1EC] text-[#1F8056] border-[#A8D2BD]">
                             ✓ Active
                           </span>
-                        )}
-                      </td>
-                      <td className="p-4 pr-6 text-right">
-                        {deal.claimCode ? (
-                          <button
-                            onClick={() => {
-                              navigator.clipboard.writeText(deal.claimCode || '');
-                              alert('Voucher coupon code copied to clipboard!');
-                            }}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[var(--surface-secondary)] hover:bg-neutral-100 text-neutral-950 border border-[var(--border-subtle)] rounded-lg cursor-pointer transition-all font-mono text-[12px] font-extrabold shadow-sm"
-                            title="Copy coupon code"
-                          >
-                            <span>{deal.claimCode}</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-neutral-500 shrink-0">
-                              <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
-                              <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
-                            </svg>
-                          </button>
-                        ) : (
-                          <span className="text-neutral-400 italic text-[12px]">No code</span>
                         )}
                       </td>
                     </tr>

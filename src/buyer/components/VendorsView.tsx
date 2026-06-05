@@ -263,11 +263,11 @@ export function VendorsView({ vendors }: VendorsViewProps) {
                 {/* Pre-filled info row */}
                 <div className="grid grid-cols-2 gap-3 text-[14px] border-b border-[var(--border-subtle)] pb-3">
                   <div>
-                    <span className="text-[14px] text-[var(--text-muted)] block font-bold uppercase">Referring VC</span>
+                    <span className="text-[14px] text-[var(--text-muted)] block font-bold">Referring VC</span>
                     <span className="font-semibold text-neutral-800">Accel India Portfolio Services</span>
                   </div>
                   <div>
-                    <span className="text-[14px] text-[var(--text-muted)] block font-bold uppercase">Startup Client</span>
+                    <span className="text-[14px] text-[var(--text-muted)] block font-bold">Startup Client</span>
                     <span className="font-semibold text-neutral-800">Aurelia Health</span>
                   </div>
                 </div>

@@ -723,7 +723,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
           {/* Product Screenshots Gallery */}
           {selectedDeal.screenshots && selectedDeal.screenshots.length > 0 && (
             <div className="mt-4 flex flex-col gap-3.5">
-              <span className="text-[12px] font-extrabold text-neutral-500 uppercase tracking-wider select-none">
+              <span className="text-[12px] font-extrabold text-neutral-500 select-none">
                 Product Screenshots
               </span>
               
@@ -745,7 +745,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                   
                   {/* Right: Counter */}
                   <div className="w-12 shrink-0 flex justify-end">
-                    <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wide">
+                    <span className="text-[10px] font-bold text-neutral-400">
                       {activeScreenshotIdx + 1} / {selectedDeal.screenshots.length}
                     </span>
                   </div>
@@ -790,7 +790,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                   
                   {/* Click to Zoom Hint Overlay */}
                   <div className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 hover:opacity-100 duration-200 select-none">
-                    <span className="px-3 py-1 bg-black/80 text-white font-bold text-[10px] rounded-full shadow-lg flex items-center gap-1 border border-white/10 tracking-wide uppercase">
+                    <span className="px-3 py-1 bg-black/80 text-white font-bold text-[10px] rounded-full shadow-lg flex items-center gap-1 border border-white/10">
                       <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M8 11h6"/><path d="M11 8v6"/></svg>
                       <span>Click to Zoom</span>
                     </span>
@@ -938,11 +938,11 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2.5 border-t border-neutral-100">
                     <div>
-                      <span className="block text-[11.5px] font-bold text-emerald-800 uppercase tracking-wider">Pros</span>
+                      <span className="block text-[11.5px] font-bold text-emerald-800">Pros</span>
                       <span className="block text-black mt-0.5 font-normal">{rev.pros}</span>
                     </div>
                     <div>
-                      <span className="block text-[11.5px] font-bold text-rose-800 uppercase tracking-wider">Cons</span>
+                      <span className="block text-[11.5px] font-bold text-rose-800">Cons</span>
                       <span className="block text-black mt-0.5 font-normal">{rev.cons}</span>
                     </div>
                   </div>
@@ -1093,7 +1093,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
               <button
                 key={opt.id}
                 onClick={() => setLayoutOption(opt.id as any)}
-                className={`px-3 py-1.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider transition-all cursor-pointer ${
+                className={`px-3 py-1.5 rounded-md text-[11px] font-extrabold transition-all cursor-pointer ${
                   layoutOption === opt.id
                     ? 'bg-white text-black shadow-sm'
                     : 'text-neutral-500 hover:text-neutral-900 hover:bg-neutral-50/50'
@@ -1137,13 +1137,13 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                     </div>
                     
                     {selectedDeal.status !== 'available' && (
-                      <span className="px-2 py-0.5 text-[9px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200 rounded uppercase tracking-wider select-none animate-fadeIn">
+                      <span className="px-2 py-0.5 text-[9px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200 rounded select-none animate-fadeIn">
                         Claimed
                       </span>
                     )}
 
                     {selectedDeal.isNew && (
-                      <span className="px-2 py-0.5 text-[9px] font-extrabold bg-[#D97706] text-white rounded uppercase tracking-wider select-none">
+                      <span className="px-2 py-0.5 text-[9px] font-extrabold bg-[#D97706] text-white rounded select-none">
                         New
                       </span>
                     )}
@@ -1236,7 +1236,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                       <div className="flex items-center gap-2.5">
                         <h1 className="text-xl md:text-2xl font-extrabold text-neutral-900 leading-none truncate">{selectedDeal.vendorName}</h1>
                         {selectedDeal.status !== 'available' && (
-                          <span className="px-1.5 py-0.5 text-[8.5px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200 rounded uppercase tracking-wider shrink-0">Claimed</span>
+                          <span className="px-1.5 py-0.5 text-[8.5px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200 rounded shrink-0">Claimed</span>
                         )}
                       </div>
                       <p className="text-[13px] font-medium text-neutral-600 mt-1.5 truncate">{selectedDeal.title}</p>
@@ -1308,12 +1308,12 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                       {selectedDeal.vendorName}
                     </h1>
 
-                    <span className="px-2 py-0.5 text-[9px] font-extrabold bg-[#AB342B] text-white rounded uppercase tracking-wider select-none">
+                    <span className="px-2 py-0.5 text-[9px] font-extrabold bg-[#AB342B] text-white rounded select-none">
                       {selectedDeal.category} Benefit
                     </span>
 
                     {selectedDeal.status !== 'available' && (
-                      <span className="px-2 py-0.5 text-[9px] font-extrabold bg-emerald-950/80 text-emerald-400 border border-emerald-900 rounded uppercase tracking-wider select-none animate-fadeIn">
+                      <span className="px-2 py-0.5 text-[9px] font-extrabold bg-emerald-950/80 text-emerald-400 border border-emerald-900 rounded select-none animate-fadeIn">
                         ✓ Claimed
                       </span>
                     )}
@@ -1334,7 +1334,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                 ) : selectedDeal.status === 'available' ? (
                   <button
                     onClick={() => handleClaimClick(selectedDeal.id)}
-                    className="inline-flex px-5 py-2.5 bg-[#AB342B] hover:bg-[#810100] text-white font-extrabold text-[13.5px] rounded-lg cursor-pointer transition-colors shadow-md items-center uppercase tracking-wider"
+                    className="inline-flex px-5 py-2.5 bg-[#AB342B] hover:bg-[#810100] text-white font-extrabold text-[13.5px] rounded-lg cursor-pointer transition-colors shadow-md items-center"
                   >
                     <span>Claim Benefit</span>
                   </button>
@@ -1410,7 +1410,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
               {/* SDK Source Link - github, avoid copy-pasting code */}
               <div className="flex items-center justify-between p-3.5 bg-neutral-900 border border-neutral-800 rounded-xl">
                 <div className="min-w-0">
-                  <span className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider block">Open Source Repository</span>
+                  <span className="text-[11px] font-bold text-neutral-400 block">Open Source Repository</span>
                   <span className="font-mono text-[12px] text-neutral-300 truncate block mt-0.5">
                     {selectedDeal.githubUrl?.replace('https://', '') || 'github.com/prism-sdk/core'}
                   </span>
@@ -1430,7 +1430,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
               <div className="flex flex-col border border-neutral-800 rounded-xl overflow-hidden bg-neutral-900/50">
                 <div className="flex items-center justify-between px-3 py-2 bg-neutral-900 border-b border-neutral-800 text-neutral-400 font-mono text-[11px]">
                   <span>prism.config.ts</span>
-                  <span className="text-emerald-500 font-bold uppercase tracking-wider text-[10px]">active sandbox</span>
+                  <span className="text-emerald-500 font-bold text-[10px]">Active Sandbox</span>
                 </div>
                 <pre className="p-4 font-mono text-[11.5px] leading-relaxed text-neutral-300 overflow-x-auto select-text">
                   <span className="text-neutral-500">// Import pre-compiled Accel integration wrappers</span>{"\n"}
@@ -1514,7 +1514,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
               {/* Caption/Control Bar at the bottom */}
               <div className="bg-neutral-900 border-t border-neutral-800 px-6 py-4 flex items-center justify-between gap-4 select-none">
                 <div className="flex-1">
-                  <span className="text-[11px] text-neutral-400 block uppercase tracking-wider font-bold">Screenshot {activeScreenshotIdx + 1} of {selectedDeal.screenshots.length}</span>
+                  <span className="text-[11px] text-neutral-400 block font-bold">Screenshot {activeScreenshotIdx + 1} of {selectedDeal.screenshots.length}</span>
                   <span className="text-[13.5px] text-white block mt-1 font-medium">{selectedDeal.screenshots[activeScreenshotIdx].caption}</span>
                 </div>
                 
@@ -1688,7 +1688,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                 className="relative flex flex-col justify-between hover:shadow-[var(--shadow-md)] hover:-translate-y-0.5 transition-all cursor-pointer border border-[var(--border-subtle)] !bg-white rounded-[12px] p-4"
               >
                 {deal.isNew && (
-                  <span className="absolute -top-1.5 -right-1.5 px-2.5 py-0.5 text-[10px] font-bold bg-[#D97706] text-white rounded-full uppercase tracking-wider shadow-sm select-none z-10">
+                  <span className="absolute -top-1.5 -right-1.5 px-2.5 py-0.5 text-[10px] font-bold bg-[#D97706] text-white rounded-full shadow-sm select-none z-10">
                     New
                   </span>
                 )}
@@ -1769,7 +1769,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
               className="relative flex items-center justify-between p-3 border border-[var(--border-subtle)] hover:border-black rounded-[12px] !bg-white hover:shadow-[0_2px_12px_rgba(0,0,0,0.04)] transition-all cursor-pointer"
             >
               {deal.isNew && (
-                <span className="absolute -top-1.5 -right-1.5 px-2.5 py-0.5 text-[10px] font-bold bg-[#D97706] text-white rounded-full uppercase tracking-wider shadow-sm select-none z-10">
+                <span className="absolute -top-1.5 -right-1.5 px-2.5 py-0.5 text-[10px] font-bold bg-[#D97706] text-white rounded-full shadow-sm select-none z-10">
                   New
                 </span>
               )}

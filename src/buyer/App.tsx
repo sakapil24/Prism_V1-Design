@@ -253,7 +253,7 @@ export default function App() {
               <span className="text-[13.5px] font-extrabold text-neutral-900 leading-none">
                 Accel India
               </span>
-              <span className="text-[9.5px] text-neutral-500 font-bold uppercase tracking-wider mt-0.5">
+              <span className="text-[9.5px] text-neutral-500 font-bold mt-0.5">
                 Founder Network
               </span>
             </div>
