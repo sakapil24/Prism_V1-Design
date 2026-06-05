@@ -727,35 +727,28 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                 {selectedDeal.title} — Claim exclusive startup pricing
               </p>
 
-              {/* Value displaying prominently */}
-              <div className="mt-3 flex flex-col items-start gap-2">
-                <span className="text-xl font-extrabold text-neutral-900">
-                  {selectedDeal.value}
-                </span>
-
-                {/* Primary Claim Action Button below that value */}
-                <div className="mt-1">
-                  {selectedDeal.isLocked ? (
-                    <span className="inline-flex px-4 py-2 bg-neutral-50 text-neutral-450 border border-neutral-200 text-[12.5px] font-bold rounded-lg items-center gap-1.5 select-none shadow-sm">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="shrink-0"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                      <span>Benefit Locked</span>
-                    </span>
-                  ) : selectedDeal.status === 'available' ? (
-                    <button
-                      onClick={() => handleClaimClick(selectedDeal.id)}
-                      className="inline-flex px-4 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold text-[12.5px] rounded-lg cursor-pointer transition-colors shadow-sm items-center"
-                    >
-                      <span>Claim Benefit</span>
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => setRedemptionDealId(selectedDeal.id)}
-                      className="inline-flex px-4 py-2 bg-white border border-neutral-200 hover:border-neutral-300 hover:bg-neutral-50 text-neutral-800 text-[12.5px] font-bold rounded-lg items-center cursor-pointer transition-colors shadow-sm"
-                    >
-                      <span>View Claim</span>
-                    </button>
-                  )}
-                </div>
+              {/* Primary Claim Action Button directly below short summary */}
+              <div className="mt-4">
+                {selectedDeal.isLocked ? (
+                  <span className="inline-flex px-4 py-2 bg-neutral-50 text-neutral-450 border border-neutral-200 text-[12.5px] font-bold rounded-lg items-center gap-1.5 select-none shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="shrink-0"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <span>Benefit Locked</span>
+                  </span>
+                ) : selectedDeal.status === 'available' ? (
+                  <button
+                    onClick={() => handleClaimClick(selectedDeal.id)}
+                    className="inline-flex px-4 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold text-[12.5px] rounded-lg cursor-pointer transition-colors shadow-sm items-center"
+                  >
+                    <span>Claim Benefit</span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setRedemptionDealId(selectedDeal.id)}
+                    className="inline-flex px-4 py-2 bg-white border border-neutral-200 hover:border-neutral-300 hover:bg-neutral-50 text-neutral-800 text-[12.5px] font-bold rounded-lg items-center cursor-pointer transition-colors shadow-sm"
+                  >
+                    <span>View Claim</span>
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -796,8 +789,38 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                   {/* Left Column (col-span-2) */}
                   <div className="lg:col-span-2 flex flex-col gap-0">
-                    {/* Section 1: Overview & Eligibility */}
-                    <div id="overview-sec" className="pb-6 border-b border-neutral-100 flex flex-col gap-4 scroll-mt-24">
+                    {/* Section 1: Eligibility Prerequisites */}
+                    <div id="claiming-sec" className="pb-6 border-b border-neutral-100 flex flex-col gap-4 scroll-mt-24 select-none">
+                      <h3 className="text-lg font-bold text-neutral-900">Eligibility Prerequisites</h3>
+                      <div className="text-[14px] leading-relaxed text-neutral-800">
+                        <ul className="list-none flex flex-col gap-2.5">
+                          {selectedDeal.id === 'deal-slack' ? (
+                            <>
+                              <li className="flex items-start gap-2">
+                                <span className="text-neutral-400 shrink-0 select-none">•</span>
+                                <span>Startups with up to 200 employees.</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <span className="text-neutral-400 shrink-0 select-none">•</span>
+                                <span>Upgrades to paid Slack Pro or Business+ annual plans.</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <span className="text-neutral-400 shrink-0 select-none">•</span>
+                                <span>Cannot be combined with existing active promotions.</span>
+                              </li>
+                            </>
+                          ) : (
+                            <li className="flex items-start gap-2">
+                              <span className="text-neutral-400 shrink-0 select-none">•</span>
+                              <span>{details.eligibilitySummary}</span>
+                            </li>
+                          )}
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* Section 2: Overview */}
+                    <div id="overview-sec" className="py-6 border-b border-neutral-100 flex flex-col gap-4 scroll-mt-24">
                       <h3 className="text-lg font-bold text-neutral-900">What is {selectedDeal.vendorName}?</h3>
                       <p className="text-[14px] text-black leading-relaxed font-normal">
                         {details.whatIsPlatform}
@@ -1032,7 +1055,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                   {/* Right Column (Sticky Widgets) */}
                   <div className="lg:col-span-1 flex flex-col gap-6 lg:sticky lg:top-14 h-fit">
                     {/* Platform Summary & Offer Details Card */}
-                    <div className="p-6 border border-neutral-200 bg-white rounded-2xl flex flex-col gap-5 shadow-sm select-none">
+                    <div className="p-6 border border-neutral-200 bg-neutral-50 rounded-2xl flex flex-col gap-5 shadow-md select-none">
                       <div className="flex items-center gap-3.5 pb-4 border-b border-neutral-100">
                         <CompanyLogo src={selectedDeal.logoUrl} name={selectedDeal.vendorName} size="lg" className="!w-12 !h-12 p-1.5 bg-white shadow-sm shrink-0" />
                         <div>
@@ -1085,37 +1108,6 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                         )}
                       </div>
                     </div>
-
-                    {/* Eligibility Prerequisites Card */}
-                    <div className="p-6 border border-neutral-200 bg-white rounded-2xl flex flex-col gap-4 shadow-sm select-none">
-                      <h4 className="text-[15px] font-bold text-neutral-900 leading-none">Eligibility Prerequisites</h4>
-                      <div className="text-[13.5px] leading-relaxed text-neutral-850">
-                        <ul className="list-none flex flex-col gap-2">
-                          {selectedDeal.id === 'deal-slack' ? (
-                            <>
-                              <li className="flex items-start gap-2">
-                                <span className="text-neutral-400 shrink-0 select-none">•</span>
-                                <span>Startups with up to 200 employees.</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <span className="text-neutral-400 shrink-0 select-none">•</span>
-                                <span>Upgrades to paid Slack Pro or Business+ annual plans.</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <span className="text-neutral-400 shrink-0 select-none">•</span>
-                                <span>Cannot be combined with existing active promotions.</span>
-                              </li>
-                            </>
-                          ) : (
-                            <li className="flex items-start gap-2">
-                              <span className="text-neutral-400 shrink-0 select-none">•</span>
-                              <span>{details.eligibilitySummary}</span>
-                            </li>
-                          )}
-                        </ul>
-                      </div>
-                    </div>
-
                   </div>
                 </div>
 
