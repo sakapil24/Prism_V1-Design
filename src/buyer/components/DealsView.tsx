@@ -671,8 +671,10 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
           </button>
         </div>
 
-        {/* Premium Visual Summary Hero Card */}
-        <div ref={heroRef} className="relative rounded-2xl bg-white text-neutral-900 p-6 border border-neutral-200 flex flex-col md:flex-row md:items-start justify-between gap-6 animate-scaleIn">
+        {/* White Card Container for Details */}
+        <div className="bg-white border border-[var(--border-subtle)] rounded-2xl p-6 md:p-8 shadow-sm flex flex-col gap-6 animate-scaleIn">
+          {/* Premium Visual Summary Hero Card */}
+          <div ref={heroRef} className="relative bg-white text-neutral-900 pb-6 border-b border-neutral-200 flex flex-col md:flex-row md:items-start justify-between gap-6">
           <div className="flex items-start gap-5 relative z-10 w-full">
             <CompanyLogo
               src={selectedDeal.logoUrl}
@@ -786,40 +788,9 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
                   {/* Left Column (col-span-2) */}
-                  <div className="lg:col-span-2 flex flex-col gap-8">
-                    {/* Section 5: Eligibility Prerequisites */}
-                    <div id="claiming-sec" className="py-6 border-b border-neutral-100 flex flex-col gap-4 scroll-mt-24">
-                      <h3 className="text-lg font-bold text-neutral-900">Eligibility Prerequisites</h3>
-                      
-                      <div className="flex flex-col gap-2.5 text-[13.5px] leading-relaxed">
-                        <ul className="list-none flex flex-col gap-2 text-neutral-850">
-                          {selectedDeal.id === 'deal-slack' ? (
-                            <>
-                              <li className="flex items-start gap-2">
-                                <span className="text-neutral-400 shrink-0 select-none">•</span>
-                                <span>Startups with up to 200 employees.</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <span className="text-neutral-400 shrink-0 select-none">•</span>
-                                <span>Upgrades to paid Slack Pro or Business+ annual plans.</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <span className="text-neutral-400 shrink-0 select-none">•</span>
-                                <span>Cannot be combined with existing active promotions.</span>
-                              </li>
-                            </>
-                          ) : (
-                            <li className="flex items-start gap-2">
-                              <span className="text-neutral-400 shrink-0 select-none">•</span>
-                              <span>{details.eligibilitySummary}</span>
-                            </li>
-                          )}
-                        </ul>
-                      </div>
-                    </div>
-
+                  <div className="lg:col-span-2 flex flex-col gap-0">
                     {/* Section 1: Overview & Eligibility */}
-                    <div id="overview-sec" className="py-6 border-b border-neutral-100 flex flex-col gap-4 scroll-mt-24">
+                    <div id="overview-sec" className="pb-6 border-b border-neutral-100 flex flex-col gap-4 scroll-mt-24">
                       <h3 className="text-lg font-bold text-neutral-900">What is {selectedDeal.vendorName}?</h3>
                       <p className="text-[14px] text-black leading-relaxed font-normal">
                         {details.whatIsPlatform}
@@ -1002,6 +973,36 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                       </div>
                     </div>
 
+                    {/* Eligibility Prerequisites Card */}
+                    <div className="p-6 border border-neutral-200 bg-white rounded-2xl flex flex-col gap-4 shadow-sm select-none">
+                      <h4 className="text-[15px] font-bold text-neutral-900 leading-none">Eligibility Prerequisites</h4>
+                      <div className="text-[13.5px] leading-relaxed text-neutral-850">
+                        <ul className="list-none flex flex-col gap-2">
+                          {selectedDeal.id === 'deal-slack' ? (
+                            <>
+                              <li className="flex items-start gap-2">
+                                <span className="text-neutral-400 shrink-0 select-none">•</span>
+                                <span>Startups with up to 200 employees.</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <span className="text-neutral-400 shrink-0 select-none">•</span>
+                                <span>Upgrades to paid Slack Pro or Business+ annual plans.</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <span className="text-neutral-400 shrink-0 select-none">•</span>
+                                <span>Cannot be combined with existing active promotions.</span>
+                              </li>
+                            </>
+                          ) : (
+                            <li className="flex items-start gap-2">
+                              <span className="text-neutral-400 shrink-0 select-none">•</span>
+                              <span>{details.eligibilitySummary}</span>
+                            </li>
+                          )}
+                        </ul>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
 
@@ -1096,6 +1097,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
               </div>
             );
           })()}
+        </div>
 
 
         </div>
