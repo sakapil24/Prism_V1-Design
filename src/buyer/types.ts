@@ -45,6 +45,7 @@ export interface Deal {
   programDetailsUrl?: string;
   githubUrl?: string;
   usageMetric?: string;
+  isLocked?: boolean;
 }
 
 export type VendorCategory = 'Legal' | 'Design' | 'Finance' | 'Development' | 'Marketing';

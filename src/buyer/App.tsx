@@ -1,7 +1,5 @@
 import * as React from 'react';
-import { AppShell, Sidebar, SidebarHeader, SidebarContent, SidebarFooter, SidebarNavItem, SidebarSectionLabel, Topbar } from '../design-system/layouts';
 import { Toaster, useToast, DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from '../design-system/components';
-import { PersonIcon, SettingsIcon, ExternalLinkIcon, CloseIcon } from '../design-system/icons';
 import { mockStartup, mockDeals, mockVendors, mockAudits } from './data/mockData';
 import { DashboardView } from './components/DashboardView';
 import { DealsView } from './components/DealsView';
@@ -23,10 +21,6 @@ export default function App() {
   const [profileOpen, setProfileOpen] = React.useState(false);
   const [ledgerOpen, setLedgerOpen] = React.useState(false);
 
-  // Mobile navigation drawer toggle
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false);
-
   // Core application state
   const [deals, setDeals] = React.useState<Deal[]>(mockDeals);
   const [audits, setAudits] = React.useState<ClaimAudit[]>(mockAudits);
@@ -34,6 +28,9 @@ export default function App() {
 
   // Selected deal for drawer view in deals tab
   const [focusedDealId, setFocusedDealId] = React.useState<string | null>(null);
+
+  // Scroll ref for main content scroll viewport
+  const mainContentRef = React.useRef<HTMLDivElement>(null);
 
   // Dynamically update statistics when states change
   React.useEffect(() => {
@@ -121,10 +118,17 @@ export default function App() {
     }));
   };
 
+  // Helper to scroll to top on tab changes
+  const handleNavClick = (view: 'dashboard' | 'deals' | 'vendors') => {
+    setCurrentView(view);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  };
+
   // Helper to navigate to deals tab and open a deal drawer directly
   const handleViewDeal = (dealId: string) => {
     setCurrentView('deals');
     setFocusedDealId(dealId);
+    window.scrollTo({ top: 0, behavior: 'instant' });
   };
 
   const navItems = [
@@ -165,8 +169,9 @@ export default function App() {
           strokeLinejoin="round"
           className="shrink-0"
         >
-          <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" />
-          <line x1="13" y1="5" x2="13" y2="19" />
+          <line x1="19" y1="5" x2="5" y2="19" />
+          <circle cx="6.5" cy="6.5" r="2.5" />
+          <circle cx="17.5" cy="17.5" r="2.5" />
         </svg>
       )
     },
@@ -235,162 +240,137 @@ export default function App() {
     );
   }
 
-  // Sidebar Layout node
-  const sidebarContent = (
-    <Sidebar collapsed={sidebarCollapsed}>
-      {/* Sidebar Header: Workspace selector at the top showing active team info */}
-      <SidebarHeader className={`border-b border-[var(--border-subtle)] flex items-center h-auto py-5 relative ${sidebarCollapsed ? "justify-center px-0" : "justify-between px-4"}`}>
-        <div className={`flex items-center min-w-0 ${sidebarCollapsed ? "justify-center w-full" : "gap-2.5"}`}>
-          <CompanyLogo src="https://logos.hunter.io/accel.com" name="Accel India" size="sm" className="!w-7 !h-7 !rounded-[var(--radius-md)] border-neutral-300" />
-          {!sidebarCollapsed && (
-            <div className="min-w-0 flex-1">
-              <span className="block text-[14px] font-extrabold text-[var(--text-primary)] truncate">
+  return (
+    <div className="min-h-screen w-full flex flex-col bg-white">
+      {/* Premium Top Navigation Bar */}
+      <header className="w-full border-b border-neutral-200 bg-white shrink-0 select-none">
+        <div className="w-full px-4 lg:px-6 h-16 flex items-center justify-between">
+          
+          {/* Left section: Accel India Branding */}
+          <div className="flex items-center gap-2.5">
+            <CompanyLogo src="https://logo.clearbit.com/accel.com" name="Accel India" size="sm" className="!w-7 !h-7" />
+            <div className="flex flex-col">
+              <span className="text-[13.5px] font-extrabold text-neutral-900 leading-none">
                 Accel India
               </span>
-              <div className="mt-0.5 min-w-0">
-                <span className="text-[11px] text-neutral-500 font-bold uppercase tracking-wider truncate">
-                  Founder Network
-                </span>
-              </div>
+              <span className="text-[9.5px] text-neutral-500 font-bold uppercase tracking-wider mt-0.5">
+                Founder Network
+              </span>
             </div>
-          )}
-        </div>
-        
-        {/* Toggle button */}
-        <button
-          onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-          className="hidden lg:flex absolute right-[-10px] top-6 z-30 w-5 h-5 items-center justify-center bg-white border border-[var(--border-subtle)] hover:bg-[var(--surface-hover)] rounded-full text-[var(--text-muted)] hover:text-black cursor-pointer transition-colors shadow-sm"
-          title={sidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
-        >
-          {sidebarCollapsed ? (
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-right"><path d="m9 18 6-6-6-6"/></svg>
-          ) : (
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-chevron-left"><path d="m15 18-6-6 6-6"/></svg>
-          )}
-        </button>
-      </SidebarHeader>
+          </div>
+ 
+          {/* Center Section: Navigation Links (Inline on desktop) */}
+          <nav className="hidden lg:flex items-center gap-6 self-stretch">
+            {navItems.map((item) => {
+              const isActive = currentView === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={`relative h-full flex items-center px-1 text-[13.5px] font-extrabold cursor-pointer transition-all duration-150 focus:outline-none select-none ${
+                    isActive
+                      ? 'text-black font-extrabold'
+                      : 'text-neutral-500 hover:text-black font-semibold'
+                  }`}
+                >
+                  <span>{item.label}</span>
+                  {isActive && (
+                    <span className="absolute bottom-[-1px] left-0 right-0 h-0.5 bg-[var(--accent-primary)] rounded-full z-10" />
+                  )}
+                </button>
+              );
+            })}
+          </nav>
 
-      {/* Main navigation list */}
-      <SidebarContent className={`mt-6 ${sidebarCollapsed ? "px-2" : "px-3"}`}>
-        <div className="flex flex-col gap-1.5">
+          {/* Right Section: User account settings dropdown */}
+          <div className="flex items-center gap-2">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-neutral-100 cursor-pointer transition-all select-none focus:outline-none"
+                  title="Account Settings"
+                >
+                  <CompanyLogo src={startup.logo} name={startup.name} size="sm" className="!w-8 !h-8 !rounded-full shadow-sm" />
+                </button>
+              </DropdownMenuTrigger>
+              
+              <DropdownMenuContent side="bottom" align="end" className="w-64 p-2 flex flex-col gap-0.5 font-sans !rounded-[20px] shadow-[0_10px_32px_rgba(0,0,0,0.12),0_1px_8px_rgba(0,0,0,0.04)] border border-neutral-200/80 bg-white">
+                <div className="px-4 py-3 flex flex-col border-b border-neutral-100 mb-1 select-none">
+                  <span className="block text-[14px] font-extrabold text-neutral-900 truncate">
+                    {startup.name}
+                  </span>
+                  <span className="block text-[11.5px] text-neutral-500 font-medium mt-0.5 truncate">
+                    {startup.contactEmail}
+                  </span>
+                </div>
+                
+                <DropdownMenuItem onClick={() => setProfileOpen(true)} className="cursor-pointer text-[13.5px] font-bold !h-auto px-4 py-2.5 flex items-center gap-3 rounded-[8px] text-neutral-800 hover:bg-[#F7F7F7] focus:bg-[#F7F7F7] transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-neutral-800 shrink-0"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                  Startup Profile
+                </DropdownMenuItem>
+                
+                <DropdownMenuItem onClick={() => setLedgerOpen(true)} className="cursor-pointer text-[13.5px] font-bold !h-auto px-4 py-2.5 flex items-center gap-3 rounded-[8px] text-neutral-800 hover:bg-[#F7F7F7] focus:bg-[#F7F7F7] transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-neutral-800 shrink-0"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                  Redemption Ledger
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator className="my-1 bg-[#EAEAEA]" />
+
+                <DropdownMenuItem asChild className="cursor-pointer text-[13.5px] font-bold !h-auto px-4 py-2.5 flex items-center rounded-[8px] text-neutral-800 hover:bg-[#F7F7F7] focus:bg-[#F7F7F7] transition-colors">
+                  <a href="./index.html">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-neutral-800 shrink-0"><rect width="18" height="18" x="3" y="3" rx="2" /><path d="M9 3v18" /><path d="M15 3v18" /><path d="M3 9h18" /><path d="M3 15h18" /></svg>
+                    Design Specs Visualizer
+                  </a>
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator className="my-1 bg-[#EAEAEA]" />
+
+                <DropdownMenuItem
+                  onClick={() => setIsLoggedIn(false)}
+                  className="cursor-pointer text-[13.5px] font-bold !h-auto px-4 py-2.5 flex items-center gap-3 rounded-[8px] text-neutral-800 hover:bg-[#F7F7F7] focus:bg-[#F7F7F7] transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-neutral-800 shrink-0"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+      </header>
+
+      {/* Sub-navigation Menu for Mobile Viewports */}
+      <div className="lg:hidden w-full border-b border-neutral-200 bg-white overflow-x-auto scrollbar-none shrink-0 select-none">
+        <div className="flex items-center gap-6 px-4 h-11 min-w-max">
           {navItems.map((item) => {
             const isActive = currentView === item.id;
             return (
-              <SidebarNavItem
+              <button
                 key={item.id}
-                icon={item.getIcon(isActive)}
-                active={isActive}
-                onClick={() => {
-                  setCurrentView(item.id);
-                  setMobileOpen(false);
-                }}
-                title={sidebarCollapsed ? item.label : undefined}
+                onClick={() => handleNavClick(item.id)}
+                className={`relative h-full flex items-center px-1 text-[13px] font-extrabold transition-all cursor-pointer focus:outline-none ${
+                  isActive
+                    ? 'text-black font-extrabold'
+                    : 'text-neutral-500 hover:text-black font-semibold'
+                }`}
               >
-                {!sidebarCollapsed && item.label}
-              </SidebarNavItem>
+                <span>{item.label}</span>
+                {isActive && (
+                  <span className="absolute bottom-[-1px] left-0 right-0 h-0.5 bg-[var(--accent-primary)] rounded-full z-10" />
+                )}
+              </button>
             );
           })}
         </div>
-      </SidebarContent>
-
-      {/* Sidebar Footer: User Account Widget dropdown with Ledger, Profile and Logout actions */}
-      <SidebarFooter className={`border-t border-[var(--border-subtle)] py-3 ${sidebarCollapsed ? "px-2" : "px-3"}`}>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button
-              className={`flex items-center w-full hover:bg-[var(--surface-hover)] rounded-[var(--radius-lg)] cursor-pointer transition-all select-none focus:outline-none ${sidebarCollapsed ? "justify-center p-1" : "gap-3.5 px-4 py-3 text-left"}`}
-              title={sidebarCollapsed ? "Account Settings" : undefined}
-            >
-              <CompanyLogo src={startup.logo} name={startup.name} size="sm" className="!w-8 !h-8 !rounded-full border-neutral-300" />
-              {!sidebarCollapsed && (
-                <div className="min-w-0 flex-1 flex items-center justify-between gap-1">
-                  <div className="min-w-0">
-                    <span className="block text-[14px] font-bold text-[var(--text-primary)] truncate">
-                      {startup.name}
-                    </span>
-                    <span className="block text-[12px] text-[var(--text-muted)] font-medium mt-0.5 truncate">
-                      {startup.contactEmail}
-                    </span>
-                  </div>
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-neutral-400">
-                    <path d="m6 9 6 6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-              )}
-            </button>
-          </DropdownMenuTrigger>
-          
-          <DropdownMenuContent side="right" align="end" className="w-64 p-2 flex flex-col gap-0.5 font-sans !rounded-[20px] shadow-[0_10px_32px_rgba(0,0,0,0.12),0_1px_8px_rgba(0,0,0,0.04)] border border-neutral-200/80 bg-white">
-            {/* Group 1: Core Portal Actions */}
-            <DropdownMenuItem onClick={() => setProfileOpen(true)} className="cursor-pointer text-[14px] font-semibold !h-auto px-4 py-3 flex items-center gap-3.5 rounded-[8px] text-neutral-800 hover:bg-[#F7F7F7] focus:bg-[#F7F7F7] transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-neutral-800 shrink-0"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-              Startup Profile
-            </DropdownMenuItem>
-            
-            <DropdownMenuItem onClick={() => setLedgerOpen(true)} className="cursor-pointer text-[14px] font-semibold !h-auto px-4 py-3 flex items-center gap-3.5 rounded-[8px] text-neutral-800 hover:bg-[#F7F7F7] focus:bg-[#F7F7F7] transition-colors">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-neutral-800 shrink-0"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-              Redemption Ledger
-            </DropdownMenuItem>
-
-            <DropdownMenuSeparator className="my-1.5 bg-[#EAEAEA]" />
-
-            {/* Group 2: Visualizer (text-only) */}
-            <DropdownMenuItem asChild className="cursor-pointer text-[14px] font-semibold !h-auto px-4 py-3 flex items-center rounded-[8px] text-neutral-800 hover:bg-[#F7F7F7] focus:bg-[#F7F7F7] transition-colors">
-              <a href="./index.html">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-neutral-800 shrink-0"><rect width="18" height="18" x="3" y="3" rx="2" /><path d="M9 3v18" /><path d="M15 3v18" /><path d="M3 9h18" /><path d="M3 15h18" /></svg>
-                Design Specs Visualizer
-              </a>
-            </DropdownMenuItem>
-
-            <DropdownMenuSeparator className="my-1.5 bg-[#EAEAEA]" />
-
-            {/* Group 3: Logout (text-only) */}
-            <DropdownMenuItem
-              onClick={() => setIsLoggedIn(false)}
-              className="cursor-pointer text-[14px] font-semibold !h-auto px-4 py-3 flex items-center gap-3.5 rounded-[8px] text-neutral-800 hover:bg-[#F7F7F7] focus:bg-[#F7F7F7] transition-colors"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-neutral-800 shrink-0"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>
-              Log out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </SidebarFooter>
-    </Sidebar>
-  );
-
-  return (
-    <AppShell
-      sidebar={sidebarContent}
-      sidebarCollapsed={sidebarCollapsed}
-      mobileSidebarOpen={mobileOpen}
-      onMobileSidebarClose={() => setMobileOpen(false)}
-    >
-      {/* Top bar header: Mobile only (hidden on desktop to maximize real estate) */}
-      <Topbar
-        className="lg:hidden"
-        onMenuClick={() => setMobileOpen(!mobileOpen)}
-        left={
-          <span className="text-[14px] font-bold text-[var(--text-primary)] uppercase tracking-wider select-none">
-            {currentView === 'dashboard' && 'Dashboard'}
-            {currentView === 'deals' && 'Software Credits'}
-            {currentView === 'vendors' && 'VC Partners'}
-          </span>
-        }
-        right={
-          <div className="flex items-center gap-1.5 select-none">
-            <CompanyLogo src={startup.logo} name={startup.name} size="sm" className="!w-5 !h-5 !rounded-full border-neutral-300 !text-[9px]" />
-          </div>
-        }
-      />
+      </div>
 
       {/* Main View Container */}
-      <div className="flex-1 overflow-y-auto p-4 lg:p-6 bg-white [scrollbar-gutter:stable]">
+      <div className="flex-1 p-4 lg:p-6 bg-white">
         {currentView === 'dashboard' && (
           <DashboardView
             startup={startup}
             deals={deals}
             audits={audits}
-            onNavigate={setCurrentView}
+            onNavigate={handleNavClick}
             onClaimDeal={handleClaimDeal}
             onViewDeal={handleViewDeal}
           />
@@ -429,6 +409,6 @@ export default function App() {
 
       {/* Global Toast Host */}
       <Toaster />
-    </AppShell>
+    </div>
   );
 }

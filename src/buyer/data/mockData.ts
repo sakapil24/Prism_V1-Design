@@ -23,7 +23,7 @@ export const mockDeals: Deal[] = [
     description: 'Build, deploy, and scale your application with free cloud infrastructure credits.',
     value: '$5,000 Credits',
     category: 'Infrastructure',
-    logoUrl: 'https://logos.hunter.io/aws.amazon.com',
+    logoUrl: 'https://logo.clearbit.com/aws.amazon.com',
     eligibilityCriteria: 'Available to all Accel India portfolio startups who have not previously received AWS credit activations.',
     redemptionSteps: [
       'Click the "Claim Deal" button to generate your unique claim code.',
@@ -54,7 +54,7 @@ export const mockDeals: Deal[] = [
     description: 'Accept payments online with no fees on your first $20,000 in transaction volume.',
     value: '$20,000 Fee Waiver',
     category: 'SaaS',
-    logoUrl: 'https://logos.hunter.io/stripe.com',
+    logoUrl: 'https://logo.clearbit.com/stripe.com',
     eligibilityCriteria: 'Valid for new Stripe accounts registered under Aurelia Health tax IDs.',
     redemptionSteps: [
       'Claim the deal and wait for verification from your partner VC manager.',
@@ -85,7 +85,7 @@ export const mockDeals: Deal[] = [
     description: 'Centralize your wiki, docs, and project boards in Notion with free credits.',
     value: '$1,000 Credits',
     category: 'SaaS',
-    logoUrl: 'https://logos.hunter.io/notion.so',
+    logoUrl: 'https://logo.clearbit.com/notion.so',
     eligibilityCriteria: 'Must be on an active workspace with fewer than 50 members.',
     redemptionSteps: [
       'Click "Claim Deal" to submit a request to the VC partner manager.',
@@ -115,7 +115,7 @@ export const mockDeals: Deal[] = [
     description: 'Build custom internal dashboards and admin tools 10x faster with Retool credits.',
     value: '$1,200 Credits',
     category: 'SaaS',
-    logoUrl: 'https://logos.hunter.io/retool.com',
+    logoUrl: 'https://logo.clearbit.com/retool.com',
     eligibilityCriteria: 'Available to all growth startups in the Accel network who have not claimed Retool credits previously.',
     redemptionSteps: [
       'Click "Claim Deal" to instantly generate your coupon.',
@@ -142,7 +142,7 @@ export const mockDeals: Deal[] = [
     description: 'Boost team collaboration with discounts on Slack Pro or Business+ plans.',
     value: '$500 Discount',
     category: 'SaaS',
-    logoUrl: 'https://logos.hunter.io/slack.com',
+    logoUrl: 'https://logo.clearbit.com/slack.com',
     eligibilityCriteria: 'Applicable to new workspace upgrades or first-time annual commitments.',
     redemptionSteps: [
       'Generate code through the Portal.',
@@ -164,7 +164,7 @@ export const mockDeals: Deal[] = [
     description: 'Deploy web projects instantly with global CDN and serverless infrastructure credits.',
     value: '$1,000 Credits',
     category: 'Infrastructure',
-    logoUrl: 'https://logos.hunter.io/vercel.com',
+    logoUrl: 'https://logo.clearbit.com/vercel.com',
     eligibilityCriteria: 'Startup must be under a Pro team plan with Vercel.',
     redemptionSteps: [
       'Claim code in Portal.',
@@ -186,7 +186,7 @@ export const mockDeals: Deal[] = [
     description: 'Scale your marketing, sales, and customer service teams with a huge discount.',
     value: '90% Off First Year',
     category: 'Operations',
-    logoUrl: 'https://logos.hunter.io/hubspot.com',
+    logoUrl: 'https://logo.clearbit.com/hubspot.com',
     eligibilityCriteria: 'Startups with under $1M in funding and new HubSpot customers only.',
     redemptionSteps: [
       'Click Claim Deal to start verification.',
@@ -199,7 +199,8 @@ export const mockDeals: Deal[] = [
     supportContact: 'startups@hubspot.com',
     programDetailsUrl: 'https://www.hubspot.com/startups',
     githubUrl: 'https://github.com/HubSpot/hubspot-api-nodejs',
-    usageMetric: 'Used by 24 sales and marketing growth teams'
+    usageMetric: 'Used by 24 sales and marketing growth teams',
+    isLocked: true
   },
   {
     id: 'deal-google-workspace',
@@ -208,7 +209,7 @@ export const mockDeals: Deal[] = [
     description: 'Professional business email, cloud storage, and video conferencing for your team.',
     value: '1 Year Free (Up to 10 users)',
     category: 'Operations',
-    logoUrl: 'https://logos.hunter.io/google.com',
+    logoUrl: 'https://logo.clearbit.com/google.com',
     eligibilityCriteria: 'New Google Workspace tenants only, sponsored by Accel portfolio team.',
     redemptionSteps: [
       'Claim the deal and wait for verification from your partner VC manager.',
@@ -221,7 +222,8 @@ export const mockDeals: Deal[] = [
     supportContact: 'workspace-partners@google.com',
     programDetailsUrl: 'https://workspace.google.com/solutions/startups/',
     githubUrl: 'https://github.com/googleapis/google-api-nodejs-client',
-    usageMetric: 'Pre-configured for 14 early stage teams'
+    usageMetric: 'Pre-configured for 14 early stage teams',
+    isLocked: true
   },
   {
     id: 'deal-chatprd',
@@ -374,7 +376,7 @@ export const mockVendors: Vendor[] = [
     name: 'Obvious',
     category: 'Design',
     description: 'India\'s leading digital product design consultancy. They design apps, websites, and design systems for scale.',
-    logoUrl: 'https://logos.hunter.io/obvious.in',
+    logoUrl: 'https://logo.clearbit.com/obvious.in',
     vcTrusted: true,
     tags: ['Product Strategy', 'UI/UX Design', 'Design Systems'],
     rating: 4.9,
@@ -388,7 +390,7 @@ export const mockVendors: Vendor[] = [
     name: 'Cyril Amarchand Mangaldas',
     category: 'Legal',
     description: 'Premier Indian corporate law firm specializing in venture funding, compliance, IP, and ESOP schemes.',
-    logoUrl: 'https://logos.hunter.io/cyrilshroff.com',
+    logoUrl: 'https://logo.clearbit.com/cyrilshroff.com',
     vcTrusted: true,
     tags: ['Venture Funding', 'IP Law', 'ESOP Structure', 'Compliance'],
     rating: 4.8,
@@ -402,7 +404,7 @@ export const mockVendors: Vendor[] = [
     name: 'Razorpay Capital',
     category: 'Finance',
     description: 'Flexible debt financing and working capital loans tailored for fast-growing SaaS and ecommerce startups.',
-    logoUrl: 'https://logos.hunter.io/razorpay.com',
+    logoUrl: 'https://logo.clearbit.com/razorpay.com',
     vcTrusted: true,
     tags: ['Debt Financing', 'Revenue-Based Loans', 'Cash Flow Management'],
     rating: 4.7,
@@ -416,7 +418,7 @@ export const mockVendors: Vendor[] = [
     name: 'Codal India',
     category: 'Development',
     description: 'Full-stack software engineering firm building scalable web backends, APIs, and mobile applications.',
-    logoUrl: 'https://logos.hunter.io/codal.com',
+    logoUrl: 'https://logo.clearbit.com/codal.com',
     vcTrusted: false,
     tags: ['Node.js', 'React Native', 'AWS Devops', 'Full-stack Development'],
     rating: 4.5,

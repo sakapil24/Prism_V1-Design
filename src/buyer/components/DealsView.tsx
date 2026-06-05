@@ -3,6 +3,279 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter, 
 import { Deal, DealCategory } from '../types';
 import { CompanyLogo } from './CompanyLogo';
 
+interface PremiumDetails {
+  eligibilitySummary: string;
+  redeemSummary: string;
+  whatIsPlatform: string;
+  integrations: { name: string; description: string; logoUrl: string; dealId?: string }[];
+  automations: string;
+  dayToDay: string;
+  dayToDayPillars: { emoji: string; title: string; description: string }[];
+  freeVsPaid: { feature: string; free: string; paid: string }[];
+  insight: string;
+  alternativesList: { name: string; description: string; logoUrl: string; dealId?: string }[];
+  g2Reviews: { author: string; companySize: string; rating: number; title: string; pros: string; cons: string }[];
+  faqs: { q: string; a: string }[];
+  mockupType: 'chat' | 'dashboard' | 'board';
+  startupOffer: string;
+  eligiblePlans: string;
+  durationLimit: string;
+  userLimit: string;
+}
+
+function getPremiumDetails(dealId: string, vendorName: string, category: string, dealValue: string): PremiumDetails {
+  if (dealId === 'deal-slack') {
+    return {
+      eligibilitySummary: 'Open to all Accel portfolio companies not currently on a paid Slack plan.',
+      redeemSummary: 'Claim voucher, obtain Accel relationship manager approval, copy the claim code, and apply it in the Slack workspace billing settings.',
+      whatIsPlatform: 'Slack is a cloud-based team communication platform that brings messaging, files, and tools together in one place. It organizes conversations into channels, supports synchronous voice/video chats via Huddles, and offers asynchronous canvas docs to keep teams aligned.',
+      integrations: [
+        { name: 'GitHub', description: 'Track commits, pull requests, and deployment status directly in channel notifications.', logoUrl: 'https://logo.clearbit.com/github.com' },
+        { name: 'Jira', description: 'Create, update, and comment on tickets without leaving your chat threads.', logoUrl: 'https://logo.clearbit.com/atlassian.com' },
+        { name: 'Figma', description: 'Get notified of design comments and file changes in real-time.', logoUrl: 'https://logo.clearbit.com/figma.com' },
+        { name: 'Google Drive', description: 'Access, share, and manage Google docs and sheets within Slack conversations.', logoUrl: 'https://logo.clearbit.com/google.com' }
+      ],
+      automations: 'Automate routine tasks using Slack Workflow Builder. Connect webhook alerts, build interactive message menus, and configure automated weekly standup reminders without writing a single line of code.',
+      dayToDay: 'Teams use Slack to run daily standups asynchronously, manage cross-functional channels, start quick huddles for brainstorming, and share project updates. By having all conversations indexed and searchable, new team members onboard twice as fast.',
+      dayToDayPillars: [
+        { emoji: '💬', title: 'Async Standups', description: 'Run automated daily check-ins in channels to keep the team aligned without meeting fatigue.' },
+        { emoji: '🎧', title: 'Quick Huddles', description: 'Launch voice Huddles instantly to sketch ideas, co-work, and solve blockages on the fly.' },
+        { emoji: '🔍', title: 'Searchable Knowledge', description: 'Index all files, messages, and integrations so new engineers can search past decisions and onboard fast.' }
+      ],
+      freeVsPaid: [
+        { feature: 'Message History', free: 'Last 90 days only', paid: 'Unlimited search & history' },
+        { feature: 'Slack Connect', free: 'Not available', paid: 'Secure collaboration with external partners' },
+        { feature: 'Huddles & Video', free: '1-to-1 only', paid: 'Up to 50 people with screen sharing' },
+        { feature: 'Apps & Integrations', free: 'Max 10 integrations', paid: 'Unlimited integrations' },
+        { feature: 'SSO & Security', free: 'Standard login', paid: 'Google SSO & SAML support' }
+      ],
+      insight: 'Huddles reduce team sync meetings by 26%, while Slack Connect reduces external email spam by 90% and accelerates deal cycles.',
+      alternativesList: [
+        { name: 'Microsoft Teams', description: 'Chat, meeting, and calling solution integrated deeply with Office 365.', logoUrl: 'https://logo.clearbit.com/microsoft.com' },
+        { name: 'Discord', description: 'Voice-focused community chat ideal for high-collaboration developer teams.', logoUrl: 'https://logo.clearbit.com/discord.com' },
+        { name: 'Google Chat', description: 'Collaboration chat integrated with Google Workspace apps and spreadsheets.', logoUrl: 'https://logo.clearbit.com/google.com', dealId: 'deal-google-workspace' }
+      ],
+      g2Reviews: [
+        { author: 'Sarah Jenkins', companySize: 'Startup (1-10 employees)', rating: 5, title: 'Essential hub for startup collaboration', pros: 'Threaded conversations keep things organized. Integrates with everything we use. Huddles are fantastic for quick syncs without scheduling a Zoom call.', cons: 'Notification overload can be real if not properly configured. Paid seats get expensive as the team scales.' },
+        { author: 'David Chen', companySize: 'Mid-Market (51-200 employees)', rating: 4.5, title: 'Accelerates internal and external team communication', pros: 'Slack Connect makes it incredibly easy to work with our VC partners and agency vendors in shared channels. Search indexing is fast and robust.', cons: 'Mobile app occasionally delays push notifications. Memory usage on desktop app is higher than expected.' }
+      ],
+      faqs: [
+        { q: 'For what does this discount apply to?', a: 'This discount applies to new Slack Pro or Business+ annual subscriptions for up to 12 months. It cannot be combined with existing active discounts.' },
+        { q: 'What happens if I cross the seat limit during my active discount?', a: 'If you add seats beyond the initial claimed range, you will be billed for additional seats at the standard discounted rate.' },
+        { q: 'Can we apply this discount to an enterprise grid plan?', a: 'No, this startup benefit is restricted to Pro and Business+ plans. For Enterprise Grid plans, contact the Accel partnership desk for custom negotiations.' },
+        { q: 'Is there a contract lock-in post 12 months?', a: 'No, you can cancel or downgrade to the free tier at any time before the annual renewal. If you stay on the plan, renewal defaults to standard rates.' }
+      ],
+      mockupType: 'chat',
+      startupOffer: '50% off Pro or Business+ plan',
+      eligiblePlans: 'Pro or Business+ (Annual)',
+      durationLimit: '12 Months',
+      userLimit: 'Up to 200 seats'
+    };
+  }
+
+  if (dealId === 'deal-aws') {
+    return {
+      eligibilitySummary: 'Open to early-stage startups who have not previously received equivalent AWS Activate credits.',
+      redeemSummary: 'Submit your application code through the AWS Activate console using the Accel Org ID provided.',
+      whatIsPlatform: 'Amazon Web Services (AWS) is the world’s most comprehensive and broadly adopted cloud platform, offering over 200 fully featured services from data centers globally.',
+      integrations: [
+        { name: 'Terraform', description: 'Deploy cloud resources safely using infrastructure-as-code configurations.', logoUrl: 'https://logo.clearbit.com/hashicorp.com' },
+        { name: 'GitHub Actions', description: 'Deploy code directly to AWS ECS, Lambda, or S3 on every push.', logoUrl: 'https://logo.clearbit.com/github.com' },
+        { name: 'Docker', description: 'Package and containerize applications for deployment to ECS or EKS.', logoUrl: 'https://logo.clearbit.com/docker.com' },
+        { name: 'Datadog', description: 'Monitor cloud health and collect performance logs in real time.', logoUrl: 'https://logo.clearbit.com/datadoghq.com' }
+      ],
+      automations: 'Automate serverless operations using AWS Lambda and CloudWatch. Configure scheduled database snapshots, auto-scale compute capacity based on traffic, and set up real-time security alerts.',
+      dayToDay: 'Engineers use AWS console and CLI to manage database backends, host application servers, store media files in S3 buckets, and set up staging environments for testing new features before release.',
+      dayToDayPillars: [
+        { emoji: '🚀', title: 'Scalable Compute', description: 'Launch EC2 nodes and auto-scaling groups to support spikes in web traffic effortlessly.' },
+        { emoji: '🛡️', title: 'Enterprise Security', description: 'Configure granular IAM policies and private subnets to protect customer data records.' },
+        { emoji: '💸', title: 'Serverless Cost Savings', description: 'Deploy serverless backend APIs using AWS Lambda to pay only for exact code execution time.' }
+      ],
+      freeVsPaid: [
+        { feature: 'Support', free: 'Basic billing support', paid: '24/7 technical support response under 1 hour' },
+        { feature: 'Compute', free: 'Free tier limits', paid: 'Unlimited scalable EC2 nodes and serverless instances' },
+        { feature: 'Credits Coverage', free: 'Pay as you go', paid: 'Fully covered by Accel $5,000 Activate voucher' },
+        { feature: 'Security Review', free: 'Standard advice', paid: 'Custom AWS Well-Architected reviews by experts' }
+      ],
+      insight: 'Serverless infrastructure cuts maintenance overhead by 40% and allows startup teams to iterate twice as fast.',
+      alternativesList: [
+        { name: 'Google Cloud Platform', description: 'Developer-friendly cloud with strong Kubernetes and AI tooling.', logoUrl: 'https://logo.clearbit.com/google.com', dealId: 'deal-google-workspace' },
+        { name: 'Microsoft Azure', description: 'Enterprise-grade cloud with strong integration with Windows services.', logoUrl: 'https://logo.clearbit.com/microsoft.com' }
+      ],
+      g2Reviews: [
+        { author: 'Marcus Aurelius', companySize: 'Startup (1-10 employees)', rating: 5, title: 'The gold standard for scalable web apps', pros: 'Unmatched ecosystem of services. The AWS Activate program has saved us thousands in server costs during our first year.', cons: 'Console UI is complex and overwhelming. Hard to estimate monthly bills without cost explorer knowledge.' }
+      ],
+      faqs: [
+        { q: 'What is covered by the $5,000 credits?', a: 'AWS credits cover usage fees for most AWS services including EC2 compute, RDS databases, S3 storage, and technical support.' }
+      ],
+      mockupType: 'dashboard',
+      startupOffer: '$5,000 Promotional Credits',
+      eligiblePlans: 'AWS Activate Portfolio Tier',
+      durationLimit: '2 Years validity',
+      userLimit: 'Unlimited accounts'
+    };
+  }
+
+  if (dealId === 'deal-stripe') {
+    return {
+      eligibilitySummary: 'Open to new Stripe merchants who have registered through the Accel Startup Program.',
+      redeemSummary: 'Register a Stripe account through the custom Accel partner onboarding link to automatically apply fee waivers.',
+      whatIsPlatform: 'Stripe is a suite of APIs powering online payment processing and commerce solutions for startups and global internet enterprises.',
+      integrations: [
+        { name: 'QuickBooks', description: 'Automatically sync Stripe payments and sales tax data to accounting books.', logoUrl: 'https://logo.clearbit.com/intuit.com' },
+        { name: 'Salesforce', description: 'Update customer invoice statuses and pipeline metrics directly inside CRM.', logoUrl: 'https://logo.clearbit.com/salesforce.com' },
+        { name: 'Retool', description: 'Build custom internal customer support tool dashboards to trigger refunds.', logoUrl: 'https://logo.clearbit.com/retool.com', dealId: 'deal-retool' }
+      ],
+      automations: 'Automate monthly customer subscription renewals, generate hosted tax invoices, flag suspicious transactions using Radar ML, and trigger slack alerts on new purchases.',
+      dayToDay: 'Finance and support desks use Stripe to monitor daily revenue metrics, handle client subscription upgrades, issue refunds, and download tax statements.',
+      dayToDayPillars: [
+        { emoji: '💳', title: 'Global Processing', description: 'Accept cards, wallets, and local payment rails in over 135+ currencies.' },
+        { emoji: '📊', title: 'Revenue Dashboard', description: 'Track MRR, churn rates, and download accounting statements in a single interface.' },
+        { emoji: '🛡️', title: 'Radar ML Anti-Fraud', description: 'Filter out fraudulent charges dynamically using Stripe Radar machine learning.' }
+      ],
+      freeVsPaid: [
+        { feature: 'Fees Coverage', free: '2.9% + 30c per charge', paid: '0% fee waiver for the first $20,000 in volume' },
+        { feature: 'Billing Engine', free: 'Basic recurring billing', paid: 'Custom multi-tiered subscription pricing support' },
+        { feature: 'Support', free: 'Email support', paid: 'Priority 24/7 chat support response' }
+      ],
+      insight: 'Activating Radar ML filters reduces chargebacks by 35% without blocking legitimate customer checkouts.',
+      alternativesList: [
+        { name: 'Adyen', description: 'Global omnichannel merchant platform designed for scale.', logoUrl: 'https://logo.clearbit.com/adyen.com' },
+        { name: 'Braintree', description: 'PayPal-owned payment solution offering easy checkout integrations.', logoUrl: 'https://logo.clearbit.com/paypal.com' }
+      ],
+      g2Reviews: [
+        { author: 'Jane Doe', companySize: 'Startup (1-10 employees)', rating: 5, title: 'Flawless developer experience and clean API', pros: 'The documentation is incredible. We got subscription checkouts live in a single afternoon. Fee waiver saved us $600 in credit card costs.', cons: 'Account risk reviews can sometimes hold funds without prior warning. Support can take time to resolve compliance flags.' }
+      ],
+      faqs: [
+        { q: 'What transaction types are covered by the waiver?', a: 'The $20,000 waiver covers card processing fees for standard online Visa, Mastercard, and American Express transactions.' }
+      ],
+      mockupType: 'dashboard',
+      startupOffer: '$20,000 Fee-Free Volume',
+      eligiblePlans: 'Stripe Core Processing Tier',
+      durationLimit: 'No Expiration',
+      userLimit: 'New Stripe merchants'
+    };
+  }
+
+  // Fallback default
+  return {
+    eligibilitySummary: 'Open to all active Accel portfolio companies.',
+    redeemSummary: 'Claim voucher and apply it directly on the vendor console.',
+    whatIsPlatform: `${vendorName} is a premium platform specialized in ${category} solutions designed to optimize your operations.`,
+    integrations: [],
+    automations: 'Automate core team workflows and integrate with external APIs to scale operational efficiency.',
+    dayToDay: 'Manage day-to-day operations, review metric details, and coordinate team collaborations.',
+    dayToDayPillars: [
+      { emoji: '⚡', title: 'Operational Speed', description: 'Build and deploy product services faster with optimized workflow automation.' },
+      { emoji: '🔌', title: 'Deep Integrations', description: 'Sync operational tools to automate data pipelines and eliminate manual sync work.' },
+      { emoji: '📈', title: 'Scalable Foundation', description: 'Prepare your backend architecture to support customer seat growth and security audits.' }
+    ],
+    freeVsPaid: [],
+    insight: 'Integrating platform features reduces operational latency and aligns team goals.',
+    alternativesList: [],
+    g2Reviews: [],
+    faqs: [
+      { q: 'How do I redeem this benefit?', a: `Simply click the Claim button, copy your voucher code, and enter it in the billing console for ${vendorName}.` }
+    ],
+    mockupType: 'dashboard',
+    startupOffer: dealValue,
+    eligiblePlans: 'Standard startup tier',
+    durationLimit: '12 Months',
+    userLimit: 'All active users'
+  };
+}
+
+function renderPillarIcon(emoji: string) {
+  const iconClass = "w-5 h-5 text-neutral-800 shrink-0";
+  switch (emoji) {
+    case '💬': // Async Standups
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={iconClass}>
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+      );
+    case '🎧': // Quick Huddles
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={iconClass}>
+          <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+          <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+        </svg>
+      );
+    case '🔍': // Searchable Knowledge
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={iconClass}>
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+      );
+    case '🚀': // Scalable Compute
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={iconClass}>
+          <path d="M4.5 16.5c-1.5 1.25-2.5 3.5-2.5 3.5s2.25-1 3.5-2.5M16.5 4.5c1.5-1.25 2.5-3.5 2.5-3.5s-2.25 1-3.5 2.5"/>
+          <path d="m12 12 9-9-9 9Z"/>
+          <path d="M12 12c-3.1 3.1-4.8 6.5-5.5 8.5C6 22 6.5 22.5 7 22c2-0.7 5.4-2.4 8.5-5.5M19 9c-1-1-3-1-4 0l-6 6c-1 1-1 3 0 4 1 1 3 1 4 0l6-6c1-1 1-3 0-4Z"/>
+        </svg>
+      );
+    case '🛡️': // Enterprise Security / Radar ML
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={iconClass}>
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+      );
+    case '💸': // Serverless Cost Savings
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={iconClass}>
+          <line x1="12" y1="1" x2="12" y2="23"/>
+          <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        </svg>
+      );
+    case '💳': // Global Processing
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={iconClass}>
+          <rect x="2" y="5" width="20" height="14" rx="2" ry="2"/>
+          <line x1="2" y1="10" x2="22" y2="10"/>
+        </svg>
+      );
+    case '📊': // Revenue Dashboard
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={iconClass}>
+          <line x1="18" y1="20" x2="18" y2="10"/>
+          <line x1="12" y1="20" x2="12" y2="4"/>
+          <line x1="6" y1="20" x2="6" y2="14"/>
+        </svg>
+      );
+    case '⚡': // Operational Speed
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={iconClass}>
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+      );
+    case '🔌': // Deep Integrations
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={iconClass}>
+          <path d="M18.36 6.64a9 9 0 0 1 0 12.73"/>
+          <path d="M6.14 12a6 6 0 0 1 4.24-5.66"/>
+          <path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+        </svg>
+      );
+    case '📈': // Scalable Foundation
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={iconClass}>
+          <polygon points="23 6 13.5 15.5 8.5 10.5 1 18 1 22 23 22 23 6"/>
+        </svg>
+      );
+    case '💡': // Insight
+      return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5 text-emerald-800 shrink-0">
+          <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .5 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/>
+          <path d="M9 18h6M10 22h4"/>
+        </svg>
+      );
+    default:
+      return null;
+  }
+}
+
 interface DealsViewProps {
   deals: Deal[];
   onClaimDeal: (dealId: string, variationIndex?: number) => void;
@@ -15,6 +288,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
   const [searchQuery, setSearchQuery] = React.useState('');
   const [selectedCategory, setSelectedCategory] = React.useState<DealCategory | 'All'>('All');
   const [viewMode, setViewMode] = React.useState<'grid' | 'list'>('grid');
+  const [gridCols, setGridCols] = React.useState<1 | '1-row' | 2 | '2-row' | 3>(3);
   const [selectedDealId, setSelectedDealId] = React.useState<string | null>(null);
   const [filtersExpanded, setFiltersExpanded] = React.useState(false);
   const [searchExpanded, setSearchExpanded] = React.useState(false);
@@ -29,8 +303,209 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
     }
   }, [initialSelectedDealId]);
 
+  const heroRef = React.useRef<HTMLDivElement>(null);
+  const [showAnchorNav, setShowAnchorNav] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!heroRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setShowAnchorNav(!entry.isIntersecting);
+      },
+      { threshold: 0, rootMargin: '-10px 0px 0px 0px' }
+    );
+    observer.observe(heroRef.current);
+    return () => observer.disconnect();
+  }, [selectedDealId]);
+
   const [selectedOptionIndex, setSelectedOptionIndex] = React.useState<number>(0);
-  const [activeTab, setActiveTab] = React.useState<'overview' | 'usage' | 'redemption'>('overview');
+  const [redemptionDealId, setRedemptionDealId] = React.useState<string | null>(null);
+
+  const handleClaimClick = (dealId: string, variationIndex?: number) => {
+    const deal = deals.find(d => d.id === dealId);
+    if (!deal) return;
+    if (deal.status === 'available') {
+      onClaimDeal(dealId, variationIndex);
+    }
+    setRedemptionDealId(dealId);
+  };
+
+  const formatDateString = (dateStr?: string) => {
+    if (!dateStr) return new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return dateStr;
+    return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  };
+
+  const formatMonthYear = (dateStr?: string) => {
+    if (!dateStr) return new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return dateStr;
+    return d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  };
+
+  const getRedeemByDate = (dateStr?: string) => {
+    const baseDate = dateStr ? new Date(dateStr) : new Date();
+    const parsed = isNaN(baseDate.getTime()) ? new Date() : baseDate;
+    const redeemBy = new Date(parsed.getTime() + 30 * 24 * 60 * 60 * 1000);
+    return redeemBy.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  };
+
+  const formatYYYYMMDD = (date: Date) => {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}${m}${d}`;
+  };
+
+  const getCalendarReminderLink = (deal: Deal) => {
+    const baseDate = deal.claimedDate ? new Date(deal.claimedDate) : new Date();
+    const parsed = isNaN(baseDate.getTime()) ? new Date() : baseDate;
+    
+    const reminderDate = new Date(parsed);
+    reminderDate.setFullYear(reminderDate.getFullYear() + 1);
+    const startStr = formatYYYYMMDD(reminderDate);
+    
+    const endDate = new Date(reminderDate);
+    endDate.setDate(endDate.getDate() + 1);
+    const endStr = formatYYYYMMDD(endDate);
+    
+    const title = encodeURIComponent(`Prism Reminder: Evaluate/Cancel ${deal.vendorName} Subscription`);
+    const details = encodeURIComponent(`Your 1-year free ${deal.vendorName} startup benefit claimed on Prism is ending. Review your account settings and cancel or renew your subscription to avoid unexpected auto-renewal charges.`);
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startStr}/${endStr}&details=${details}&sf=true&output=xml`;
+  };
+
+  const renderRedemptionModal = () => {
+    if (!redemptionDealId) return null;
+    const modalDeal = deals.find(d => d.id === redemptionDealId);
+    if (!modalDeal) return null;
+
+    return (
+      <Modal open={!!redemptionDealId} onOpenChange={(open) => { if (!open) setRedemptionDealId(null); }}>
+        <ModalContent className="max-w-[720px] border border-[var(--border-subtle)] bg-white rounded-2xl p-0 overflow-hidden shadow-2xl">
+          {/* Clean Flat Header with Divider Separator */}
+          <ModalHeader className="px-8 pb-5 pt-8 border-b border-[var(--border-subtle)]">
+            <ModalTitle className="text-xl font-extrabold text-neutral-900">
+              Redeeming your {modalDeal.vendorName} offer
+            </ModalTitle>
+            <ModalDescription className="text-neutral-500 text-[13px] mt-1.5">
+              Follow the instructions below to apply your {modalDeal.value} startup package.
+            </ModalDescription>
+          </ModalHeader>
+          
+          {/* Claimed Success Banner Box - full-width, aligns with divider, no corner radius */}
+          {modalDeal.status !== 'available' && (
+            <div className="px-8 py-3.5 bg-emerald-50/60 border-b border-[var(--border-subtle)] flex items-center gap-3.5 font-sans w-full">
+              <div className="w-5.5 h-5.5 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0 select-none">
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="3.5" viewBox="0 0 24 24">
+                  <path d="M20 6 9 17l-5-5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <span className="text-[13.5px] text-emerald-955 leading-normal font-bold">
+                {modalDeal.vendorName} offer was claimed on {formatMonthYear(modalDeal.claimedDate)}.
+              </span>
+            </div>
+          )}
+          
+          <ModalBody className="p-8 flex flex-col gap-8 text-[13px]">
+            {/* Steps List (Clean rounded number badges, with vertical stepper line) */}
+            <div className="relative flex flex-col gap-8 ml-1">
+              
+              {/* Step 1 */}
+              <div className="relative flex flex-col gap-2 z-10">
+                {/* Stepper Connector Line Segment */}
+                <div className="absolute left-[11px] top-3 bottom-[-44px] w-px bg-[var(--border-subtle)]" />
+                <div className="flex items-center gap-2.5">
+                  <span className="w-6 h-6 rounded-full bg-neutral-100 text-neutral-800 border border-[var(--border-subtle)] flex items-center justify-center font-extrabold text-[12px] select-none shrink-0 relative z-10">
+                    1
+                  </span>
+                  <span className="text-[14px] font-extrabold text-neutral-900">Sign Up / Create Account</span>
+                </div>
+                <span className="text-[13px] text-neutral-600 leading-relaxed font-normal pl-[34px]">
+                  Sign up or log in. This link will automatically route you to the partner console checkout page.
+                </span>
+                <div className="mt-3 ml-[34px]">
+                  <a
+                    href={getConsoleLink(modalDeal.vendorName)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-1.5 px-4.5 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold text-[12px] rounded-lg cursor-pointer transition-colors shadow-sm"
+                  >
+                    <span>Visit {modalDeal.vendorName}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="shrink-0 opacity-90"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                  </a>
+                </div>
+              </div>
+
+              {/* Step 2 */}
+              <div className="relative flex flex-col gap-2 z-10">
+                {/* Stepper Connector Line Segment */}
+                <div className="absolute left-[11px] top-3 bottom-[-44px] w-px bg-[var(--border-subtle)]" />
+                <div className="flex items-center gap-2.5">
+                  <span className="w-6 h-6 rounded-full bg-neutral-100 text-neutral-800 border border-[var(--border-subtle)] flex items-center justify-center font-extrabold text-[12px] select-none shrink-0 relative z-10">
+                    2
+                  </span>
+                  <span className="text-[14px] font-extrabold text-neutral-900">Apply Coupon Code</span>
+                </div>
+                <span className="text-[13px] text-neutral-600 leading-relaxed font-normal pl-[34px]">
+                  Enter your unique coupon code in the Billing portal. <span className="font-extrabold text-black">Do not checkout without entering this code.</span>
+                </span>
+                
+                {/* Clean, Non-hectic Coupon Copy Pill */}
+                <div className="mt-2.5 ml-[34px] flex items-center gap-2">
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(modalDeal.claimCode || `PRISM-${modalDeal.vendorName.toUpperCase()}-MOCK`);
+                      alert('Coupon code copied to clipboard!');
+                    }}
+                    className="flex items-center gap-2 px-3 py-1.5 bg-neutral-50 border border-[var(--border-subtle)] hover:bg-neutral-100 text-neutral-900 rounded-lg cursor-pointer transition-all group shadow-sm"
+                    title="Click to copy code"
+                  >
+                    <code className="font-mono text-[12.5px] font-bold text-neutral-900 tracking-wide select-all">
+                      {modalDeal.claimCode || `PRISM-${modalDeal.vendorName.toUpperCase()}-MOCK`}
+                    </code>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-neutral-400 group-hover:text-black transition-colors shrink-0">
+                      <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+                      <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              {/* Step 3 */}
+              <div className="relative flex flex-col gap-2 z-10">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-6 h-6 rounded-full bg-neutral-100 text-neutral-800 border border-[var(--border-subtle)] flex items-center justify-center font-extrabold text-[12px] select-none shrink-0 relative z-10">
+                    3
+                  </span>
+                  <span className="text-[14px] font-extrabold text-neutral-900">Enter Payment Details & Continue</span>
+                </div>
+                <span className="text-[13px] text-neutral-600 leading-relaxed font-normal pl-[34px]">
+                  You will not be charged until your renewal at the end of your first free year.
+                </span>
+              </div>
+            </div>
+
+            {/* Disclaimer & Support Section */}
+            <div className="text-[12px] text-neutral-500 border-t border-[var(--border-subtle)] pt-5 flex flex-col gap-2.5 font-normal">
+              <span className="leading-relaxed">
+                Assume all deals will auto-renew to a paid plan at the end of the free year and consider setting a calendar reminder.
+              </span>
+              <div className="leading-normal">
+                <span>Having issues? </span>
+                <a
+                  href={modalDeal.supportContact ? `mailto:${modalDeal.supportContact}` : "mailto:support@accel.com"}
+                  className="text-black font-semibold underline hover:text-neutral-800"
+                >
+                  Contact support for help
+                </a>
+              </div>
+            </div>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    );
+  };
 
   const getClaimButtonText = (deal: Deal): string => {
     switch (deal.id) {
@@ -110,7 +585,6 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
   React.useEffect(() => {
     if (selectedDeal) {
       setSelectedOptionIndex(selectedDeal.selectedVariationIndex ?? 0);
-      setActiveTab('overview'); // reset to overview on deal change
       setSandboxStatus('idle');
       setSandboxLogs([]);
       setSandboxProgress(0);
@@ -177,7 +651,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
         <div className="flex items-center justify-between gap-3 pb-1">
           <button
             onClick={() => setSelectedDealId(null)}
-            className="flex items-center gap-1.5 text-[14px] font-bold text-[var(--text-muted)] hover:text-black cursor-pointer group transition-colors"
+            className="flex items-center gap-1.5 text-[14px] font-bold text-neutral-800 hover:text-black cursor-pointer group transition-colors"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -198,587 +672,431 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
         </div>
 
         {/* Premium Visual Summary Hero Card */}
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-neutral-900 via-neutral-950 to-black text-white p-6 shadow-lg border border-neutral-800 flex flex-col md:flex-row md:items-center justify-between gap-6 animate-scaleIn">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(200,16,46,0.18),transparent_50%)] pointer-events-none" />
-          
-          <div className="flex items-center gap-5 relative z-10">
+        <div ref={heroRef} className="relative rounded-2xl bg-white text-neutral-900 p-6 border border-neutral-200 flex flex-col md:flex-row md:items-start justify-between gap-6 animate-scaleIn">
+          <div className="flex items-start gap-5 relative z-10 w-full">
             <CompanyLogo
               src={selectedDeal.logoUrl}
               name={selectedDeal.vendorName}
               size="lg"
-              className="!w-16 !h-16 !rounded-2xl border border-neutral-800 shrink-0 bg-white p-1.5 shadow-sm"
+              className="!w-16 !h-16 shrink-0 bg-white p-1.5 shadow-sm"
             />
-            <div>
-              <div className="flex items-center gap-2.5 flex-wrap">
-                <span className="text-[12px] font-extrabold tracking-widest text-neutral-400 uppercase bg-neutral-800 px-2.5 py-0.5 rounded border border-neutral-700">
-                  {selectedDeal.category}
-                </span>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-3 flex-wrap">
+                <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-neutral-900 leading-none">
+                  {selectedDeal.vendorName}
+                </h1>
+
+                {/* Accel Verified Benefit Icon with Tooltip */}
+                <div className="relative group flex items-center cursor-help">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="shrink-0 drop-shadow-sm">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="url(#shield3dGrad)" />
+                    <path d="m9 11 2 2 4-4" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  
+                  {/* Tooltip content */}
+                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-64 bg-neutral-950 text-white text-[12px] rounded-lg p-3 shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50 leading-relaxed font-normal normal-case">
+                    <span className="block font-bold text-[12.5px] text-emerald-400 mb-1">Accel Verified Benefit</span>
+                    Vetted by Accel portfolio operations. Direct partner desk escalation is guaranteed.
+                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-b-neutral-950"></div>
+                  </div>
+                </div>
+                
+                {selectedDeal.status !== 'available' && (
+                  <span className="px-2 py-0.5 text-[9px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200 rounded uppercase tracking-wider select-none animate-fadeIn">
+                    Claimed
+                  </span>
+                )}
+
                 {selectedDeal.isNew && (
-                  <span className="px-2.5 py-0.5 text-[10px] font-extrabold bg-[#D97706] text-white rounded-full uppercase tracking-wider shadow-sm select-none">
+                  <span className="px-2 py-0.5 text-[9px] font-extrabold bg-[#D97706] text-white rounded uppercase tracking-wider select-none">
                     New
                   </span>
                 )}
               </div>
-              <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-white mt-2 leading-none">
-                {selectedDeal.vendorName}
-              </h1>
               {/* Short summary of the deal */}
-              <p className="text-[14px] font-semibold text-neutral-300 mt-2.5">
+              <p className="text-[14px] font-medium text-neutral-900 mt-2">
                 {selectedDeal.title} — Claim exclusive startup pricing
               </p>
+
+              {/* Value displaying prominently */}
+              <div className="mt-3 flex flex-col items-start gap-2">
+                <span className="text-xl font-extrabold text-neutral-900">
+                  {selectedDeal.value}
+                </span>
+
+                {/* Primary Claim Action Button below that value */}
+                <div className="mt-1">
+                  {selectedDeal.isLocked ? (
+                    <span className="inline-flex px-4 py-2 bg-neutral-50 text-neutral-450 border border-neutral-200 text-[12.5px] font-bold rounded-lg items-center gap-1.5 select-none shadow-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="shrink-0"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                      <span>Benefit Locked</span>
+                    </span>
+                  ) : selectedDeal.status === 'available' ? (
+                    <button
+                      onClick={() => handleClaimClick(selectedDeal.id)}
+                      className="inline-flex px-4 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold text-[12.5px] rounded-lg cursor-pointer transition-colors shadow-sm items-center"
+                    >
+                      <span>Claim Benefit</span>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => setRedemptionDealId(selectedDeal.id)}
+                      className="inline-flex px-4 py-2 bg-white border border-neutral-200 hover:border-neutral-300 hover:bg-neutral-50 text-neutral-800 text-[12.5px] font-bold rounded-lg items-center cursor-pointer transition-colors shadow-sm"
+                    >
+                      <span>View Claim</span>
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
-
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 shrink-0 relative z-10">
-            {/* Link to deal details - not copy pasted details! */}
-            {selectedDeal.programDetailsUrl && (
-              <a
-                href={selectedDeal.programDetailsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-1.5 text-[13px] font-bold text-neutral-450 hover:text-white transition-colors"
-              >
-                <span>View Program Details</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="shrink-0"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-              </a>
-            )}
-
-            {selectedDeal.status === 'available' ? (
-              <button
-                onClick={() => onClaimDeal(selectedDeal.id)}
-                className="px-6 py-2.5 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold text-[14px] rounded-full cursor-pointer transition-colors shadow-md flex items-center justify-center gap-1.5"
-              >
-                <span>Claim Benefit</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="shrink-0"><path d="m9 18 6-6-6-6"/></svg>
-              </button>
-            ) : (
-              <Badge color="amber" className="px-6 py-2.5 !rounded-full !h-auto font-extrabold text-[14px] flex items-center justify-center gap-1 shadow-sm select-none">
-                <span>Voucher Claimed ✓</span>
-              </Badge>
-            )}
-          </div>
-        </div>
-
-        {/* Tab switcher navigation: Segmented rounded control style */}
-        <div className="flex p-1 bg-neutral-100 rounded-full select-none self-start border border-neutral-200">
-          <button
-            onClick={() => setActiveTab('overview')}
-            className={`px-5 py-1.5 rounded-full text-[14px] font-bold cursor-pointer transition-all duration-150 ${
-              activeTab === 'overview'
-                ? 'bg-black text-white shadow-sm'
-                : 'text-neutral-600 hover:text-black hover:bg-neutral-50/50'
-            }`}
-          >
-            Overview
-          </button>
-          <button
-            onClick={() => setActiveTab('usage')}
-            className={`px-5 py-1.5 rounded-full text-[14px] font-bold cursor-pointer transition-all duration-150 ${
-              activeTab === 'usage'
-                ? 'bg-black text-white shadow-sm'
-                : 'text-neutral-600 hover:text-black hover:bg-neutral-50/50'
-            }`}
-          >
-            Benefits
-          </button>
-          <button
-            onClick={() => setActiveTab('redemption')}
-            className={`px-5 py-1.5 rounded-full text-[14px] font-bold cursor-pointer transition-all duration-150 ${
-              activeTab === 'redemption'
-                ? 'bg-black text-white shadow-sm'
-                : 'text-neutral-600 hover:text-black hover:bg-neutral-50/50'
-            }`}
-          >
-            Redemption Steps
-          </button>
         </div>
 
         {/* Tab contents */}
-        <div className="animate-fadeIn">
+        <div className="animate-fadeIn mt-4">
           
-          {/* TAB 1: OVERVIEW & INTERACTIVE SANDBOX */}
-          {activeTab === 'overview' && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Left 2 Cols: Details & Contacts */}
-              <div className="lg:col-span-2 flex flex-col gap-6">
-                
-                {/* About Section */}
-                <div className="p-5 border border-neutral-200 bg-white rounded-2xl flex flex-col gap-3.5 shadow-sm">
-                  <h3 className="text-[14px] font-black text-neutral-800 uppercase tracking-wider">About the Platform</h3>
-                  <p className="text-[14px] text-neutral-600 leading-relaxed font-normal">
-                    {selectedDeal.longDescription || selectedDeal.description}
-                  </p>
-                  {selectedDeal.websiteUrl && (
-                    <a
-                      href={selectedDeal.websiteUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-4 py-2 border border-neutral-200 hover:border-black rounded-full font-bold text-[13px] text-neutral-700 hover:text-black transition-colors self-start bg-white cursor-pointer shadow-sm"
-                    >
-                      <span>Explore Website</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="shrink-0"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                    </a>
+          {(() => {
+            const details = getPremiumDetails(selectedDeal.id, selectedDeal.vendorName, selectedDeal.category, selectedDeal.value);
+            return (
+              <div className="flex flex-col gap-6 animate-fadeIn">
+                {/* Horizontal Anchor Navigation */}
+                {showAnchorNav && (
+                  <div className="sticky -top-4 lg:-top-6 z-20 flex gap-2 py-3 px-4 lg:px-6 bg-white/95 backdrop-blur border-b border-neutral-200 overflow-x-auto scrollbar-none select-none -mx-4 lg:-mx-6 animate-fadeIn transition-all duration-300">
+                    {[
+                      { id: 'claiming-sec', label: 'Eligibility' },
+                      { id: 'overview-sec', label: 'Overview' },
+                      { id: 'integrations-sec', label: 'Integrations & Automations' },
+                      { id: 'day-to-day-sec', label: 'Daily Workflows' },
+                      { id: 'plans-sec', label: 'Free vs Paid' }
+                    ].map(sec => (
+                      <a
+                        key={sec.id}
+                        href={`#${sec.id}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          document.getElementById(sec.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }}
+                        className="px-4 py-1.5 text-xs font-bold text-neutral-800 hover:text-black border border-neutral-200 bg-white hover:border-black rounded-full transition-all whitespace-nowrap shadow-sm"
+                      >
+                        {sec.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                  {/* Left Column (col-span-2) */}
+                  <div className="lg:col-span-2 flex flex-col gap-8">
+                    {/* Section 5: Eligibility Prerequisites */}
+                    <div id="claiming-sec" className="py-6 border-b border-neutral-100 flex flex-col gap-4 scroll-mt-24">
+                      <h3 className="text-lg font-bold text-neutral-900">Eligibility Prerequisites</h3>
+                      
+                      <div className="flex flex-col gap-2.5 text-[13.5px] leading-relaxed">
+                        <ul className="list-none flex flex-col gap-2 text-neutral-850">
+                          {selectedDeal.id === 'deal-slack' ? (
+                            <>
+                              <li className="flex items-start gap-2">
+                                <span className="text-neutral-400 shrink-0 select-none">•</span>
+                                <span>Startups with up to 200 employees.</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <span className="text-neutral-400 shrink-0 select-none">•</span>
+                                <span>Upgrades to paid Slack Pro or Business+ annual plans.</span>
+                              </li>
+                              <li className="flex items-start gap-2">
+                                <span className="text-neutral-400 shrink-0 select-none">•</span>
+                                <span>Cannot be combined with existing active promotions.</span>
+                              </li>
+                            </>
+                          ) : (
+                            <li className="flex items-start gap-2">
+                              <span className="text-neutral-400 shrink-0 select-none">•</span>
+                              <span>{details.eligibilitySummary}</span>
+                            </li>
+                          )}
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* Section 1: Overview & Eligibility */}
+                    <div id="overview-sec" className="py-6 border-b border-neutral-100 flex flex-col gap-4 scroll-mt-24">
+                      <h3 className="text-lg font-bold text-neutral-900">What is {selectedDeal.vendorName}?</h3>
+                      <p className="text-[14px] text-black leading-relaxed font-normal">
+                        {details.whatIsPlatform}
+                      </p>
+                      {selectedDeal.programDetailsUrl && (
+                        <div className="mt-1">
+                          <a
+                            href={selectedDeal.programDetailsUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-[13px] font-bold text-neutral-800 hover:text-black hover:underline transition-colors"
+                          >
+                            <span>Program Details</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="shrink-0"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                          </a>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Section 2: Integrations & Automations */}
+                    <div id="integrations-sec" className="py-6 border-b border-neutral-100 flex flex-col gap-6 scroll-mt-24">
+                      <div>
+                        <h3 className="text-lg font-bold text-neutral-900">Integrations & Automations</h3>
+                        <p className="text-[13px] text-black mt-1 leading-normal">
+                          Connect your developer and team tools automatically.
+                        </p>
+                      </div>
+                      
+                      {details.integrations && details.integrations.length > 0 && (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          {details.integrations.map((integration, idx) => (
+                            <div key={idx} className="p-4 border border-neutral-200 rounded-xl flex gap-3 bg-neutral-50/20">
+                              <CompanyLogo src={integration.logoUrl} name={integration.name} size="sm" className="!w-9 !h-9 p-1" />
+                              <div>
+                                <span className="block text-[13px] font-bold text-neutral-900">{integration.name}</span>
+                                <span className="block text-[12px] text-neutral-900 mt-1 leading-relaxed">{integration.description}</span>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      <div className="p-4 bg-indigo-50/20 border border-indigo-100 rounded-xl flex gap-3.5">
+                        <div className="w-9 h-9 rounded-lg bg-indigo-50 border border-indigo-100 text-indigo-700 flex items-center justify-center shrink-0">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+                        </div>
+                        <div>
+                          <span className="block text-[13px] font-bold text-indigo-900">Custom Automations</span>
+                          <span className="block text-[12.5px] text-indigo-900 mt-1 leading-relaxed">
+                            {details.automations}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Section 3: Day-to-Day Team Work */}
+                    <div id="day-to-day-sec" className="py-6 border-b border-neutral-100 flex flex-col gap-6 scroll-mt-24">
+                      <div>
+                        <h3 className="text-lg font-bold text-neutral-900">Daily Workflows</h3>
+                        <p className="text-[13.5px] text-black mt-1.5 leading-relaxed font-normal">
+                          {details.dayToDay}
+                        </p>
+                      </div>
+
+                      {details.dayToDayPillars && details.dayToDayPillars.length > 0 && (
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-1">
+                          {details.dayToDayPillars.map((pillar, idx) => (
+                            <div key={idx} className="p-4 border border-neutral-200 bg-neutral-50/10 rounded-xl flex flex-col gap-2.5 hover:shadow-[var(--shadow-sm)] transition-shadow">
+                              <div className="text-neutral-800 select-none">
+                                {renderPillarIcon(pillar.emoji)}
+                              </div>
+                              <span className="font-bold text-[13.5px] text-neutral-950">{pillar.title}</span>
+                              <p className="text-[12px] text-neutral-900 leading-relaxed font-normal">{pillar.description}</p>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Section 4: Free vs Paid Tier Comparison */}
+                    <div id="plans-sec" className="py-6 border-b border-neutral-100 flex flex-col gap-5 scroll-mt-24">
+                      <div>
+                        <h3 className="text-lg font-bold text-neutral-900">Free vs Paid Tier Comparison</h3>
+                        <p className="text-[13px] text-black mt-1 leading-normal">
+                          Know why upgrading to a paid startup tier makes sense for your velocity.
+                        </p>
+                      </div>
+
+                      {details.freeVsPaid && details.freeVsPaid.length > 0 && (
+                        <div className="border border-neutral-200 rounded-xl overflow-hidden shadow-inner">
+                          <table className="w-full text-[13px] text-left border-collapse bg-white">
+                            <thead>
+                              <tr className="bg-neutral-50/80 border-b border-neutral-200 font-bold text-neutral-800 select-none">
+                                <th className="p-3.5 pl-4">Feature</th>
+                                <th className="p-3.5">Free Plan</th>
+                                <th className="p-3.5 pr-4 text-emerald-800 bg-emerald-50/10">Paid Startup Offer</th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-neutral-100 font-medium">
+                              {details.freeVsPaid.map((item, idx) => (
+                                <tr key={idx} className="hover:bg-neutral-50/20">
+                                  <td className="p-3.5 pl-4 font-bold text-neutral-900">{item.feature}</td>
+                                  <td className="p-3.5 text-neutral-900">{item.free}</td>
+                                  <td className="p-3.5 pr-4 text-emerald-700 font-semibold bg-emerald-50/5">{item.paid}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+
+                      <div className="p-4 bg-emerald-50/15 border border-emerald-200/85 rounded-xl flex gap-3.5 items-start">
+                        <div className="w-9 h-9 rounded-lg bg-emerald-100/70 border border-emerald-200 text-emerald-800 flex items-center justify-center shrink-0 select-none">
+                          {renderPillarIcon('💡')}
+                        </div>
+                        <div>
+                          <span className="block text-[13px] font-bold text-neutral-900">Accel Portfolio Insight</span>
+                          <span className="block text-[12.5px] text-emerald-900 mt-0.5 leading-relaxed font-normal">
+                            {details.insight}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Column (Sticky Widgets) */}
+                  <div className="lg:col-span-1 flex flex-col gap-6 lg:sticky lg:top-14 h-fit">
+                    {/* Platform Summary & Offer Details Card */}
+                    <div className="p-6 border border-neutral-200 bg-white rounded-2xl flex flex-col gap-5 shadow-sm select-none">
+                      <div className="flex items-center gap-3.5 pb-4 border-b border-neutral-100">
+                        <CompanyLogo src={selectedDeal.logoUrl} name={selectedDeal.vendorName} size="lg" className="!w-12 !h-12 p-1.5 bg-white shadow-sm shrink-0" />
+                        <div>
+                          <h4 className="text-[16px] font-bold text-neutral-900 leading-none">{selectedDeal.vendorName}</h4>
+                          <span className="text-[12px] text-neutral-700 font-semibold block mt-1.5">{selectedDeal.category} Startup Benefit</span>
+                        </div>
+                      </div>
+
+                      {/* Real Data Details */}
+                      <div className="flex flex-col gap-3 py-1 text-[13px]">
+                        <div className="flex justify-between items-center pb-2.5 border-b border-neutral-100">
+                          <span className="text-neutral-800 font-medium">Startup Offer</span>
+                          <span className="text-emerald-800 font-extrabold">{details.startupOffer}</span>
+                        </div>
+                        <div className="flex justify-between items-center pb-2.5 border-b border-neutral-100">
+                          <span className="text-neutral-800 font-medium">Eligible Plans</span>
+                          <span className="text-neutral-900 font-bold">{details.eligiblePlans}</span>
+                        </div>
+                        <div className="flex justify-between items-center pb-2.5 border-b border-neutral-100">
+                          <span className="text-neutral-800 font-medium">Duration</span>
+                          <span className="text-neutral-900 font-bold">{details.durationLimit}</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-neutral-800 font-medium">User Seat Cap</span>
+                          <span className="text-neutral-900 font-bold">{details.userLimit}</span>
+                        </div>
+                      </div>
+
+                      {/* Primary Claim Action Button */}
+                      <div className="flex flex-col gap-2 mt-2">
+                        {selectedDeal.isLocked ? (
+                          <div className="w-full py-3 bg-neutral-50 text-neutral-700 border border-neutral-200 font-bold text-[13px] rounded-full text-center select-none flex items-center justify-center gap-1.5 shadow-inner">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="shrink-0"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            <span>Benefit Locked</span>
+                          </div>
+                        ) : selectedDeal.status === 'available' ? (
+                          <button
+                            onClick={() => handleClaimClick(selectedDeal.id)}
+                            className="w-full py-3 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold text-[13.5px] rounded-full cursor-pointer transition-colors shadow-md text-center flex items-center justify-center"
+                          >
+                            <span>Claim {selectedDeal.vendorName} Offer</span>
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => setRedemptionDealId(selectedDeal.id)}
+                            className="w-full py-3 bg-white border border-neutral-200 hover:border-neutral-300 hover:bg-neutral-50 text-neutral-800 font-bold text-[13.5px] rounded-full text-center cursor-pointer transition-colors flex items-center justify-center shadow-sm"
+                          >
+                            <span>View Claim</span>
+                          </button>
+                        )}
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                {/* Section 6: G2 Verified Reviews */}
+                <div id="reviews-sec" className="py-6 border-b border-neutral-100 flex flex-col gap-5 scroll-mt-24 w-full">
+                  <div className="flex items-center justify-between border-b border-neutral-200 pb-4">
+                    <div className="flex items-center gap-3">
+                      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0 shadow-sm rounded-full">
+                        <circle cx="16" cy="16" r="16" fill="url(#g2Gradient)" />
+                        <defs>
+                          <linearGradient id="g2Gradient" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                            <stop stopColor="#FF492C" />
+                            <stop stopColor="#D83018" />
+                          </linearGradient>
+                        </defs>
+                        <text x="50%" y="58%" dominantBaseline="middle" textAnchor="middle" fill="#FFFFFF" fontSize="13" fontWeight="900" fontFamily="system-ui, sans-serif" letterSpacing="-0.5">G2</text>
+                      </svg>
+                      <div>
+                        <h3 className="text-lg font-bold text-neutral-900 leading-none">G2 Verified Reviews</h3>
+                        <p className="text-[13px] text-black mt-1.5 leading-normal font-normal">
+                          Real experiences from startup founders and tech leaders.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1.5 bg-[#FF492C]/5 px-3 py-1.5 rounded-full border border-[#FF492C]/10">
+                      <span className="text-[#FF492C] font-black text-xs">G2 Rating</span>
+                      <span className="text-neutral-900 font-extrabold text-xs">4.7 / 5</span>
+                    </div>
+                  </div>
+
+                  {details.g2Reviews && details.g2Reviews.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {details.g2Reviews.map((rev, idx) => (
+                        <div key={idx} className="p-4 border border-neutral-200 rounded-xl bg-neutral-50/10 flex flex-col justify-between gap-3">
+                          <div className="flex justify-between items-start flex-wrap gap-2">
+                            <div>
+                              <span className="block text-[13px] font-bold text-neutral-900">{rev.author}</span>
+                              <span className="block text-[11.5px] text-neutral-800 font-normal">{rev.companySize}</span>
+                            </div>
+                            <div className="flex flex-col items-end gap-1">
+                              <div className="flex text-amber-400 select-none">
+                                {Array.from({ length: 5 }).map((_, i) => (
+                                  <svg key={i} className={`w-3.5 h-3.5 ${i < Math.floor(rev.rating) ? 'fill-current' : 'stroke-current fill-none'}`} viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                ))}
+                              </div>
+                              <span className="text-[10px] font-extrabold text-emerald-800 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full select-none">✓ Verified Reviewer</span>
+                            </div>
+                          </div>
+
+                          <div className="text-[13px] font-bold text-neutral-900 mt-1">"{rev.title}"</div>
+                          
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2.5 border-t border-neutral-100">
+                            <div>
+                              <span className="block text-[11.5px] font-bold text-emerald-800 uppercase tracking-wider">Pros</span>
+                              <span className="block text-black mt-0.5 font-normal">{rev.pros}</span>
+                            </div>
+                            <div>
+                              <span className="block text-[11.5px] font-bold text-rose-800 uppercase tracking-wider">Cons</span>
+                              <span className="block text-black mt-0.5 font-normal">{rev.cons}</span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-neutral-450 italic text-[13px] py-4 text-center">No G2 reviews available for this vendor.</div>
                   )}
                 </div>
 
-                {/* Support Contact Section */}
-                <div className="p-5 border border-neutral-200 bg-white rounded-2xl flex flex-col gap-3 shadow-sm">
-                  <h3 className="text-[14px] font-black text-neutral-800 uppercase tracking-wider">Direct Integration & Support Desk</h3>
-                  <p className="text-[13.5px] text-neutral-550 leading-relaxed font-normal">
-                    Accel founders have access to dedicated account handlers to troubleshoot voucher activations and enterprise scaling setups.
-                  </p>
+                {/* Section 7: FAQs */}
+                <div id="faqs-sec" className="py-6 flex flex-col gap-4 scroll-mt-24 w-full">
+                  <h3 className="text-lg font-bold text-neutral-900">Frequently Asked Questions</h3>
                   
-                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-neutral-50/50 p-3.5 border border-neutral-200/80 rounded-xl mt-1">
-                    <div className="flex items-center gap-2.5 min-w-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-neutral-400 shrink-0"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                      <span className="font-mono text-[13px] font-bold text-neutral-800 truncate">{selectedDeal.supportContact}</span>
-                    </div>
-                    <div className="flex gap-2 shrink-0">
-                      <button
-                        onClick={() => {
-                          navigator.clipboard.writeText(selectedDeal.supportContact || '');
-                          alert('Support email copied to clipboard!');
-                        }}
-                        className="px-3.5 py-1.5 border border-neutral-300 hover:border-black rounded-lg text-[12px] font-bold text-neutral-600 hover:text-black cursor-pointer transition-colors bg-white shadow-sm"
-                      >
-                        Copy
-                      </button>
-                      <a
-                        href={`mailto:${selectedDeal.supportContact}`}
-                        className="px-3.5 py-1.5 bg-black hover:bg-neutral-800 text-white rounded-lg text-[12px] font-bold cursor-pointer transition-colors shadow-sm text-center"
-                      >
-                        Email Support
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Eligibility Requirements */}
-                <div className="p-5 border border-neutral-200 bg-white rounded-2xl flex flex-col gap-2.5 shadow-sm">
-                  <h3 className="text-[14px] font-black text-neutral-800 uppercase tracking-wider">Eligibility Requirements</h3>
-                  <p className="text-[14px] text-neutral-655 leading-relaxed font-normal">
-                    {selectedDeal.eligibilityCriteria}
-                  </p>
-                </div>
-
-              </div>
-
-              {/* Right 1 Col: Metrics & Interactive Terminal */}
-              <div className="lg:col-span-1 flex flex-col gap-6">
-                
-                {/* Visual Stats Metric Highlight */}
-                <div className="p-5 border border-emerald-200 bg-emerald-50/10 rounded-2xl flex items-start gap-4 shadow-sm">
-                  <div className="w-11 h-11 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center shrink-0">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
-                  </div>
-                  <div>
-                    <span className="block text-[11px] font-extrabold text-emerald-800 uppercase tracking-widest">Startup Engagement Factor</span>
-                    <p className="text-[14px] font-bold text-neutral-800 mt-1 leading-snug">
-                      {selectedDeal.usageMetric}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Interactive Developer CLI Sandbox widget */}
-                <div className="flex flex-col gap-3">
-                  <div className="flex justify-between items-center px-1">
-                    <span className="text-[11px] font-bold text-neutral-450 uppercase tracking-wider">API Integration Sandbox</span>
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  </div>
-                  
-                  <div className="flex flex-col border border-neutral-800 bg-neutral-950 rounded-2xl overflow-hidden shadow-lg select-none">
-                    {/* Terminal Header */}
-                    <div className="flex items-center justify-between px-4 py-2.5 bg-neutral-900 border-b border-neutral-800">
-                      <div className="flex items-center gap-1.5">
-                        <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" />
-                        <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" />
-                        <div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
-                      </div>
-                      <span className="text-[10px] font-mono text-neutral-500 uppercase tracking-widest font-bold">prism-cli --bash</span>
-                      <div className="w-8" />
-                    </div>
-                    
-                    {/* Terminal Window Logs */}
-                    <div className="p-4 font-mono text-[12px] leading-relaxed text-neutral-300 min-h-[170px] max-h-[170px] overflow-y-auto">
-                      {sandboxLogs.map((log, index) => {
-                        const isSuccess = log.startsWith('[success]');
-                        const isCli = log.startsWith('$');
-                        return (
-                          <div
-                            key={index}
-                            className={`${
-                              isSuccess ? 'text-emerald-400 font-bold' :
-                              isCli ? 'text-neutral-400 font-semibold' : 'text-neutral-350'
-                            } mb-1`}
-                          >
-                            {log}
+                  {details.faqs && details.faqs.length > 0 ? (
+                    <div className="divide-y divide-neutral-200 border-t border-b border-neutral-200 mt-2">
+                      {details.faqs.map((faq, idx) => (
+                        <details key={idx} className="group py-4 [&_summary::-webkit-details-marker]:hidden">
+                          <summary className="flex justify-between items-center font-bold text-[13.5px] text-black cursor-pointer list-none hover:text-neutral-800 transition-colors focus:outline-none">
+                            <span>{faq.q}</span>
+                            <svg className="w-4.5 h-4.5 text-neutral-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                          </summary>
+                          <div className="pt-3 text-[13px] text-black leading-relaxed font-normal">
+                            {faq.a}
                           </div>
-                        );
-                      })}
-
-                      {sandboxStatus === 'building' && (
-                        <div className="flex flex-col gap-1.5 mt-3 animate-fadeIn">
-                          <div className="flex justify-between items-center text-[10px] text-neutral-500 font-bold">
-                            <span>Compiling SDK integration package...</span>
-                            <span>{sandboxProgress}%</span>
-                          </div>
-                          <div className="w-full bg-neutral-900 border border-neutral-800 h-1.5 rounded-full overflow-hidden">
-                            <div
-                              className="bg-emerald-500 h-full transition-all duration-300 ease-out"
-                              style={{ width: `${sandboxProgress}%` }}
-                            />
-                          </div>
-                        </div>
-                      )}
-
-                      {sandboxStatus === 'idle' && (
-                        <div className="text-neutral-600 italic text-center py-8">
-                          Developer sandbox ready.<br/>Click build to compile API boilerplate.
-                        </div>
-                      )}
+                        </details>
+                      ))}
                     </div>
-
-                    {/* Terminal Footer Bar */}
-                    <div className="px-4 py-2.5 bg-neutral-900 border-t border-neutral-800 flex justify-end">
-                      {sandboxStatus === 'idle' && (
-                        <button
-                          onClick={() => runSandboxBuild(selectedDeal)}
-                          className="px-3.5 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-white font-bold text-[11px] rounded-lg cursor-pointer transition-colors shadow-sm"
-                        >
-                          Run Build Simulation
-                        </button>
-                      )}
-                      {sandboxStatus === 'building' && (
-                        <span className="text-[11px] font-bold text-neutral-500 flex items-center gap-1.5 px-1 py-1 select-none">
-                          <svg className="animate-spin h-3.5 w-3.5 text-emerald-500" viewBox="0 0 24 24" fill="none">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                          </svg>
-                          Compiling SDK modules...
-                        </span>
-                      )}
-                      {sandboxStatus === 'complete' && (
-                        <button
-                          onClick={() => setShowSandboxModal(true)}
-                          className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[11px] rounded-lg cursor-pointer transition-colors shadow-sm"
-                        >
-                          View Sandbox Config
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Accel Trust badge */}
-                <div className="p-4 bg-neutral-50 border border-neutral-200 rounded-2xl flex gap-3 shadow-sm select-none animate-fadeIn">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="shrink-0 drop-shadow-sm">
-                    <g filter="url(#shadow3d)">
-                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="url(#shield3dGrad)" />
-                      <path d="m9 11 2 2 4-4" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </g>
-                  </svg>
-                  <div>
-                    <h4 className="text-[13px] font-black text-neutral-900 leading-none">Accel Trust</h4>
-                    <p className="text-[11.5px] text-neutral-500 mt-1 leading-normal font-normal">
-                      Guaranteed 48-hour approvals or direct partner desk escalate channels.
-                    </p>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          )}
-
-          {/* TAB 2: HOW TO BENEFIT */}
-          {activeTab === 'usage' && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Left 2 Cols: Usage cases */}
-              <div className="lg:col-span-2 flex flex-col gap-6">
-                <div className="p-5 border border-neutral-200 bg-white rounded-2xl flex flex-col gap-4 shadow-sm animate-slideInUp">
-                  <h3 className="text-[14px] font-black text-neutral-800 uppercase tracking-wider">Startup Use-Cases</h3>
-                  <p className="text-[14px] text-neutral-600 leading-relaxed font-normal">
-                    Startups typically deploy this benefit package to optimize MVP sandboxes, reduce computing burn, or streamline organizational operational setups.
-                  </p>
-                  
-                  <div className="flex flex-col gap-4 pt-3 border-t border-neutral-100">
-                    <div className="flex gap-3">
-                      <div className="w-6 h-6 rounded-full bg-neutral-100 flex items-center justify-center shrink-0 text-[11px] font-black text-neutral-800 mt-0.5">1</div>
-                      <div>
-                        <span className="block text-[13.5px] font-bold text-neutral-900">Sandbox & Prototyping</span>
-                        <span className="block text-[13px] text-neutral-500 mt-0.5 leading-normal font-normal">
-                          Quickly test product capabilities, staging endpoints, and beta releases under a zero-cost matching limit.
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-3">
-                      <div className="w-6 h-6 rounded-full bg-neutral-100 flex items-center justify-center shrink-0 text-[11px] font-black text-neutral-800 mt-0.5">2</div>
-                      <div>
-                        <span className="block text-[13.5px] font-bold text-neutral-900">Scaling Production Capacities</span>
-                        <span className="block text-[13px] text-neutral-500 mt-0.5 leading-normal font-normal">
-                          Scale database nodes, expand network speeds, and activate backup pipelines as customer load increases.
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-3">
-                      <div className="w-6 h-6 rounded-full bg-neutral-100 flex items-center justify-center shrink-0 text-[11px] font-black text-neutral-800 mt-0.5">3</div>
-                      <div>
-                        <span className="block text-[13.5px] font-bold text-neutral-900">Team Alignment & Workspaces</span>
-                        <span className="block text-[13px] text-neutral-500 mt-0.5 leading-normal font-normal">
-                          Add seats for engineering, product managers, design team members, and sales desks to synchronize project releases.
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                  ) : (
+                    <p className="text-neutral-700 italic text-[13px] text-center py-2">No FAQs available.</p>
+                  )}
                 </div>
               </div>
+            );
+          })()}
 
-              {/* Right 1 Col: Quick Stats */}
-              <div className="lg:col-span-1 flex flex-col gap-6">
-                <div className="p-5 border border-neutral-200 bg-white rounded-2xl flex flex-col gap-4 shadow-sm animate-slideInUp">
-                  <span className="text-[11px] font-bold text-neutral-450 uppercase tracking-wider block">Resource Details</span>
-                  <div className="flex flex-col gap-4 text-[13px]">
-                    <div className="pb-3 border-b border-neutral-100">
-                      <span className="text-[18px] font-black text-black block">12 Months</span>
-                      <span className="text-neutral-500 block mt-0.5 leading-snug">Average benefit cycle duration.</span>
-                    </div>
-                    <div>
-                      <span className="text-[18px] font-black text-black block">Direct Sync</span>
-                      <span className="text-neutral-500 block mt-0.5 leading-snug">Synced automatically with VC partner billing templates.</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* TAB 3: REDEMPTION STEPS */}
-          {activeTab === 'redemption' && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Left 2 Cols: Stepper */}
-              <div className="lg:col-span-2 flex flex-col gap-6">
-                <div className="p-5 border border-neutral-200 bg-white rounded-2xl shadow-sm">
-                  <h3 className="text-[14px] font-black text-neutral-800 uppercase tracking-wider mb-2">Guided Activation Steps</h3>
-                  <p className="text-[14px] text-neutral-600 leading-relaxed font-normal mb-6">
-                    Claim your voucher package, request partner review, and apply the voucher configurations to unlock your product benefits.
-                  </p>
-
-                  <div className="flex flex-col gap-6 relative pt-4 border-t border-neutral-100">
-                    {/* Vertical connector line */}
-                    <div className="absolute top-8 bottom-6 left-[15px] w-0.5 bg-neutral-200" />
-
-                    {/* Step 1 */}
-                    <div className="flex gap-4 relative z-10">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border text-[12px] font-bold ${
-                        selectedDeal.status !== 'available'
-                          ? 'bg-black border-black text-white'
-                          : 'bg-white border-neutral-300 text-neutral-600'
-                      }`}>
-                        {selectedDeal.status !== 'available' ? '✓' : '1'}
-                      </div>
-                      <div className="flex-1 pt-0.5 pb-2">
-                        <span className="block text-[14px] font-bold text-neutral-900">Step 1: Choose Package Variation</span>
-                        
-                        {/* Variations list */}
-                        {selectedDeal.variations && selectedDeal.variations.length > 0 ? (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mt-3 max-w-xl">
-                            {selectedDeal.variations.map((variant, idx) => {
-                              const isSelected = selectedOptionIndex === idx;
-                              const isClaimed = selectedDeal.status !== 'available';
-                              return (
-                                <div
-                                  key={variant.id}
-                                  className={`flex flex-col p-4 rounded-xl border transition-all bg-white ${
-                                    isClaimed && isSelected
-                                      ? 'border-emerald-500 bg-emerald-50/10'
-                                      : 'border-neutral-200'
-                                  }`}
-                                >
-                                  <span className="font-bold text-neutral-900 text-[13.5px] leading-snug">{variant.title}</span>
-                                  <span className="text-[12px] text-neutral-500 mt-1 leading-snug flex-1 font-normal">{variant.description}</span>
-                                  <span className="text-[12.5px] font-extrabold text-neutral-850 mt-2 block">Value: {variant.value}</span>
-                                  
-                                  <div className="mt-3">
-                                    {selectedDeal.status === 'available' ? (
-                                      <button
-                                        onClick={() => onClaimDeal(selectedDeal.id, idx)}
-                                        className="w-full text-center py-1.5 border border-neutral-300 hover:border-black rounded text-[11.5px] font-bold text-neutral-700 hover:text-black cursor-pointer transition-colors"
-                                      >
-                                        Claim Option
-                                      </button>
-                                    ) : isSelected ? (
-                                      <span className="w-full text-center py-1.5 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded text-[11px] font-bold uppercase tracking-wider block">
-                                        Claimed ✓
-                                      </span>
-                                    ) : (
-                                      <span className="w-full text-center py-1.5 bg-neutral-50 text-neutral-450 border border-neutral-200 rounded text-[11px] font-medium block">
-                                        Unavailable
-                                      </span>
-                                    )}
-                                  </div>
-                                </div>
-                              );
-                            })}
-                          </div>
-                        ) : (
-                          <div className="mt-3">
-                            {selectedDeal.status === 'available' ? (
-                              <button
-                                onClick={() => onClaimDeal(selectedDeal.id)}
-                                className="px-5 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[14px] rounded-full cursor-pointer transition-colors shadow-sm"
-                              >
-                                Claim Voucher
-                              </button>
-                            ) : (
-                              <span className="inline-flex items-center gap-1 text-[12px] font-bold text-neutral-500">
-                                Voucher Claimed ✓
-                              </span>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Step 2 */}
-                    <div className="flex gap-4 relative z-10">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border text-[12px] font-bold ${
-                        selectedDeal.status === 'approved' || selectedDeal.status === 'active'
-                          ? 'bg-black border-black text-white'
-                          : 'bg-white border-neutral-300 text-neutral-600'
-                      }`}>
-                        {selectedDeal.status === 'approved' || selectedDeal.status === 'active' ? '✓' : '2'}
-                      </div>
-                      <div className="flex-1 pt-0.5 pb-2">
-                        <span className="block text-[14px] font-bold text-neutral-900">Step 2: VC Relationship Manager Review</span>
-                        <span className="block text-[13px] text-neutral-500 mt-1 leading-normal font-normal">
-                          The VC partner representative reviews your claim credentials.
-                        </span>
-                        
-                        <div className="mt-3">
-                          {selectedDeal.status === 'claimed' ? (
-                            <button
-                              onClick={() => onAdminAdvanceStatus(selectedDeal.id)}
-                              className="px-4 py-2 bg-black hover:bg-neutral-800 text-white font-bold text-[12px] rounded cursor-pointer transition-colors shadow-sm"
-                            >
-                              Simulate VC Approval
-                            </button>
-                          ) : selectedDeal.status === 'approved' || selectedDeal.status === 'active' ? (
-                            <span className="inline-flex items-center gap-1 text-[12px] font-bold text-neutral-500">
-                              Approved by Accel ✓
-                            </span>
-                          ) : (
-                            <span className="text-[12px] text-neutral-400 italic font-normal">Awaiting claim activation...</span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Step 3 */}
-                    <div className="flex gap-4 relative z-10">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border text-[12px] font-bold ${
-                        selectedDeal.status === 'active'
-                          ? 'bg-black border-black text-white'
-                          : 'bg-white border-neutral-300 text-neutral-600'
-                      }`}>
-                        {selectedDeal.status === 'active' ? '✓' : '3'}
-                      </div>
-                      <div className="flex-1 pt-0.5 pb-2">
-                        <span className="block text-[14px] font-bold text-neutral-900">Step 3: Access Voucher Key</span>
-                        <span className="block text-[13px] text-neutral-555 mt-1 leading-normal font-normal">
-                          Your pre-approved partner voucher code is visible here.
-                        </span>
-
-                        {(selectedDeal.status === 'approved' || selectedDeal.status === 'active') && selectedDeal.claimCode && (
-                          <div className="mt-2.5 p-3 bg-neutral-50 border border-neutral-200 rounded-lg inline-flex items-center gap-3">
-                            <span className="text-[11px] text-neutral-500 font-bold uppercase tracking-wider">Voucher:</span>
-                            <code className="font-mono text-[13px] font-bold bg-white px-2 py-0.5 rounded border border-neutral-200">
-                              {selectedDeal.claimCode}
-                            </code>
-                            <button
-                              onClick={() => {
-                                navigator.clipboard.writeText(selectedDeal.claimCode || '');
-                                alert('Voucher code copied to clipboard!');
-                              }}
-                              className="text-[12px] font-bold text-neutral-600 hover:text-black cursor-pointer underline"
-                            >
-                              Copy
-                            </button>
-                          </div>
-                        )}
-
-                        <div className="mt-3">
-                          {selectedDeal.status === 'approved' ? (
-                            <button
-                              onClick={() => onAdminAdvanceStatus(selectedDeal.id)}
-                              className="px-5 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[14px] rounded-full cursor-pointer transition-colors shadow-sm"
-                            >
-                              Activate Credits
-                            </button>
-                          ) : selectedDeal.status === 'active' ? (
-                            <span className="inline-flex items-center gap-1 text-[12px] font-bold text-neutral-500">
-                              Credits Applied & Active ✓
-                            </span>
-                          ) : (
-                            <span className="text-[12px] text-neutral-400 italic font-normal">Awaiting VC approval...</span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Step 4 */}
-                    <div className="flex gap-4 relative z-10">
-                      <div className="w-8 h-8 rounded-full bg-white border border-neutral-300 text-neutral-600 flex items-center justify-center shrink-0 text-[12px] font-bold">
-                        4
-                      </div>
-                      <div className="flex-1 pt-0.5">
-                        <span className="block text-[14px] font-bold text-neutral-900">Step 4: Launch Developer Platform</span>
-                        <span className="block text-[13px] text-neutral-555 mt-1 leading-normal font-normal">
-                          Go to the vendor console directly to configure your integration options.
-                        </span>
-
-                        <div className="mt-3">
-                          <a
-                            href={getConsoleLink(selectedDeal.vendorName)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 px-4 py-2 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 hover:text-black border border-neutral-300 rounded-lg font-bold text-[12px] cursor-pointer transition-colors shadow-sm"
-                          >
-                            <span>Open Console ↗</span>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-              </div>
-
-              {/* Right 1 Col: Quick Links */}
-              <div className="lg:col-span-1 flex flex-col gap-6">
-                <div className="p-5 border border-neutral-200 bg-white rounded-2xl flex flex-col gap-3 shadow-sm">
-                  <h3 className="text-[11px] font-bold text-neutral-455 uppercase tracking-wider mb-2">Help & Documentation</h3>
-                  <a
-                    href={`https://support.${selectedDeal.vendorName.toLowerCase().replace(/\s+/g, '')}.com`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between text-[13px] font-bold text-neutral-800 hover:text-black group border-b border-neutral-100 pb-2.5"
-                  >
-                    <span>Visit Help Center</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-neutral-400 group-hover:translate-x-0.5 transition-transform"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                  </a>
-                  
-                  <div className="text-[12px] text-neutral-400 flex flex-col gap-1 leading-normal font-normal">
-                    <span className="font-semibold text-neutral-600">Download Guide:</span>
-                    <div className="flex items-center gap-1.5 mt-0.5">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-neutral-400"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/></svg>
-                      <span className="text-neutral-500 font-medium">Redemption_Guide.pdf</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
 
         </div>
 
@@ -848,7 +1166,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
               <button
                 type="button"
                 onClick={() => {
-                  onClaimDeal(selectedDeal.id);
+                  handleClaimClick(selectedDeal.id);
                   setShowSandboxModal(false);
                   window.open(getConsoleLink(selectedDeal.vendorName), '_blank');
                 }}
@@ -860,6 +1178,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
           </ModalContent>
         </Modal>
 
+        {renderRedemptionModal()}
       </div>
     );
   }
@@ -975,6 +1294,29 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
             </svg>
           </button>
 
+          {/* Column layout switcher (only for Grid view) */}
+          {viewMode === 'grid' && (
+            <div className="flex items-center gap-1 p-1 bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)] select-none">
+              {([1, '1-row', 2, '2-row', 3] as const).map((cols) => (
+                <button
+                  key={cols}
+                  onClick={() => setGridCols(cols)}
+                  className={`px-2.5 py-1 text-xs font-bold rounded-[8px] cursor-pointer transition-all duration-150 ${
+                    gridCols === cols
+                      ? 'bg-black text-white shadow-sm font-extrabold'
+                      : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] font-semibold'
+                  }`}
+                >
+                  {cols === '1-row'
+                    ? '1 Col (Row)'
+                    : cols === '2-row'
+                    ? '2 Cols (Row)'
+                    : `${cols} Col${cols > 1 ? 's' : ''}`}
+                </button>
+              ))}
+            </div>
+          )}
+
           {/* View mode toggle */}
           <div className="flex items-center gap-1 p-1 bg-[var(--surface-secondary)] border border-[var(--border-subtle)] rounded-[var(--radius-lg)]">
             <button
@@ -1042,59 +1384,93 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
           <p className="text-sm">No deals matches your filter criteria.</p>
         </Card>
       ) : viewMode === 'grid' ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 animate-slideInUp stagger-1">
-          {filteredDeals.map((deal) => (
-            <Card
-              key={deal.id}
-              onClick={() => setSelectedDealId(deal.id)}
-              className="relative flex flex-col justify-between hover:shadow-[var(--shadow-md)] hover:-translate-y-0.5 transition-all cursor-pointer border border-[var(--border-subtle)] bg-white rounded-[12px] p-3"
-            >
-              {deal.isNew && (
-                <span className="absolute -top-1.5 -right-1.5 px-2.5 py-0.5 text-[10px] font-bold bg-[#D97706] text-white rounded-full uppercase tracking-wider shadow-sm select-none z-10">
-                  New
-                </span>
-              )}
-              {/* Card Body */}
-              <div className="flex-1 flex flex-col gap-3">
-                <div className="flex justify-between items-start gap-2">
-                  <CompanyLogo src={deal.logoUrl} name={deal.vendorName} size="lg" />
-                </div>
-                <div>
-                  <h3 className="text-[14px] font-bold text-[var(--text-primary)] leading-snug">
-                    {deal.vendorName}
-                  </h3>
-                  <p className="text-[14px] font-semibold text-[var(--text-muted)] mt-0.5 truncate">
-                    {deal.title}
-                  </p>
-                  <p className="text-[14px] text-[var(--text-muted)] mt-1.5 line-clamp-2 leading-relaxed">
-                    {deal.description}
-                  </p>
-                </div>
-              </div>
-
-              {/* Card Footer */}
-              <div className="flex justify-between items-center pt-3 border-t border-neutral-100 mt-3 shrink-0">
-                <span className="text-[14px] font-bold text-[var(--text-primary)]">
-                  {deal.variations && deal.variations.length > 1 ? `Up to ${deal.value}` : deal.value}
-                </span>
-
-                {deal.status === 'available' ? (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onClaimDeal(deal.id);
-                    }}
-                    className="px-5 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[14px] rounded-full cursor-pointer transition-colors shadow-sm flex items-center gap-1.5"
-                  >
-                    <span>Claim</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><path d="m9 18 6-6-6-6"/></svg>
-                  </button>
-                ) : (
-                  <Badge color="amber" className="px-5 py-2 !rounded-full !h-auto font-bold text-[14px]">Claimed</Badge>
+        <div className={`grid gap-4 animate-slideInUp stagger-1 ${
+          gridCols === 1 || gridCols === '1-row'
+            ? 'grid-cols-1 w-full'
+            : gridCols === 2 || gridCols === '2-row'
+            ? 'grid-cols-1 md:grid-cols-2'
+            : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+        }`}>
+          {filteredDeals.map((deal) => {
+            const isRowLayout = gridCols === '1-row' || gridCols === '2-row';
+            return (
+              <Card
+                key={deal.id}
+                onClick={() => setSelectedDealId(deal.id)}
+                className="relative flex flex-col justify-between hover:shadow-[var(--shadow-md)] hover:-translate-y-0.5 transition-all cursor-pointer border border-[var(--border-subtle)] !bg-white rounded-[12px] p-4"
+              >
+                {deal.isNew && (
+                  <span className="absolute -top-1.5 -right-1.5 px-2.5 py-0.5 text-[10px] font-bold bg-[#D97706] text-white rounded-full uppercase tracking-wider shadow-sm select-none z-10">
+                    New
+                  </span>
                 )}
-              </div>
-            </Card>
-          ))}
+                {/* Card Body */}
+                <div className="flex-1 flex flex-col gap-3">
+                  {isRowLayout ? (
+                    <>
+                      <div className="flex items-center gap-3.5">
+                        <CompanyLogo
+                          src={deal.logoUrl}
+                          name={deal.vendorName}
+                          className="!w-14 !h-14 shrink-0"
+                        />
+                        <h3 className="text-[17px] font-extrabold text-[var(--text-primary)] leading-none">
+                          {deal.vendorName}
+                        </h3>
+                      </div>
+                      <p className="text-[14px] text-[var(--text-muted)] line-clamp-2 leading-relaxed mt-1">
+                        {deal.description}
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex justify-between items-start gap-2">
+                        <CompanyLogo
+                          src={deal.logoUrl}
+                          name={deal.vendorName}
+                          className="!w-14 !h-14 shrink-0"
+                        />
+                      </div>
+                      <div>
+                        <h3 className="text-[17px] font-extrabold text-[var(--text-primary)] leading-none">
+                          {deal.vendorName}
+                        </h3>
+                        <p className="text-[14px] text-[var(--text-muted)] mt-2 line-clamp-2 leading-relaxed">
+                          {deal.description}
+                        </p>
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                {/* Card Footer */}
+                <div className="flex justify-between items-center pt-3 border-t border-neutral-100 mt-3 shrink-0">
+                  <span className="text-[14px] font-bold text-[var(--text-primary)]">
+                    {deal.variations && deal.variations.length > 1 ? `Up to ${deal.value}` : deal.value}
+                  </span>
+
+                  {deal.isLocked ? (
+                    <span className="px-4 py-1.5 bg-neutral-100 text-neutral-450 border border-neutral-200 text-xs font-bold rounded-full flex items-center gap-1 shadow-inner select-none shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="shrink-0"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                      <span>Locked</span>
+                    </span>
+                  ) : deal.status === 'available' ? (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleClaimClick(deal.id);
+                      }}
+                      className="px-5 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[14px] rounded-full cursor-pointer transition-colors shadow-sm text-center"
+                    >
+                      <span>Claim</span>
+                    </button>
+                  ) : (
+                    <Badge color="amber" className="px-5 py-2 !rounded-full !h-auto font-bold text-[14px]">Claimed</Badge>
+                  )}
+                </div>
+              </Card>
+            );
+          })}
         </div>
       ) : (
         <div className="flex flex-col gap-2.5 animate-slideInUp stagger-1">
@@ -1102,7 +1478,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
             <div
               key={deal.id}
               onClick={() => setSelectedDealId(deal.id)}
-              className="relative flex items-center justify-between p-3 border border-[var(--border-subtle)] hover:border-black rounded-[12px] bg-white hover:shadow-[0_2px_12px_rgba(0,0,0,0.04)] transition-all cursor-pointer"
+              className="relative flex items-center justify-between p-3 border border-[var(--border-subtle)] hover:border-black rounded-[12px] !bg-white hover:shadow-[0_2px_12px_rgba(0,0,0,0.04)] transition-all cursor-pointer"
             >
               {deal.isNew && (
                 <span className="absolute -top-1.5 -right-1.5 px-2.5 py-0.5 text-[10px] font-bold bg-[#D97706] text-white rounded-full uppercase tracking-wider shadow-sm select-none z-10">
@@ -1110,21 +1486,22 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
                 </span>
               )}
               {/* Column 1: Logo + Vendor Name */}
-              <div className="w-1/4 min-w-[180px] flex items-center gap-3 shrink-0">
-                <CompanyLogo src={deal.logoUrl} name={deal.vendorName} size="sm" />
+              <div className="w-1/3 min-w-[220px] flex items-center gap-3.5 shrink-0">
+                <CompanyLogo
+                  src={deal.logoUrl}
+                  name={deal.vendorName}
+                  className="!w-12 !h-12 shrink-0"
+                />
                 <div className="min-w-0">
-                  <h3 className="text-[14px] font-bold text-[var(--text-primary)] truncate">
+                  <h3 className="text-[16px] font-extrabold text-[var(--text-primary)] truncate">
                     {deal.vendorName}
                   </h3>
                 </div>
               </div>
 
-              {/* Column 2: Title & Description */}
+              {/* Column 2: Description */}
               <div className="flex-1 min-w-0 px-4">
-                <p className="text-[14px] text-[var(--text-primary)] font-bold truncate">
-                  {deal.title}
-                </p>
-                <p className="text-[14px] text-[var(--text-muted)] line-clamp-1 mt-0.5">
+                <p className="text-[14px] text-[var(--text-muted)] line-clamp-2 leading-relaxed">
                   {deal.description}
                 </p>
               </div>
@@ -1137,16 +1514,20 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
               {/* Column 4: Status Badge + Chevron Arrow */}
               <div className="w-36 shrink-0 flex items-center justify-between pl-2">
                 <div>
-                  {deal.status === 'available' ? (
+                  {deal.isLocked ? (
+                    <span className="px-4 py-1.5 bg-neutral-100 text-neutral-450 border border-neutral-200 text-xs font-bold rounded-full flex items-center gap-1 shadow-inner select-none shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="shrink-0"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                      <span>Locked</span>
+                    </span>
+                  ) : deal.status === 'available' ? (
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        onClaimDeal(deal.id);
+                        handleClaimClick(deal.id);
                       }}
-                      className="px-5 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[14px] rounded-full cursor-pointer transition-colors shadow-sm flex items-center gap-1.5"
+                      className="px-5 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-bold text-[14px] rounded-full cursor-pointer transition-colors shadow-sm text-center"
                     >
                       <span>Claim</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="shrink-0"><path d="m9 18 6-6-6-6"/></svg>
                     </button>
                   ) : (
                     <Badge color="amber" className="px-5 py-2 !rounded-full !h-auto font-bold text-[14px]">Claimed</Badge>
@@ -1172,6 +1553,7 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
           ))}
         </div>
       )}
+      {renderRedemptionModal()}
     </div>
   );
 }
