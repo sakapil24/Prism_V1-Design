@@ -292,6 +292,31 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
   const [selectedDealId, setSelectedDealId] = React.useState<string | null>(null);
   const [activeScreenshotIdx, setActiveScreenshotIdx] = React.useState<number>(0);
   const [lightboxOpen, setLightboxOpen] = React.useState<boolean>(false);
+  const [layoutOption, setLayoutOption] = React.useState<'contained' | 'flat-sticky' | 'hybrid'>('contained');
+
+  React.useEffect(() => {
+    const mainContainer = document.querySelector('.flex-1.p-4.lg\\:p-6.bg-\\[var\\(--surface-secondary\\)\\]');
+    if (!mainContainer) return;
+
+    if (selectedDealId && (layoutOption === 'flat-sticky' || layoutOption === 'hybrid')) {
+      (mainContainer as HTMLElement).style.setProperty('background-color', '#FFFFFF', 'important');
+      if (layoutOption === 'flat-sticky') {
+        (mainContainer as HTMLElement).style.setProperty('padding', '0px', 'important');
+      } else {
+        (mainContainer as HTMLElement).style.removeProperty('padding');
+      }
+    } else {
+      (mainContainer as HTMLElement).style.removeProperty('background-color');
+      (mainContainer as HTMLElement).style.removeProperty('padding');
+    }
+
+    return () => {
+      if (mainContainer) {
+        (mainContainer as HTMLElement).style.removeProperty('background-color');
+        (mainContainer as HTMLElement).style.removeProperty('padding');
+      }
+    };
+  }, [selectedDealId, layoutOption]);
 
   React.useEffect(() => {
     setActiveScreenshotIdx(0);
@@ -639,8 +664,387 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
       ? selectedDeal.variations[selectedOptionIndex].value
       : selectedDeal.value;
 
+    const details = getPremiumDetails(selectedDeal.id, selectedDeal.vendorName, selectedDeal.category, selectedDeal.value);
+
+    // ───────── LAYOUT RENDERING HELPERS ─────────
+
+    const renderLeftColumnContent = () => (
+      <>
+        {/* Section 1: Eligibility Prerequisites */}
+        <div id="claiming-sec" className="pb-6 border-b border-neutral-100 flex flex-col gap-4 scroll-mt-32 select-none">
+          <h3 className="text-lg font-bold text-neutral-900">Eligibility Prerequisites</h3>
+          <div className="text-[14px] leading-relaxed text-neutral-800">
+            <ul className="list-none flex flex-col gap-2.5">
+              {selectedDeal.id === 'deal-slack' ? (
+                <>
+                  <li className="flex items-start gap-2">
+                    <span className="text-neutral-400 shrink-0 select-none">•</span>
+                    <span>Startups with up to 200 employees.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-neutral-400 shrink-0 select-none">•</span>
+                    <span>Upgrades to paid Slack Pro or Business+ annual plans.</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-neutral-400 shrink-0 select-none">•</span>
+                    <span>Cannot be combined with existing active promotions.</span>
+                  </li>
+                </>
+              ) : (
+                <li className="flex items-start gap-2">
+                  <span className="text-neutral-400 shrink-0 select-none">•</span>
+                  <span>{details.eligibilitySummary}</span>
+                </li>
+              )}
+            </ul>
+          </div>
+        </div>
+
+        {/* Section 2: Overview */}
+        <div id="overview-sec" className="py-6 border-b border-neutral-100 flex flex-col gap-4 scroll-mt-32">
+          <h3 className="text-lg font-bold text-neutral-900">What is {selectedDeal.vendorName}?</h3>
+          <p className="text-[14px] text-black leading-relaxed font-normal">
+            {details.whatIsPlatform}
+          </p>
+          {selectedDeal.programDetailsUrl && (
+            <div className="mt-1">
+              <a
+                href={selectedDeal.programDetailsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-[13px] font-bold text-neutral-800 hover:text-black hover:underline transition-colors"
+              >
+                <span>Program Details</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="shrink-0"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
+            </div>
+          )}
+
+          {/* Product Screenshots Gallery */}
+          {selectedDeal.screenshots && selectedDeal.screenshots.length > 0 && (
+            <div className="mt-4 flex flex-col gap-3.5">
+              <span className="text-[12px] font-extrabold text-neutral-500 uppercase tracking-wider select-none">
+                Product Screenshots
+              </span>
+              
+              {/* Browser Window Mockup */}
+              <div className="border border-neutral-200 bg-white rounded-xl overflow-hidden shadow-sm relative group flex flex-col">
+                {/* Browser Window Header */}
+                <div className="flex items-center justify-between px-4 py-2 border-b border-neutral-100 bg-neutral-50/50 select-none">
+                  {/* Left: Window Controls */}
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-400/90 border border-red-500/10" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-400/90 border border-amber-500/10" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-400/90 border border-emerald-500/10" />
+                  </div>
+                  
+                  {/* Center: Fake Address Bar */}
+                  <div className="flex-1 max-w-xs md:max-w-md mx-4 bg-white border border-neutral-200 rounded px-2 py-0.5 text-center text-[10.5px] text-neutral-500 font-medium truncate select-none shadow-sm">
+                    {selectedDeal.websiteUrl?.replace('https://', '') || 'workspace.app'}
+                  </div>
+                  
+                  {/* Right: Counter */}
+                  <div className="w-12 shrink-0 flex justify-end">
+                    <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wide">
+                      {activeScreenshotIdx + 1} / {selectedDeal.screenshots.length}
+                    </span>
+                  </div>
+                </div>
+                
+                {/* Browser Body / Image Display */}
+                <div 
+                  onClick={() => setLightboxOpen(true)}
+                  className="relative aspect-[16/10] w-full bg-neutral-900 cursor-zoom-in overflow-hidden flex items-center justify-center group/img"
+                >
+                  <img
+                    src={selectedDeal.screenshots[activeScreenshotIdx].url}
+                    alt={selectedDeal.screenshots[activeScreenshotIdx].caption}
+                    className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover/img:scale-[1.01]"
+                  />
+                  
+                  {/* Navigation Arrows */}
+                  {selectedDeal.screenshots.length > 1 && (
+                    <>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveScreenshotIdx((prev) => (prev === 0 ? selectedDeal.screenshots!.length - 1 : prev - 1));
+                        }}
+                        className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 border border-neutral-200 shadow flex items-center justify-center cursor-pointer text-neutral-800 hover:bg-white hover:text-black opacity-0 group-hover:opacity-100 transition-all duration-200"
+                        title="Previous screenshot"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setActiveScreenshotIdx((prev) => (prev === selectedDeal.screenshots!.length - 1 ? 0 : prev + 1));
+                        }}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 border border-neutral-200 shadow flex items-center justify-center cursor-pointer text-neutral-800 hover:bg-white hover:text-black opacity-0 group-hover:opacity-100 transition-all duration-200"
+                        title="Next screenshot"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                      </button>
+                    </>
+                  )}
+                  
+                  {/* Click to Zoom Hint Overlay */}
+                  <div className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 hover:opacity-100 duration-200 select-none">
+                    <span className="px-3 py-1 bg-black/80 text-white font-bold text-[10px] rounded-full shadow-lg flex items-center gap-1 border border-white/10 tracking-wide uppercase">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M8 11h6"/><path d="M11 8v6"/></svg>
+                      <span>Click to Zoom</span>
+                    </span>
+                  </div>
+                </div>
+                
+                {/* Caption Bar */}
+                <div className="bg-neutral-50 px-4 py-2.5 border-t border-neutral-100 flex items-start gap-2">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-neutral-500 shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                  <span className="text-[12.5px] text-neutral-700 leading-normal font-medium">
+                    {selectedDeal.screenshots[activeScreenshotIdx].caption}
+                  </span>
+                </div>
+              </div>
+
+              {/* Dots indicator at the bottom */}
+              {selectedDeal.screenshots.length > 1 && (
+                <div className="flex justify-center items-center gap-1.5 mt-1 select-none">
+                  {selectedDeal.screenshots.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveScreenshotIdx(idx)}
+                      className={`w-2 h-2 rounded-full cursor-pointer transition-all duration-200 border-none p-0 ${
+                        activeScreenshotIdx === idx
+                          ? 'bg-black scale-110'
+                          : 'bg-neutral-300 hover:bg-neutral-400'
+                      }`}
+                      aria-label={`Go to screenshot ${idx + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Section 3: Daily Workflows */}
+        <div id="day-to-day-sec" className="py-6 border-b border-neutral-100 flex flex-col gap-6 scroll-mt-32">
+          <div>
+            <h3 className="text-lg font-bold text-neutral-900">Daily Workflows</h3>
+            <p className="text-[13.5px] text-black mt-1.5 leading-relaxed font-normal">
+              {details.dayToDay}
+            </p>
+          </div>
+
+          {details.dayToDayPillars && details.dayToDayPillars.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-1">
+              {details.dayToDayPillars.map((pillar, idx) => (
+                <div key={idx} className="p-4 border border-neutral-200 bg-neutral-50/10 rounded-xl flex flex-col gap-2.5 hover:shadow-[var(--shadow-sm)] transition-shadow">
+                  <div className="text-neutral-800 select-none">
+                    {renderPillarIcon(pillar.emoji)}
+                  </div>
+                  <span className="font-bold text-[13.5px] text-neutral-950">{pillar.title}</span>
+                  <p className="text-[12px] text-neutral-900 leading-relaxed font-normal">{pillar.description}</p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Section 4: Free vs Paid Tier Comparison */}
+        <div id="plans-sec" className="py-6 flex flex-col gap-5 scroll-mt-32">
+          <div>
+            <h3 className="text-lg font-bold text-neutral-900">Free vs Paid Tier Comparison</h3>
+            <p className="text-[13px] text-black mt-1 leading-normal">
+              Know why upgrading to a paid startup tier makes sense for your velocity.
+            </p>
+          </div>
+
+          {details.freeVsPaid && details.freeVsPaid.length > 0 && (
+            <div className="border border-neutral-200 rounded-xl overflow-hidden shadow-inner">
+              <table className="w-full text-[13px] text-left border-collapse bg-white">
+                <thead>
+                  <tr className="bg-neutral-50/80 border-b border-neutral-200 font-bold text-neutral-800 select-none">
+                    <th className="p-3.5 pl-4">Feature</th>
+                    <th className="p-3.5">Free Plan</th>
+                    <th className="p-3.5 pr-4 text-emerald-800 bg-emerald-50/10">Paid Startup Offer</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-neutral-100 font-medium">
+                  {details.freeVsPaid.map((item, idx) => (
+                    <tr key={idx} className="hover:bg-neutral-50/20">
+                      <td className="p-3.5 pl-4 font-bold text-neutral-900">{item.feature}</td>
+                      <td className="p-3.5 text-neutral-900">{item.free}</td>
+                      <td className="p-3.5 pr-4 text-emerald-700 font-semibold bg-emerald-50/5">{item.paid}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      </>
+    );
+
+    const renderReviewsAndFAQsContent = () => (
+      <>
+        {/* Section 5: G2 Verified Reviews */}
+        <div id="reviews-sec" className="py-6 flex flex-col gap-5 scroll-mt-32 w-full">
+          <div className="flex items-center justify-between border-b border-neutral-200 pb-4">
+            <div className="flex items-center gap-3">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0 shadow-sm rounded-full">
+                <circle cx="16" cy="16" r="16" fill="url(#g2Gradient)" />
+                <defs>
+                  <linearGradient id="g2Gradient" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                    <stop stopColor="#FF492C" />
+                    <stop stopColor="#D83018" />
+                  </linearGradient>
+                </defs>
+                <text x="50%" y="58%" dominantBaseline="middle" textAnchor="middle" fill="#FFFFFF" fontSize="13" fontWeight="900" fontFamily="system-ui, sans-serif" letterSpacing="-0.5">G2</text>
+              </svg>
+              <div>
+                <h3 className="text-lg font-bold text-neutral-900 leading-none">G2 Verified Reviews</h3>
+                <p className="text-[13px] text-black mt-1.5 leading-normal font-normal">
+                  Real experiences from startup founders and tech leaders.
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1.5 bg-[#FF492C]/5 px-3 py-1.5 rounded-full border border-[#FF492C]/10">
+              <span className="text-[#FF492C] font-black text-xs">G2 Rating</span>
+              <span className="text-neutral-900 font-extrabold text-xs">4.7 / 5</span>
+            </div>
+          </div>
+
+          {details.g2Reviews && details.g2Reviews.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {details.g2Reviews.map((rev, idx) => (
+                <div key={idx} className="p-4 border border-neutral-200 rounded-xl bg-neutral-50/10 flex flex-col justify-between gap-3">
+                  <div className="flex justify-between items-start flex-wrap gap-2">
+                    <div>
+                      <span className="block text-[13px] font-bold text-neutral-900">{rev.author}</span>
+                      <span className="block text-[11.5px] text-neutral-800 font-normal">{rev.companySize}</span>
+                    </div>
+                    <div className="flex flex-col items-end gap-1">
+                      <div className="flex text-amber-400 select-none">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <svg key={i} className={`w-3.5 h-3.5 ${i < Math.floor(rev.rating) ? 'fill-current' : 'stroke-current fill-none'}`} viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        ))}
+                      </div>
+                      <span className="text-[10px] font-extrabold text-emerald-800 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full select-none">✓ Verified Reviewer</span>
+                    </div>
+                  </div>
+
+                  <div className="text-[13px] font-bold text-neutral-900 mt-1">"{rev.title}"</div>
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2.5 border-t border-neutral-100">
+                    <div>
+                      <span className="block text-[11.5px] font-bold text-emerald-800 uppercase tracking-wider">Pros</span>
+                      <span className="block text-black mt-0.5 font-normal">{rev.pros}</span>
+                    </div>
+                    <div>
+                      <span className="block text-[11.5px] font-bold text-rose-800 uppercase tracking-wider">Cons</span>
+                      <span className="block text-black mt-0.5 font-normal">{rev.cons}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-neutral-450 italic text-[13px] py-4 text-center">No G2 reviews available for this vendor.</div>
+          )}
+        </div>
+
+        {/* Section 6: FAQs */}
+        <div id="faqs-sec" className="py-6 flex flex-col gap-4 scroll-mt-32 w-full">
+          <h3 className="text-lg font-bold text-neutral-900">Frequently Asked Questions</h3>
+          
+          {details.faqs && details.faqs.length > 0 ? (
+            <div className="divide-y divide-neutral-200 border-t border-b border-neutral-200 mt-2">
+              {details.faqs.map((faq, idx) => (
+                <details key={idx} className="group py-4 [&_summary::-webkit-details-marker]:hidden">
+                  <summary className="flex justify-between items-center font-bold text-[13.5px] text-black cursor-pointer list-none hover:text-neutral-800 transition-colors focus:outline-none">
+                    <span>{faq.q}</span>
+                    <svg className="w-4.5 h-4.5 text-neutral-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                  </summary>
+                  <div className="pt-3 text-[13px] text-black leading-relaxed font-normal">
+                    {faq.a}
+                  </div>
+                </details>
+              ))}
+            </div>
+          ) : (
+            <p className="text-neutral-700 italic text-[13px] text-center py-2">No FAQs available.</p>
+          )}
+        </div>
+      </>
+    );
+
+    const renderPlatformSummaryCard = (isEditorial: boolean = false) => (
+      <div className={`p-6 ${
+        isEditorial
+          ? "border-t border-b border-neutral-200 md:border-l-2 md:border-t-0 md:border-b-0 md:border-r-0 md:border-[#AB342B] bg-[#F8F8EE] rounded-none shadow-none"
+          : "border border-neutral-200 bg-neutral-50 rounded-2xl shadow-md"
+      } flex flex-col gap-5 select-none`}>
+        <div className="flex items-center gap-3.5 pb-4 border-b border-neutral-100">
+          <CompanyLogo src={selectedDeal.logoUrl} name={selectedDeal.vendorName} size="lg" className="!w-12 !h-12 p-1.5 bg-white shadow-sm shrink-0" />
+          <div>
+            <h4 className="text-[16px] font-bold text-neutral-900 leading-none">{selectedDeal.vendorName}</h4>
+            <span className="text-[12px] text-neutral-700 font-semibold block mt-1.5">{selectedDeal.category} Startup Benefit</span>
+          </div>
+        </div>
+
+        {/* Real Data Details */}
+        <div className="flex flex-col gap-3 py-1 text-[13px]">
+          <div className="flex justify-between items-center pb-2.5 border-b border-neutral-100">
+            <span className="text-neutral-800 font-medium">Startup Offer</span>
+            <span className="text-emerald-800 font-extrabold">{details.startupOffer}</span>
+          </div>
+          <div className="flex justify-between items-center pb-2.5 border-b border-neutral-100">
+            <span className="text-neutral-800 font-medium">Eligible Plans</span>
+            <span className="text-neutral-900 font-bold">{details.eligiblePlans}</span>
+          </div>
+          <div className="flex justify-between items-center pb-2.5 border-b border-neutral-100">
+            <span className="text-neutral-800 font-medium">Duration</span>
+            <span className="text-neutral-900 font-bold">{details.durationLimit}</span>
+          </div>
+          <div className="flex justify-between items-center">
+            <span className="text-neutral-800 font-medium">User Seat Cap</span>
+            <span className="text-neutral-900 font-bold">{details.userLimit}</span>
+          </div>
+        </div>
+
+        {/* Primary Claim Action Button */}
+        <div className="flex flex-col gap-2 mt-2">
+          {selectedDeal.isLocked ? (
+            <div className="w-full py-3 bg-neutral-50 text-neutral-700 border border-neutral-200 font-bold text-[13px] rounded-full text-center select-none flex items-center justify-center gap-1.5 shadow-inner">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="shrink-0"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <span>Benefit Locked</span>
+            </div>
+          ) : selectedDeal.status === 'available' ? (
+            <button
+              onClick={() => handleClaimClick(selectedDeal.id)}
+              className="w-full py-3 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold text-[13.5px] rounded-full cursor-pointer transition-colors shadow-md text-center flex items-center justify-center"
+            >
+              <span>Claim {selectedDeal.vendorName} Offer</span>
+            </button>
+          ) : (
+            <button
+              onClick={() => setRedemptionDealId(selectedDeal.id)}
+              className="w-full py-3 bg-white border border-neutral-200 hover:border-neutral-300 hover:bg-neutral-50 text-neutral-800 font-bold text-[13.5px] rounded-full text-center cursor-pointer transition-colors flex items-center justify-center shadow-sm"
+            >
+              <span>View Claim</span>
+            </button>
+          )}
+        </div>
+      </div>
+    );
+
+    const outerContainerClass = layoutOption === 'flat-sticky'
+      ? "flex-1 flex flex-col animate-fadeIn font-sans select-none w-full bg-white"
+      : "flex-1 flex flex-col gap-6 py-2 animate-fadeIn font-sans select-none max-w-6xl mx-auto w-full";
+
     return (
-      <div className="flex-1 flex flex-col gap-6 py-2 animate-fadeIn font-sans select-none max-w-6xl mx-auto w-full">
+      <div className={outerContainerClass}>
         {/* Global SVG gradients and filters for 3D shield */}
         <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
           <defs>
@@ -654,8 +1058,10 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
           </defs>
         </svg>
         
-        {/* Back navigation */}
-        <div className="flex items-center justify-between gap-3 pb-1">
+        {/* Back navigation and switcher bar */}
+        <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-neutral-100 ${
+          layoutOption === 'flat-sticky' ? 'max-w-6xl mx-auto w-full px-6 pt-4' : 'w-full'
+        }`}>
           <button
             onClick={() => setSelectedDealId(null)}
             className="flex items-center gap-1.5 text-[14px] font-bold text-neutral-800 hover:text-black cursor-pointer group transition-colors"
@@ -676,491 +1082,315 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
             </svg>
             Back to Deals
           </button>
+
+          {/* Elegant layout switcher controls */}
+          <div className="flex items-center gap-1 bg-neutral-100 p-0.5 rounded-lg border border-neutral-200 select-none shadow-sm shrink-0">
+            {[
+              { id: 'contained', label: '1. Contained Card' },
+              { id: 'flat-sticky', label: '2. Flat Full-Width' },
+              { id: 'hybrid', label: '3. Editorial Hybrid' }
+            ].map(opt => (
+              <button
+                key={opt.id}
+                onClick={() => setLayoutOption(opt.id as any)}
+                className={`px-3 py-1.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider transition-all cursor-pointer ${
+                  layoutOption === opt.id
+                    ? 'bg-white text-black shadow-sm'
+                    : 'text-neutral-500 hover:text-neutral-900 hover:bg-neutral-50/50'
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* White Card Container for Details */}
-        <div className="bg-white border border-[var(--border-subtle)] rounded-2xl p-6 md:p-8 shadow-sm flex flex-col gap-6 animate-scaleIn">
-          {/* Premium Visual Summary Hero Card */}
-          <div ref={heroRef} className="relative bg-white text-neutral-900 pb-6 border-b border-neutral-200 flex flex-col md:flex-row md:items-start justify-between gap-6">
-          <div className="flex items-start gap-5 relative z-10 w-full">
-            <CompanyLogo
-              src={selectedDeal.logoUrl}
-              name={selectedDeal.vendorName}
-              size="lg"
-              className="!w-16 !h-16 shrink-0 bg-white p-1.5 shadow-sm"
-            />
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-3 flex-wrap">
-                <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-neutral-900 leading-none">
-                  {selectedDeal.vendorName}
-                </h1>
+        {/* Option 1: Contained Card Layout */}
+        {layoutOption === 'contained' && (
+          <div className="bg-white border border-[var(--border-subtle)] rounded-2xl p-6 md:p-8 shadow-sm flex flex-col gap-6 animate-scaleIn mt-2">
+            {/* Premium Visual Summary Hero Card */}
+            <div ref={heroRef} className="relative bg-white text-neutral-900 pb-6 border-b border-neutral-200 flex flex-col md:flex-row md:items-start justify-between gap-6">
+              <div className="flex items-start gap-5 relative z-10 w-full">
+                <CompanyLogo
+                  src={selectedDeal.logoUrl}
+                  name={selectedDeal.vendorName}
+                  size="lg"
+                  className="!w-16 !h-16 shrink-0 bg-white p-1.5 shadow-sm"
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight text-neutral-900 leading-none">
+                      {selectedDeal.vendorName}
+                    </h1>
 
-                {/* Accel Verified Benefit Icon with Tooltip */}
-                <div className="relative group flex items-center cursor-help">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="shrink-0 drop-shadow-sm">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="url(#shield3dGrad)" />
-                    <path d="m9 11 2 2 4-4" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                  
-                  {/* Tooltip content */}
-                  <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-64 bg-neutral-950 text-white text-[12px] rounded-lg p-3 shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50 leading-relaxed font-normal normal-case">
-                    <span className="block font-bold text-[12.5px] text-emerald-400 mb-1">Accel Verified Benefit</span>
-                    Vetted by Accel portfolio operations. Direct partner desk escalation is guaranteed.
-                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-b-neutral-950"></div>
+                    {/* Accel Verified Benefit Icon */}
+                    <div className="relative group flex items-center cursor-help">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="shrink-0 drop-shadow-sm">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="url(#shield3dGrad)" />
+                        <path d="m9 11 2 2 4-4" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-64 bg-neutral-950 text-white text-[12px] rounded-lg p-3 shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50 leading-relaxed font-normal normal-case">
+                        <span className="block font-bold text-[12.5px] text-emerald-400 mb-1">Accel Verified Benefit</span>
+                        Vetted by Accel portfolio operations. Direct partner desk escalation is guaranteed.
+                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 border-4 border-transparent border-b-neutral-950"></div>
+                      </div>
+                    </div>
+                    
+                    {selectedDeal.status !== 'available' && (
+                      <span className="px-2 py-0.5 text-[9px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200 rounded uppercase tracking-wider select-none animate-fadeIn">
+                        Claimed
+                      </span>
+                    )}
+
+                    {selectedDeal.isNew && (
+                      <span className="px-2 py-0.5 text-[9px] font-extrabold bg-[#D97706] text-white rounded uppercase tracking-wider select-none">
+                        New
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[14px] font-medium text-neutral-900 mt-2">
+                    {selectedDeal.title} — Claim exclusive startup pricing
+                  </p>
+
+                  <div className="mt-4">
+                    {selectedDeal.isLocked ? (
+                      <span className="inline-flex px-4 py-2 bg-neutral-50 text-neutral-450 border border-neutral-200 text-[12.5px] font-bold rounded-lg items-center gap-1.5 select-none shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="shrink-0"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        <span>Benefit Locked</span>
+                      </span>
+                    ) : selectedDeal.status === 'available' ? (
+                      <button
+                        onClick={() => handleClaimClick(selectedDeal.id)}
+                        className="inline-flex px-4 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold text-[12.5px] rounded-lg cursor-pointer transition-colors shadow-sm items-center"
+                      >
+                        <span>Claim Benefit</span>
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => setRedemptionDealId(selectedDeal.id)}
+                        className="inline-flex px-4 py-2 bg-white border border-neutral-200 hover:border-neutral-300 hover:bg-neutral-50 text-neutral-800 text-[12.5px] font-bold rounded-lg items-center cursor-pointer transition-colors shadow-sm"
+                      >
+                        <span>View Claim</span>
+                      </button>
+                    )}
                   </div>
                 </div>
-                
-                {selectedDeal.status !== 'available' && (
-                  <span className="px-2 py-0.5 text-[9px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200 rounded uppercase tracking-wider select-none animate-fadeIn">
-                    Claimed
-                  </span>
-                )}
-
-                {selectedDeal.isNew && (
-                  <span className="px-2 py-0.5 text-[9px] font-extrabold bg-[#D97706] text-white rounded uppercase tracking-wider select-none">
-                    New
-                  </span>
-                )}
               </div>
-              {/* Short summary of the deal */}
-              <p className="text-[14px] font-medium text-neutral-900 mt-2">
-                {selectedDeal.title} — Claim exclusive startup pricing
-              </p>
+            </div>
 
-              {/* Primary Claim Action Button directly below short summary */}
-              <div className="mt-4">
+            {/* Horizontal Anchor Navigation */}
+            {showAnchorNav && (
+              <div className="sticky -top-4 lg:-top-6 z-20 flex gap-2 py-3 px-4 lg:px-6 bg-white/95 backdrop-blur border-b border-neutral-200 overflow-x-auto scrollbar-none select-none -mx-4 lg:-mx-6 animate-fadeIn transition-all duration-300">
+                {[
+                  { id: 'claiming-sec', label: 'Eligibility' },
+                  { id: 'overview-sec', label: 'Overview' },
+                  { id: 'day-to-day-sec', label: 'Daily Workflows' },
+                  { id: 'plans-sec', label: 'Free vs Paid' }
+                ].map(sec => (
+                  <a
+                    key={sec.id}
+                    href={`#${sec.id}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document.getElementById(sec.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }}
+                    className="px-4 py-1.5 text-xs font-bold text-neutral-800 hover:text-black border border-neutral-200 bg-white hover:border-black rounded-full transition-all whitespace-nowrap shadow-sm"
+                  >
+                    {sec.label}
+                  </a>
+                ))}
+              </div>
+            )}
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+              {/* Left Column (col-span-2) */}
+              <div className="lg:col-span-2 flex flex-col gap-0">
+                {renderLeftColumnContent()}
+              </div>
+
+              {/* Right Column */}
+              <div className="lg:col-span-1 flex flex-col gap-6 lg:sticky lg:top-14 h-fit">
+                {renderPlatformSummaryCard(false)}
+              </div>
+            </div>
+
+            {renderReviewsAndFAQsContent()}
+          </div>
+        )}
+
+        {/* Option 2: Flat Full-Width Layout (Sticky Hero & Nav) */}
+        {layoutOption === 'flat-sticky' && (
+          <div className="flex flex-col w-full bg-white select-none animate-fadeIn">
+            {/* Sticky Header Wrapper */}
+            <div className="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-neutral-200 py-5 shadow-sm">
+              <div className="max-w-6xl mx-auto w-full px-6 flex flex-col gap-4">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-4.5 min-w-0">
+                    <CompanyLogo
+                      src={selectedDeal.logoUrl}
+                      name={selectedDeal.vendorName}
+                      size="lg"
+                      className="!w-14 !h-14 shrink-0 bg-white p-1.5 border border-neutral-150 shadow-sm rounded-xl"
+                    />
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2.5">
+                        <h1 className="text-xl md:text-2xl font-extrabold text-neutral-900 leading-none truncate">{selectedDeal.vendorName}</h1>
+                        {selectedDeal.status !== 'available' && (
+                          <span className="px-1.5 py-0.5 text-[8.5px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200 rounded uppercase tracking-wider shrink-0">Claimed</span>
+                        )}
+                      </div>
+                      <p className="text-[13px] font-medium text-neutral-600 mt-1.5 truncate">{selectedDeal.title}</p>
+                    </div>
+                  </div>
+                  <div className="shrink-0 flex items-center gap-3">
+                    {selectedDeal.isLocked ? (
+                      <span className="inline-flex px-4 py-2 bg-neutral-50 text-neutral-450 border border-neutral-200 text-[12px] font-bold rounded-lg items-center gap-1.5 shadow-sm">Benefit Locked</span>
+                    ) : selectedDeal.status === 'available' ? (
+                      <button onClick={() => handleClaimClick(selectedDeal.id)} className="px-4 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold text-[12px] rounded-lg transition-colors shadow-sm cursor-pointer">Claim Benefit</button>
+                    ) : (
+                      <button onClick={() => setRedemptionDealId(selectedDeal.id)} className="px-4 py-2 bg-white border border-neutral-200 hover:bg-neutral-50 text-neutral-800 text-[12px] font-bold rounded-lg transition-colors shadow-sm cursor-pointer">View Claim</button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Navigation Bar */}
+                <div className="flex gap-2 overflow-x-auto scrollbar-none py-1 select-none">
+                  {[
+                    { id: 'claiming-sec', label: 'Eligibility' },
+                    { id: 'overview-sec', label: 'Overview' },
+                    { id: 'day-to-day-sec', label: 'Daily Workflows' },
+                    { id: 'plans-sec', label: 'Free vs Paid' },
+                    { id: 'reviews-sec', label: 'Reviews' },
+                    { id: 'faqs-sec', label: 'FAQs' }
+                  ].map(sec => (
+                    <a
+                      key={sec.id}
+                      href={`#${sec.id}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document.getElementById(sec.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }}
+                      className="px-3.5 py-1.5 text-xs font-bold text-neutral-800 hover:text-black border border-neutral-200 bg-white hover:border-black rounded-full transition-all whitespace-nowrap shadow-sm"
+                    >
+                      {sec.label}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Flat Content List (Single column layout) */}
+            <div className="max-w-6xl mx-auto w-full px-6 py-8 flex flex-col gap-0 bg-white">
+              {renderLeftColumnContent()}
+              {renderReviewsAndFAQsContent()}
+            </div>
+          </div>
+        )}
+
+        {/* Option 3: Editorial Hybrid Layout (Recommended Premium Option) */}
+        {layoutOption === 'hybrid' && (
+          <div className="flex flex-col w-full bg-white select-none animate-fadeIn mt-2 border border-neutral-200 rounded-2xl overflow-hidden shadow-sm">
+            {/* Dark Brand Editorial Header Band */}
+            <div className="relative bg-[#191816] text-white px-8 py-10 flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-neutral-800">
+              {/* Radial backdrop highlight */}
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(200,16,46,0.1),transparent_60%)] pointer-events-none" />
+              
+              <div className="flex items-start gap-5 relative z-10 w-full">
+                <CompanyLogo
+                  src={selectedDeal.logoUrl}
+                  name={selectedDeal.vendorName}
+                  size="lg"
+                  className="!w-16 !h-16 shrink-0 bg-white p-1.5 shadow-md rounded-xl"
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <h1 className="text-3xl font-extrabold tracking-tight text-white leading-none font-serif">
+                      {selectedDeal.vendorName}
+                    </h1>
+
+                    <span className="px-2 py-0.5 text-[9px] font-extrabold bg-[#AB342B] text-white rounded uppercase tracking-wider select-none">
+                      {selectedDeal.category} Benefit
+                    </span>
+
+                    {selectedDeal.status !== 'available' && (
+                      <span className="px-2 py-0.5 text-[9px] font-extrabold bg-emerald-950/80 text-emerald-400 border border-emerald-900 rounded uppercase tracking-wider select-none animate-fadeIn">
+                        ✓ Claimed
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[14px] font-medium text-neutral-300 mt-2.5 max-w-2xl leading-relaxed">
+                    {selectedDeal.title} — Vetted startup program details and billing waivers.
+                  </p>
+                </div>
+              </div>
+
+              {/* Action Button inside dark band */}
+              <div className="relative z-10 shrink-0 self-start md:self-center">
                 {selectedDeal.isLocked ? (
-                  <span className="inline-flex px-4 py-2 bg-neutral-50 text-neutral-450 border border-neutral-200 text-[12.5px] font-bold rounded-lg items-center gap-1.5 select-none shadow-sm">
+                  <span className="inline-flex px-5 py-2.5 bg-neutral-800 text-neutral-450 border border-neutral-700 text-[13px] font-bold rounded-lg items-center gap-1.5 select-none shadow-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="shrink-0"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                     <span>Benefit Locked</span>
                   </span>
                 ) : selectedDeal.status === 'available' ? (
                   <button
                     onClick={() => handleClaimClick(selectedDeal.id)}
-                    className="inline-flex px-4 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold text-[12.5px] rounded-lg cursor-pointer transition-colors shadow-sm items-center"
+                    className="inline-flex px-5 py-2.5 bg-[#AB342B] hover:bg-[#810100] text-white font-extrabold text-[13.5px] rounded-lg cursor-pointer transition-colors shadow-md items-center uppercase tracking-wider"
                   >
                     <span>Claim Benefit</span>
                   </button>
                 ) : (
                   <button
                     onClick={() => setRedemptionDealId(selectedDeal.id)}
-                    className="inline-flex px-4 py-2 bg-white border border-neutral-200 hover:border-neutral-300 hover:bg-neutral-50 text-neutral-800 text-[12.5px] font-bold rounded-lg items-center cursor-pointer transition-colors shadow-sm"
+                    className="inline-flex px-5 py-2.5 bg-neutral-800 border border-neutral-700 hover:bg-neutral-700 text-neutral-200 text-[13px] font-bold rounded-lg items-center cursor-pointer transition-colors shadow-sm"
                   >
                     <span>View Claim</span>
                   </button>
                 )}
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Tab contents */}
-        <div className="animate-fadeIn mt-4">
-          
-          {(() => {
-            const details = getPremiumDetails(selectedDeal.id, selectedDeal.vendorName, selectedDeal.category, selectedDeal.value);
-            return (
-              <div className="flex flex-col gap-6 animate-fadeIn">
-                {/* Horizontal Anchor Navigation */}
-                {showAnchorNav && (
-                  <div className="sticky -top-4 lg:-top-6 z-20 flex gap-2 py-3 px-4 lg:px-6 bg-white/95 backdrop-blur border-b border-neutral-200 overflow-x-auto scrollbar-none select-none -mx-4 lg:-mx-6 animate-fadeIn transition-all duration-300">
-                    {[
-                      { id: 'claiming-sec', label: 'Eligibility' },
-                      { id: 'overview-sec', label: 'Overview' },
-                      { id: 'day-to-day-sec', label: 'Daily Workflows' },
-                      { id: 'plans-sec', label: 'Free vs Paid' }
-                    ].map(sec => (
-                      <a
-                        key={sec.id}
-                        href={`#${sec.id}`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          document.getElementById(sec.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }}
-                        className="px-4 py-1.5 text-xs font-bold text-neutral-800 hover:text-black border border-neutral-200 bg-white hover:border-black rounded-full transition-all whitespace-nowrap shadow-sm"
-                      >
-                        {sec.label}
-                      </a>
-                    ))}
-                  </div>
-                )}
+            {/* Scroll Navigation Header (Sticky on Scroll) */}
+            <div className="sticky top-0 z-25 bg-white/95 backdrop-blur border-b border-neutral-200 px-8 py-3.5 flex gap-2 overflow-x-auto scrollbar-none select-none shadow-sm">
+              {[
+                { id: 'claiming-sec', label: 'Eligibility' },
+                { id: 'overview-sec', label: 'Overview' },
+                { id: 'day-to-day-sec', label: 'Daily Workflows' },
+                { id: 'plans-sec', label: 'Free vs Paid' },
+                { id: 'reviews-sec', label: 'Reviews' },
+                { id: 'faqs-sec', label: 'FAQs' }
+              ].map(sec => (
+                <a
+                  key={sec.id}
+                  href={`#${sec.id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById(sec.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }}
+                  className="px-3.5 py-1.5 text-xs font-bold text-neutral-800 hover:text-black border border-neutral-200 bg-white hover:border-black rounded-full transition-all whitespace-nowrap shadow-sm"
+                >
+                  {sec.label}
+                </a>
+              ))}
+            </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-                  {/* Left Column (col-span-2) */}
-                  <div className="lg:col-span-2 flex flex-col gap-0">
-                    {/* Section 1: Eligibility Prerequisites */}
-                    <div id="claiming-sec" className="pb-6 border-b border-neutral-100 flex flex-col gap-4 scroll-mt-24 select-none">
-                      <h3 className="text-lg font-bold text-neutral-900">Eligibility Prerequisites</h3>
-                      <div className="text-[14px] leading-relaxed text-neutral-800">
-                        <ul className="list-none flex flex-col gap-2.5">
-                          {selectedDeal.id === 'deal-slack' ? (
-                            <>
-                              <li className="flex items-start gap-2">
-                                <span className="text-neutral-400 shrink-0 select-none">•</span>
-                                <span>Startups with up to 200 employees.</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <span className="text-neutral-400 shrink-0 select-none">•</span>
-                                <span>Upgrades to paid Slack Pro or Business+ annual plans.</span>
-                              </li>
-                              <li className="flex items-start gap-2">
-                                <span className="text-neutral-400 shrink-0 select-none">•</span>
-                                <span>Cannot be combined with existing active promotions.</span>
-                              </li>
-                            </>
-                          ) : (
-                            <li className="flex items-start gap-2">
-                              <span className="text-neutral-400 shrink-0 select-none">•</span>
-                              <span>{details.eligibilitySummary}</span>
-                            </li>
-                          )}
-                        </ul>
-                      </div>
-                    </div>
-
-                    {/* Section 2: Overview */}
-                    <div id="overview-sec" className="py-6 border-b border-neutral-100 flex flex-col gap-4 scroll-mt-24">
-                      <h3 className="text-lg font-bold text-neutral-900">What is {selectedDeal.vendorName}?</h3>
-                      <p className="text-[14px] text-black leading-relaxed font-normal">
-                        {details.whatIsPlatform}
-                      </p>
-                      {selectedDeal.programDetailsUrl && (
-                        <div className="mt-1">
-                          <a
-                            href={selectedDeal.programDetailsUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 text-[13px] font-bold text-neutral-800 hover:text-black hover:underline transition-colors"
-                          >
-                            <span>Program Details</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="shrink-0"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                          </a>
-                        </div>
-                      )}
-
-                      {/* Product Screenshots Gallery */}
-                      {selectedDeal.screenshots && selectedDeal.screenshots.length > 0 && (
-                        <div className="mt-4 flex flex-col gap-3.5">
-                          <span className="text-[12px] font-extrabold text-neutral-500 uppercase tracking-wider select-none">
-                            Product Screenshots
-                          </span>
-                          
-                          {/* Browser Window Mockup */}
-                          <div className="border border-neutral-200 bg-white rounded-xl overflow-hidden shadow-sm relative group flex flex-col">
-                            {/* Browser Window Header */}
-                            <div className="flex items-center justify-between px-4 py-2 border-b border-neutral-100 bg-neutral-50/50 select-none">
-                              {/* Left: Window Controls */}
-                              <div className="flex items-center gap-1.5 shrink-0">
-                                <span className="w-2.5 h-2.5 rounded-full bg-red-400/90 border border-red-500/10" />
-                                <span className="w-2.5 h-2.5 rounded-full bg-amber-400/90 border border-amber-500/10" />
-                                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400/90 border border-emerald-500/10" />
-                              </div>
-                              
-                              {/* Center: Fake Address Bar */}
-                              <div className="flex-1 max-w-xs md:max-w-md mx-4 bg-white border border-neutral-200 rounded px-2 py-0.5 text-center text-[10.5px] text-neutral-500 font-medium truncate select-none shadow-sm">
-                                {selectedDeal.websiteUrl?.replace('https://', '') || 'workspace.app'}
-                              </div>
-                              
-                              {/* Right: Counter */}
-                              <div className="w-12 shrink-0 flex justify-end">
-                                <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wide">
-                                  {activeScreenshotIdx + 1} / {selectedDeal.screenshots.length}
-                                </span>
-                              </div>
-                            </div>
-                            
-                            {/* Browser Body / Image Display */}
-                            <div 
-                              onClick={() => setLightboxOpen(true)}
-                              className="relative aspect-[16/10] w-full bg-neutral-900 cursor-zoom-in overflow-hidden flex items-center justify-center group/img"
-                            >
-                              <img
-                                src={selectedDeal.screenshots[activeScreenshotIdx].url}
-                                alt={selectedDeal.screenshots[activeScreenshotIdx].caption}
-                                className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover/img:scale-[1.01]"
-                              />
-                              
-                              {/* Navigation Arrows */}
-                              {selectedDeal.screenshots.length > 1 && (
-                                <>
-                                  <button
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setActiveScreenshotIdx((prev) => (prev === 0 ? selectedDeal.screenshots!.length - 1 : prev - 1));
-                                    }}
-                                    className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 border border-neutral-200 shadow flex items-center justify-center cursor-pointer text-neutral-800 hover:bg-white hover:text-black opacity-0 group-hover:opacity-100 transition-all duration-200"
-                                    title="Previous screenshot"
-                                  >
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-                                  </button>
-                                  <button
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setActiveScreenshotIdx((prev) => (prev === selectedDeal.screenshots!.length - 1 ? 0 : prev + 1));
-                                    }}
-                                    className="absolute right-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 border border-neutral-200 shadow flex items-center justify-center cursor-pointer text-neutral-800 hover:bg-white hover:text-black opacity-0 group-hover:opacity-100 transition-all duration-200"
-                                    title="Next screenshot"
-                                  >
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                                  </button>
-                                </>
-                              )}
-                              
-                              {/* Click to Zoom Hint Overlay */}
-                              <div className="absolute inset-0 bg-black/0 hover:bg-black/10 transition-colors flex items-center justify-center opacity-0 hover:opacity-100 duration-200 select-none">
-                                <span className="px-3 py-1 bg-black/80 text-white font-bold text-[10px] rounded-full shadow-lg flex items-center gap-1 border border-white/10 tracking-wide uppercase">
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M8 11h6"/><path d="M11 8v6"/></svg>
-                                  <span>Click to Zoom</span>
-                                </span>
-                              </div>
-                            </div>
-                            
-                            {/* Caption Bar */}
-                            <div className="bg-neutral-50 px-4 py-2.5 border-t border-neutral-100 flex items-start gap-2">
-                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-neutral-500 shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-                              <span className="text-[12.5px] text-neutral-700 leading-normal font-medium">
-                                {selectedDeal.screenshots[activeScreenshotIdx].caption}
-                              </span>
-                            </div>
-                          </div>
-
-                          {/* Dots indicator at the bottom */}
-                          {selectedDeal.screenshots.length > 1 && (
-                            <div className="flex justify-center items-center gap-1.5 mt-1 select-none">
-                              {selectedDeal.screenshots.map((_, idx) => (
-                                <button
-                                  key={idx}
-                                  onClick={() => setActiveScreenshotIdx(idx)}
-                                  className={`w-2 h-2 rounded-full cursor-pointer transition-all duration-200 border-none p-0 ${
-                                    activeScreenshotIdx === idx
-                                      ? 'bg-black scale-110'
-                                      : 'bg-neutral-300 hover:bg-neutral-400'
-                                  }`}
-                                  aria-label={`Go to screenshot ${idx + 1}`}
-                                />
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-
-
-
-                    {/* Section 3: Day-to-Day Team Work */}
-                    <div id="day-to-day-sec" className="py-6 border-b border-neutral-100 flex flex-col gap-6 scroll-mt-24">
-                      <div>
-                        <h3 className="text-lg font-bold text-neutral-900">Daily Workflows</h3>
-                        <p className="text-[13.5px] text-black mt-1.5 leading-relaxed font-normal">
-                          {details.dayToDay}
-                        </p>
-                      </div>
-
-                      {details.dayToDayPillars && details.dayToDayPillars.length > 0 && (
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-1">
-                          {details.dayToDayPillars.map((pillar, idx) => (
-                            <div key={idx} className="p-4 border border-neutral-200 bg-neutral-50/10 rounded-xl flex flex-col gap-2.5 hover:shadow-[var(--shadow-sm)] transition-shadow">
-                              <div className="text-neutral-800 select-none">
-                                {renderPillarIcon(pillar.emoji)}
-                              </div>
-                              <span className="font-bold text-[13.5px] text-neutral-950">{pillar.title}</span>
-                              <p className="text-[12px] text-neutral-900 leading-relaxed font-normal">{pillar.description}</p>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Section 4: Free vs Paid Tier Comparison */}
-                    <div id="plans-sec" className="py-6 border-b border-neutral-100 flex flex-col gap-5 scroll-mt-24">
-                      <div>
-                        <h3 className="text-lg font-bold text-neutral-900">Free vs Paid Tier Comparison</h3>
-                        <p className="text-[13px] text-black mt-1 leading-normal">
-                          Know why upgrading to a paid startup tier makes sense for your velocity.
-                        </p>
-                      </div>
-
-                      {details.freeVsPaid && details.freeVsPaid.length > 0 && (
-                        <div className="border border-neutral-200 rounded-xl overflow-hidden shadow-inner">
-                          <table className="w-full text-[13px] text-left border-collapse bg-white">
-                            <thead>
-                              <tr className="bg-neutral-50/80 border-b border-neutral-200 font-bold text-neutral-800 select-none">
-                                <th className="p-3.5 pl-4">Feature</th>
-                                <th className="p-3.5">Free Plan</th>
-                                <th className="p-3.5 pr-4 text-emerald-800 bg-emerald-50/10">Paid Startup Offer</th>
-                              </tr>
-                            </thead>
-                            <tbody className="divide-y divide-neutral-100 font-medium">
-                              {details.freeVsPaid.map((item, idx) => (
-                                <tr key={idx} className="hover:bg-neutral-50/20">
-                                  <td className="p-3.5 pl-4 font-bold text-neutral-900">{item.feature}</td>
-                                  <td className="p-3.5 text-neutral-900">{item.free}</td>
-                                  <td className="p-3.5 pr-4 text-emerald-700 font-semibold bg-emerald-50/5">{item.paid}</td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
-                        </div>
-                      )}
-
-
-                    </div>
-                  </div>
-
-                  {/* Right Column (Sticky Widgets) */}
-                  <div className="lg:col-span-1 flex flex-col gap-6 lg:sticky lg:top-14 h-fit">
-                    {/* Platform Summary & Offer Details Card */}
-                    <div className="p-6 border border-neutral-200 bg-neutral-50 rounded-2xl flex flex-col gap-5 shadow-md select-none">
-                      <div className="flex items-center gap-3.5 pb-4 border-b border-neutral-100">
-                        <CompanyLogo src={selectedDeal.logoUrl} name={selectedDeal.vendorName} size="lg" className="!w-12 !h-12 p-1.5 bg-white shadow-sm shrink-0" />
-                        <div>
-                          <h4 className="text-[16px] font-bold text-neutral-900 leading-none">{selectedDeal.vendorName}</h4>
-                          <span className="text-[12px] text-neutral-700 font-semibold block mt-1.5">{selectedDeal.category} Startup Benefit</span>
-                        </div>
-                      </div>
-
-                      {/* Real Data Details */}
-                      <div className="flex flex-col gap-3 py-1 text-[13px]">
-                        <div className="flex justify-between items-center pb-2.5 border-b border-neutral-100">
-                          <span className="text-neutral-800 font-medium">Startup Offer</span>
-                          <span className="text-emerald-800 font-extrabold">{details.startupOffer}</span>
-                        </div>
-                        <div className="flex justify-between items-center pb-2.5 border-b border-neutral-100">
-                          <span className="text-neutral-800 font-medium">Eligible Plans</span>
-                          <span className="text-neutral-900 font-bold">{details.eligiblePlans}</span>
-                        </div>
-                        <div className="flex justify-between items-center pb-2.5 border-b border-neutral-100">
-                          <span className="text-neutral-800 font-medium">Duration</span>
-                          <span className="text-neutral-900 font-bold">{details.durationLimit}</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-neutral-800 font-medium">User Seat Cap</span>
-                          <span className="text-neutral-900 font-bold">{details.userLimit}</span>
-                        </div>
-                      </div>
-
-                      {/* Primary Claim Action Button */}
-                      <div className="flex flex-col gap-2 mt-2">
-                        {selectedDeal.isLocked ? (
-                          <div className="w-full py-3 bg-neutral-50 text-neutral-700 border border-neutral-200 font-bold text-[13px] rounded-full text-center select-none flex items-center justify-center gap-1.5 shadow-inner">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="shrink-0"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                            <span>Benefit Locked</span>
-                          </div>
-                        ) : selectedDeal.status === 'available' ? (
-                          <button
-                            onClick={() => handleClaimClick(selectedDeal.id)}
-                            className="w-full py-3 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold text-[13.5px] rounded-full cursor-pointer transition-colors shadow-md text-center flex items-center justify-center"
-                          >
-                            <span>Claim {selectedDeal.vendorName} Offer</span>
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => setRedemptionDealId(selectedDeal.id)}
-                            className="w-full py-3 bg-white border border-neutral-200 hover:border-neutral-300 hover:bg-neutral-50 text-neutral-800 font-bold text-[13.5px] rounded-full text-center cursor-pointer transition-colors flex items-center justify-center shadow-sm"
-                          >
-                            <span>View Claim</span>
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+            {/* Content Body Grid */}
+            <div className="px-8 py-8 flex flex-col gap-6 bg-white">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                {/* Left Column (col-span-2) */}
+                <div className="lg:col-span-2 flex flex-col gap-0">
+                  {renderLeftColumnContent()}
                 </div>
 
-                {/* Section 6: G2 Verified Reviews */}
-                <div id="reviews-sec" className="py-6 flex flex-col gap-5 scroll-mt-24 w-full">
-                  <div className="flex items-center justify-between border-b border-neutral-200 pb-4">
-                    <div className="flex items-center gap-3">
-                      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" className="shrink-0 shadow-sm rounded-full">
-                        <circle cx="16" cy="16" r="16" fill="url(#g2Gradient)" />
-                        <defs>
-                          <linearGradient id="g2Gradient" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                            <stop stopColor="#FF492C" />
-                            <stop stopColor="#D83018" />
-                          </linearGradient>
-                        </defs>
-                        <text x="50%" y="58%" dominantBaseline="middle" textAnchor="middle" fill="#FFFFFF" fontSize="13" fontWeight="900" fontFamily="system-ui, sans-serif" letterSpacing="-0.5">G2</text>
-                      </svg>
-                      <div>
-                        <h3 className="text-lg font-bold text-neutral-900 leading-none">G2 Verified Reviews</h3>
-                        <p className="text-[13px] text-black mt-1.5 leading-normal font-normal">
-                          Real experiences from startup founders and tech leaders.
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-1.5 bg-[#FF492C]/5 px-3 py-1.5 rounded-full border border-[#FF492C]/10">
-                      <span className="text-[#FF492C] font-black text-xs">G2 Rating</span>
-                      <span className="text-neutral-900 font-extrabold text-xs">4.7 / 5</span>
-                    </div>
-                  </div>
-
-                  {details.g2Reviews && details.g2Reviews.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {details.g2Reviews.map((rev, idx) => (
-                        <div key={idx} className="p-4 border border-neutral-200 rounded-xl bg-neutral-50/10 flex flex-col justify-between gap-3">
-                          <div className="flex justify-between items-start flex-wrap gap-2">
-                            <div>
-                              <span className="block text-[13px] font-bold text-neutral-900">{rev.author}</span>
-                              <span className="block text-[11.5px] text-neutral-800 font-normal">{rev.companySize}</span>
-                            </div>
-                            <div className="flex flex-col items-end gap-1">
-                              <div className="flex text-amber-400 select-none">
-                                {Array.from({ length: 5 }).map((_, i) => (
-                                  <svg key={i} className={`w-3.5 h-3.5 ${i < Math.floor(rev.rating) ? 'fill-current' : 'stroke-current fill-none'}`} viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                                ))}
-                              </div>
-                              <span className="text-[10px] font-extrabold text-emerald-800 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full select-none">✓ Verified Reviewer</span>
-                            </div>
-                          </div>
-
-                          <div className="text-[13px] font-bold text-neutral-900 mt-1">"{rev.title}"</div>
-                          
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2.5 border-t border-neutral-100">
-                            <div>
-                              <span className="block text-[11.5px] font-bold text-emerald-800 uppercase tracking-wider">Pros</span>
-                              <span className="block text-black mt-0.5 font-normal">{rev.pros}</span>
-                            </div>
-                            <div>
-                              <span className="block text-[11.5px] font-bold text-rose-800 uppercase tracking-wider">Cons</span>
-                              <span className="block text-black mt-0.5 font-normal">{rev.cons}</span>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-neutral-450 italic text-[13px] py-4 text-center">No G2 reviews available for this vendor.</div>
-                  )}
-                </div>
-
-                {/* Section 7: FAQs */}
-                <div id="faqs-sec" className="py-6 flex flex-col gap-4 scroll-mt-24 w-full">
-                  <h3 className="text-lg font-bold text-neutral-900">Frequently Asked Questions</h3>
-                  
-                  {details.faqs && details.faqs.length > 0 ? (
-                    <div className="divide-y divide-neutral-200 border-t border-b border-neutral-200 mt-2">
-                      {details.faqs.map((faq, idx) => (
-                        <details key={idx} className="group py-4 [&_summary::-webkit-details-marker]:hidden">
-                          <summary className="flex justify-between items-center font-bold text-[13.5px] text-black cursor-pointer list-none hover:text-neutral-800 transition-colors focus:outline-none">
-                            <span>{faq.q}</span>
-                            <svg className="w-4.5 h-4.5 text-neutral-400 group-open:rotate-180 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"/></svg>
-                          </summary>
-                          <div className="pt-3 text-[13px] text-black leading-relaxed font-normal">
-                            {faq.a}
-                          </div>
-                        </details>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-neutral-700 italic text-[13px] text-center py-2">No FAQs available.</p>
-                  )}
+                {/* Right Column: Editorial Sticky summary card */}
+                <div className="lg:col-span-1 flex flex-col gap-6 lg:sticky lg:top-16 h-fit">
+                  {renderPlatformSummaryCard(true)}
                 </div>
               </div>
-            );
-          })()}
-        </div>
 
-
-        </div>
+              {renderReviewsAndFAQsContent()}
+            </div>
+          </div>
+        )}
 
         {/* Modal Popup displaying compiled code block configuration and github link */}
         <Modal open={showSandboxModal} onOpenChange={setShowSandboxModal}>
