@@ -394,6 +394,20 @@ export const mockDeals: Deal[] = [
 
 export const mockVendors: Vendor[] = [
   {
+    id: 'vendor-sarvaank',
+    name: 'Sarvaank Associates LLP',
+    category: 'Legal',
+    description: 'Sarvaank Associates LLP is a full-service legal and advisory firm delivering strategic, business-focused solutions across corporate, regulatory, transactional, and dispute resolution matters.',
+    logoUrl: 'src/buyer/components/sarvaank_logo.png',
+    vcTrusted: true,
+    tags: ['Venture Capital', 'M&A', 'Corporate Law', 'Disputes'],
+    rating: 5.0,
+    location: 'New Delhi, DL',
+    details: 'Sarvaank Associates LLP is a boutique, full-service legal and advisory firm founded in 2019, recognized by leading legal directories including IFLR1000 and Legal 500 for its work in Private Equity & Venture Capital and Corporate & M&A. Built on the belief that legal advice should enable business objectives rather than constrain them, Sarvaank delivers practical, business-oriented solutions across corporate, commercial, transactional, and dispute resolution matters. With strong expertise in cap table structuring, equity dilution management, and investor negotiations, Sarvaank partners with startups, investors, and high-growth businesses to build compliant, scalable, and investment-ready enterprises.',
+    specialties: ['Fundraising & ESOPs', 'Corporate Structuring & M&A', 'Commercial Contracts', 'Dispute Resolution & Risk'],
+    typicalEngagement: 'VC Hub Member Offer: 30-min free initial consultation and preferential pricing on professional fees.'
+  },
+  {
     id: 'vendor-obvious',
     name: 'Obvious',
     category: 'Design',

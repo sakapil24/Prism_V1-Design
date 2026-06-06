@@ -292,7 +292,53 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
   const [selectedDealId, setSelectedDealId] = React.useState<string | null>(null);
   const [activeScreenshotIdx, setActiveScreenshotIdx] = React.useState<number>(0);
   const [lightboxOpen, setLightboxOpen] = React.useState<boolean>(false);
-  const [layoutOption, setLayoutOption] = React.useState<'contained' | 'flat-sticky' | 'hybrid'>('contained');
+  const [layoutOption, setLayoutOption] = React.useState<'contained' | 'flat-sticky' | 'hybrid'>('flat-sticky');
+
+  // Dynamic header and scroll spy states
+  const [isCompact, setIsCompact] = React.useState(false);
+  const [activeSection, setActiveSection] = React.useState('claiming-sec');
+
+  React.useEffect(() => {
+    if (!selectedDealId) {
+      setIsCompact(false);
+      setActiveSection('claiming-sec');
+      return;
+    }
+
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      setIsCompact(scrollY > 85);
+
+      const sections = [
+        'claiming-sec',
+        'overview-sec',
+        'day-to-day-sec',
+        'plans-sec',
+        'reviews-sec'
+      ];
+
+      const headerOffset = scrollY > 85 ? 120 : 180;
+
+      let active = 'claiming-sec';
+      for (const sectionId of sections) {
+        const el = document.getElementById(sectionId);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= headerOffset + 60) {
+            active = sectionId;
+          }
+        }
+      }
+      setActiveSection(active);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [selectedDealId]);
 
   React.useEffect(() => {
     const mainContainer = document.querySelector('.flex-1.p-4.lg\\:p-6.bg-\\[var\\(--surface-secondary\\)\\]');
@@ -1058,52 +1104,31 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
           </defs>
         </svg>
         
-        {/* Back navigation and switcher bar */}
-        <div className={`flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-neutral-100 ${
-          layoutOption === 'flat-sticky' ? 'max-w-6xl mx-auto w-full px-6 pt-4' : 'w-full'
-        }`}>
-          <button
-            onClick={() => setSelectedDealId(null)}
-            className="flex items-center gap-1.5 text-[14px] font-bold text-neutral-800 hover:text-black cursor-pointer group transition-colors"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="transform group-hover:-translate-x-0.5 transition-transform"
+        {/* Back navigation switcher wrapper (only rendered when not using flat-sticky layout) */}
+        {layoutOption !== 'flat-sticky' && (
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 w-full">
+            <button
+              onClick={() => setSelectedDealId(null)}
+              className="flex items-center gap-1.5 text-[14px] font-bold text-neutral-800 hover:text-black cursor-pointer group transition-colors"
             >
-              <path d="m15 18-6-6 6-6" />
-            </svg>
-            Back to Deals
-          </button>
-
-          {/* Elegant layout switcher controls */}
-          <div className="flex items-center gap-1 bg-neutral-100 p-0.5 rounded-lg border border-neutral-200 select-none shadow-sm shrink-0">
-            {[
-              { id: 'contained', label: '1. Contained Card' },
-              { id: 'flat-sticky', label: '2. Flat Full-Width' },
-              { id: 'hybrid', label: '3. Editorial Hybrid' }
-            ].map(opt => (
-              <button
-                key={opt.id}
-                onClick={() => setLayoutOption(opt.id as any)}
-                className={`px-3 py-1.5 rounded-md text-[11px] font-extrabold transition-all cursor-pointer ${
-                  layoutOption === opt.id
-                    ? 'bg-white text-black shadow-sm'
-                    : 'text-neutral-500 hover:text-neutral-900 hover:bg-neutral-50/50'
-                }`}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="transform group-hover:-translate-x-0.5 transition-transform"
               >
-                {opt.label}
-              </button>
-            ))}
+                <path d="m15 18-6-6 6-6" />
+              </svg>
+              Back to Deals
+            </button>
           </div>
-        </div>
+        )}
 
         {/* Option 1: Contained Card Layout */}
         {layoutOption === 'contained' && (
@@ -1222,59 +1247,132 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
         {layoutOption === 'flat-sticky' && (
           <div className="flex flex-col w-full bg-white select-none animate-fadeIn">
             {/* Sticky Header Wrapper */}
-            <div className="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-neutral-200 py-5 shadow-sm">
-              <div className="max-w-6xl mx-auto w-full px-6 flex flex-col gap-4">
+            <div className={`sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-neutral-200 transition-all duration-300 ${
+              isCompact ? 'shadow-sm pt-2.5 pb-0' : 'shadow-none py-5'
+            }`}>
+              <div className="max-w-6xl mx-auto w-full px-6 flex flex-col transition-all duration-300" style={{ gap: isCompact ? '10px' : '16px' }}>
+                {/* Back to Deals button inside hero section - Hidden on scroll */}
+                <div className={`transition-all duration-300 ${
+                  isCompact 
+                    ? 'max-h-0 opacity-0 overflow-hidden pointer-events-none pb-0' 
+                    : 'max-h-10 opacity-100 pb-1'
+                }`}>
+                  <button
+                    onClick={() => setSelectedDealId(null)}
+                    className="flex items-center gap-1.5 text-[13.5px] font-bold text-neutral-600 hover:text-black cursor-pointer group transition-colors"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="transform group-hover:-translate-x-0.5 transition-transform"
+                    >
+                      <path d="m15 18-6-6 6-6" />
+                    </svg>
+                    Back to Deals
+                  </button>
+                </div>
                 <div className="flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-4.5 min-w-0">
+                  <div className="flex items-center gap-4 min-w-0">
                     <CompanyLogo
                       src={selectedDeal.logoUrl}
                       name={selectedDeal.vendorName}
-                      size="lg"
-                      className="!w-14 !h-14 shrink-0 bg-white p-1.5 border border-neutral-150 shadow-sm rounded-xl"
+                      className={`shrink-0 bg-white shadow-sm rounded-xl transition-all duration-300 ${
+                        isCompact ? '!w-8 !h-8 p-0.5' : '!w-14 !h-14 p-1.5'
+                      }`}
+                      size={isCompact ? 'sm' : 'lg'}
                     />
                     <div className="min-w-0">
-                      <div className="flex items-center gap-2.5">
-                        <h1 className="text-xl md:text-2xl font-extrabold text-neutral-900 leading-none truncate">{selectedDeal.vendorName}</h1>
+                      <div className="flex items-center gap-2.5 flex-wrap">
+                        <h1 className={`font-extrabold text-neutral-900 leading-none truncate transition-all duration-300 ${
+                          isCompact ? 'text-md md:text-lg' : 'text-xl md:text-2xl'
+                        }`}>
+                          {selectedDeal.vendorName}
+                        </h1>
+                        {isCompact && (
+                          <span className="text-neutral-400 font-medium text-[12.5px] select-none">—</span>
+                        )}
+                        {isCompact && (
+                          <span className="text-neutral-600 font-bold text-[12.5px] truncate max-w-xs md:max-w-md">
+                            {selectedDeal.title}
+                          </span>
+                        )}
                         {selectedDeal.status !== 'available' && (
                           <span className="px-1.5 py-0.5 text-[8.5px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200 rounded shrink-0">Claimed</span>
                         )}
                       </div>
-                      <p className="text-[13px] font-medium text-neutral-600 mt-1.5 truncate">{selectedDeal.title}</p>
+                      {!isCompact && (
+                        <p className="font-medium text-neutral-600 truncate mt-1.5 text-[13px] transition-all duration-300">
+                          {selectedDeal.title}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="shrink-0 flex items-center gap-3">
                     {selectedDeal.isLocked ? (
-                      <span className="inline-flex px-4 py-2 bg-neutral-50 text-neutral-450 border border-neutral-200 text-[12px] font-bold rounded-lg items-center gap-1.5 shadow-sm">Benefit Locked</span>
+                      <span className={`inline-flex bg-neutral-50 text-neutral-450 border border-neutral-200 font-bold rounded-lg items-center gap-1.5 shadow-sm transition-all duration-300 ${
+                        isCompact ? 'px-4 py-2 text-[12px]' : 'px-5.5 py-2.5 text-[13.5px]'
+                      }`}>Benefit Locked</span>
                     ) : selectedDeal.status === 'available' ? (
-                      <button onClick={() => handleClaimClick(selectedDeal.id)} className="px-4 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold text-[12px] rounded-lg transition-colors shadow-sm cursor-pointer">Claim Benefit</button>
+                      <button
+                        onClick={() => handleClaimClick(selectedDeal.id)}
+                        className={`bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold rounded-lg transition-all duration-300 shadow-sm cursor-pointer border-none ${
+                          isCompact ? 'px-5 py-2 text-[13px]' : 'px-6 py-2.5 text-[14.5px]'
+                        }`}
+                      >
+                        Claim Benefit
+                      </button>
                     ) : (
-                      <button onClick={() => setRedemptionDealId(selectedDeal.id)} className="px-4 py-2 bg-white border border-neutral-200 hover:bg-neutral-50 text-neutral-800 text-[12px] font-bold rounded-lg transition-colors shadow-sm cursor-pointer">View Claim</button>
+                      <button
+                        onClick={() => setRedemptionDealId(selectedDeal.id)}
+                        className={`bg-white border border-neutral-200 hover:bg-neutral-50 text-neutral-800 font-bold rounded-lg transition-all duration-300 shadow-sm cursor-pointer ${
+                          isCompact ? 'px-5 py-2 text-[13px]' : 'px-6 py-2.5 text-[14.5px]'
+                        }`}
+                      >
+                        View Claim
+                      </button>
                     )}
                   </div>
                 </div>
 
-                {/* Navigation Bar */}
-                <div className="flex gap-2 overflow-x-auto scrollbar-none py-1 select-none">
+                {/* Navigation Bar - Shown only when scrolled (isCompact === true) */}
+                <div className={`flex gap-6 overflow-x-auto scrollbar-none select-none transition-all duration-300 origin-top ${
+                  isCompact 
+                    ? 'max-h-14 opacity-100 mt-2.5 pt-2' 
+                    : 'max-h-0 opacity-0 mt-0 pt-0 overflow-hidden pointer-events-none'
+                }`}>
                   {[
                     { id: 'claiming-sec', label: 'Eligibility' },
                     { id: 'overview-sec', label: 'Overview' },
                     { id: 'day-to-day-sec', label: 'Daily Workflows' },
                     { id: 'plans-sec', label: 'Free vs Paid' },
-                    { id: 'reviews-sec', label: 'Reviews' },
-                    { id: 'faqs-sec', label: 'FAQs' }
-                  ].map(sec => (
-                    <a
-                      key={sec.id}
-                      href={`#${sec.id}`}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        document.getElementById(sec.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                      }}
-                      className="px-3.5 py-1.5 text-xs font-bold text-neutral-800 hover:text-black border border-neutral-200 bg-white hover:border-black rounded-full transition-all whitespace-nowrap shadow-sm"
-                    >
-                      {sec.label}
-                    </a>
-                  ))}
+                    { id: 'reviews-sec', label: 'Reviews' }
+                  ].map(sec => {
+                    const isActive = activeSection === sec.id;
+                    return (
+                      <a
+                        key={sec.id}
+                        href={`#${sec.id}`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          document.getElementById(sec.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }}
+                        className={`relative pb-2 text-[14px] font-bold transition-all whitespace-nowrap border-b-[3px] -mb-[1px] ${
+                          isActive 
+                            ? 'text-neutral-900 font-extrabold border-neutral-900 animate-scaleIn' 
+                            : 'text-neutral-500 hover:text-neutral-900 border-transparent hover:border-neutral-300'
+                        }`}
+                      >
+                        {sec.label}
+                      </a>
+                    );
+                  })}
                 </div>
               </div>
             </div>

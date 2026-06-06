@@ -1,4 +1,6 @@
 import * as React from 'react';
+// @ts-ignore
+import sarvaankLogo from './sarvaank_logo.png';
 
 interface CompanyLogoProps {
   src?: string | null;
@@ -90,6 +92,50 @@ export function CompanyLogo({ src, name, className = '', size = 'md' }: CompanyL
   };
 
   const selectedSizeClass = sizeClasses[size];
+
+  if (name.toLowerCase().trim().includes('sarvaank')) {
+    // Strip out background, border, and padding overrides that cause layout conflicts
+    const cleanClassName = className
+      .replace(/\bbg-\S+/g, '')
+      .replace(/\bp-\S+/g, '')
+      .replace(/\bborder-\S+/g, '')
+      .replace(/\bborder\b/g, '')
+      .replace(/\bshadow-\S+/g, '');
+
+    return (
+      <div
+        className={`rounded-xl overflow-hidden bg-white shrink-0 flex items-center justify-center p-0.5 ${selectedSizeClass} ${cleanClassName}`}
+      >
+        <img
+          src={sarvaankLogo}
+          alt={name}
+          className="w-full h-full object-contain animate-fadeIn"
+        />
+      </div>
+    );
+  }
+
+  if (name.toLowerCase().trim() === 'obvious') {
+    // Strip out background, border, and padding overrides that cause layout conflicts
+    const cleanClassName = className
+      .replace(/\bbg-\S+/g, '')
+      .replace(/\bp-\S+/g, '')
+      .replace(/\bborder-\S+/g, '')
+      .replace(/\bborder\b/g, '')
+      .replace(/\bshadow-\S+/g, '');
+
+    return (
+      <div
+        className={`rounded-xl overflow-hidden bg-neutral-950 shrink-0 flex items-center justify-center p-2.5 ${selectedSizeClass} ${cleanClassName}`}
+        style={{ backgroundColor: '#09090B' }}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" className="w-full h-full text-white animate-fadeIn">
+          <circle cx="50" cy="50" r="32" stroke="currentColor" strokeWidth="9.5" />
+          <circle cx="50" cy="50" r="13" fill="currentColor" />
+        </svg>
+      </div>
+    );
+  }
 
   // Placeholder SVG building icon if both service stages fail or no domain
   if (!imgSrc || stage === 3) {
