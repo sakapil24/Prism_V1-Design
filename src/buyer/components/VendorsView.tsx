@@ -544,7 +544,9 @@ export function VendorsView({ vendors }: VendorsViewProps) {
     });
 
     setActiveVendor(null);
-  };  const renderSavankoDecisionPage = (
+  };
+
+  const renderSavankoDecisionPage = (
     selectedVendor: Vendor,
     extended: VendorDetailsExtended,
     faqs: FAQ[],
@@ -771,7 +773,51 @@ export function VendorsView({ vendors }: VendorsViewProps) {
                   )}
                 </div>
               </div>
+
+              {/* Compact Request Introduction button on the right when isCompact is true */}
+              {isCompact && (
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleOpenForm(selectedVendor);
+                  }}
+                  className="bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold rounded-lg transition-all duration-200 py-2.5 px-4 text-[13px] shrink-0 border-none shadow-sm cursor-pointer"
+                >
+                  Request Introduction
+                </button>
+              )}
             </div>
+
+            {/* Quick Facts and Primary CTA row under a divider when !isCompact */}
+            {!isCompact && (
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-4 border-t border-neutral-100 mt-2">
+                {/* Horizontal Quick Facts List */}
+                <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+                  {quickFacts.map((fact, idx) => (
+                    <div key={idx} className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-neutral-50 flex items-center justify-center border border-neutral-100 shrink-0 select-none">
+                        {fact.icon}
+                      </div>
+                      <div className="min-w-0">
+                        <span className="block text-[10px] text-neutral-400 font-bold uppercase tracking-wider leading-none select-none">{fact.label}</span>
+                        <span className="block text-[13px] text-neutral-900 font-extrabold mt-1 leading-none">{fact.val}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                {/* Primary CTA button */}
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleOpenForm(selectedVendor);
+                  }}
+                  className="bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold rounded-lg transition-all duration-200 py-3 px-6 text-[14px] shadow-sm cursor-pointer border-none shrink-0"
+                >
+                  Request Introduction
+                </button>
+              </div>
+            )}
 
             {/* Scroll Spy Anchor Navigation */}
             <div className={`flex gap-6 overflow-x-auto scrollbar-none select-none transition-all duration-300 origin-top ${
@@ -816,6 +862,66 @@ export function VendorsView({ vendors }: VendorsViewProps) {
             {/* Left Column (col-span-2) */}
             <div className="lg:col-span-2 flex flex-col gap-8">
               
+              {/* Relocated Ecosystem Benefits & PDF Download Card */}
+              <div className="border border-neutral-200 bg-neutral-50/20 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-stretch gap-6 shadow-sm">
+                {/* Left side: Ecosystem Benefits Grid */}
+                <div className="flex-1 flex flex-col gap-4">
+                  <div className="flex items-center gap-2">
+                    <svg className="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    <span className="text-[14px] font-black text-neutral-900 uppercase tracking-wider select-none">
+                      Exclusive Ecosystem Benefits
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {[
+                      { title: 'Free Consultation', desc: 'Free initial 30-minute scoping and cap table audit session.' },
+                      { title: 'Preferred Pricing', desc: '20% discount on first fundraising or ESOP pool mandate.' },
+                      { title: 'Priority Dispatch', desc: 'Direct escalation line with SLA response under 4 hours.' }
+                    ].map((ben, idx) => (
+                      <div key={idx} className="flex gap-2">
+                        <svg className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                          <path d="M20 6 9 17l-5-5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        <div>
+                          <span className="text-[13px] font-extrabold text-neutral-900 block">{ben.title}</span>
+                          <p className="text-[12px] text-neutral-600 mt-1 font-normal leading-relaxed">{ben.desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Vertical Divider */}
+                <div className="hidden md:block w-px bg-neutral-200 self-stretch my-2" />
+
+                {/* Right side: PDF Download Attachment */}
+                <div className="md:w-64 flex flex-col gap-2 justify-center shrink-0">
+                  <span className="text-[11px] font-extrabold text-neutral-400 uppercase tracking-wider block select-none">
+                    Ecosystem Attachment
+                  </span>
+                  <a
+                    href="file:///Users/kapil/Downloads/Sarvaank%20Associates%20Profile%20(April%202026).pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2.5 p-3 border border-neutral-200 hover:border-neutral-350 bg-white hover:bg-neutral-50 rounded-xl transition-all text-left group select-none shadow-sm"
+                  >
+                    <div className="w-9 h-9 rounded bg-rose-100 flex items-center justify-center text-rose-600 shrink-0">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                        <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                      </svg>
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <span className="block font-bold text-[12.5px] text-neutral-900 truncate group-hover:underline">Sarvaank Profile.pdf</span>
+                      <span className="block text-[11px] text-neutral-400 font-medium mt-0.5">14.5 KB • View Profile</span>
+                    </div>
+                  </a>
+                </div>
+              </div>
+
               {/* Section 2: Why Recommended Block */}
               <div id="recommendation-sec" className="pb-8 border-b border-neutral-100 flex flex-col gap-6 scroll-mt-[125px]">
                 <div>
@@ -933,7 +1039,7 @@ export function VendorsView({ vendors }: VendorsViewProps) {
                   {/* Section 6: Expertise Coverage */}
                   <div className="flex flex-col gap-4">
                     <div>
-                      <h3 className="text-[17px] font-bold text-neutral-950">Expertise Coverage</h3>
+                      <h3 className="text-[17px] font-bold text-neutral-955">Expertise Coverage</h3>
                       <p className="text-[13px] text-neutral-500 mt-1 font-normal">
                         Supported fund segments and service verticals.
                       </p>
@@ -1066,9 +1172,9 @@ export function VendorsView({ vendors }: VendorsViewProps) {
                         Verified founder satisfaction ratings.
                       </p>
                     </div>
-                    <div className="flex items-center gap-1.5 bg-neutral-50 px-3 py-1 rounded-full border border-neutral-200 shrink-0">
-                      <span className="text-amber-500 select-none">★</span>
-                      <span className="text-neutral-955 font-black text-xs">5.0 / 5.0</span>
+                    <div className="flex items-center gap-1.5 bg-[#FF492C]/5 px-3 py-1.5 rounded-full border border-[#FF492C]/10 shrink-0">
+                      <span className="text-[#FF492C] font-black text-xs">Platform Rating</span>
+                      <span className="text-neutral-900 font-extrabold text-xs">5.0 / 5.0</span>
                     </div>
                   </div>
 
@@ -1089,17 +1195,27 @@ export function VendorsView({ vendors }: VendorsViewProps) {
                         review: 'Their speed on our ESOP pool setup was incredible. Handled all documentation and dilution schedules in under 10 business days. Extremely supportive team!'
                       }
                     ].map((rev, idx) => (
-                      <div key={idx} className="border border-neutral-200 rounded-xl p-5 flex flex-col gap-3 shadow-sm bg-white">
-                        <div className="flex justify-between items-start">
+                      <div key={idx} className="p-5 border border-neutral-200 rounded-xl bg-neutral-50/10 flex flex-col justify-between gap-3.5 shadow-sm">
+                        <div className="flex justify-between items-start flex-wrap gap-2">
                           <div>
-                            <span className="text-[13.5px] font-bold text-neutral-900 block">{rev.author}</span>
-                            <span className="text-[11.5px] text-neutral-500 block mt-0.5">{rev.role}, {rev.company}</span>
+                            <span className="block text-[13.5px] font-bold text-neutral-900">{rev.author}</span>
+                            <span className="block text-[11.5px] text-neutral-500 font-semibold mt-0.5">{rev.role}, {rev.company}</span>
                           </div>
-                          <span className="text-[10px] font-black uppercase text-emerald-800 bg-emerald-50 border border-emerald-150 px-2 py-0.5 rounded-full select-none shrink-0">
-                            ✓ {rev.stage} Verified
-                          </span>
+                          <div className="flex flex-col items-end gap-1">
+                            <div className="flex text-amber-400 select-none">
+                              {Array.from({ length: 5 }).map((_, i) => (
+                                <svg key={i} className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                </svg>
+                              ))}
+                            </div>
+                            <span className="text-[10px] font-extrabold text-emerald-800 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full select-none shrink-0">
+                              ✓ {rev.stage} Verified
+                            </span>
+                          </div>
                         </div>
-                        <p className="text-[13px] text-neutral-700 leading-relaxed font-normal italic flex-1">
+
+                        <p className="text-[13px] text-neutral-700 leading-relaxed font-normal italic mt-2 flex-1">
                           "{rev.review}"
                         </p>
                       </div>
@@ -1107,7 +1223,7 @@ export function VendorsView({ vendors }: VendorsViewProps) {
                   </div>
                 </div>
 
-                {/* Section 14: FAQ (Accordions - Imported from Sarvaank) */}
+                {/* Section 14: FAQ (Accordions - Native HTML details/summary matching Deals page style) */}
                 <div className="mt-6 pt-6 border-t border-neutral-100 flex flex-col gap-4">
                   <div>
                     <h3 className="text-[17px] font-bold text-neutral-900">Frequently Asked Questions</h3>
@@ -1116,41 +1232,24 @@ export function VendorsView({ vendors }: VendorsViewProps) {
                     </p>
                   </div>
 
-                  <div className="flex flex-col border-t border-neutral-150 mt-3 select-none">
-                    {savankoFAQs.map((faq, idx) => {
-                      const isOpen = savankoFAQIndex === idx;
-                      return (
-                        <div key={idx} className="border-b border-neutral-150">
-                          <button
-                            onClick={() => setSavankoFAQIndex(prev => prev === idx ? null : idx)}
-                            className="w-full py-4 flex justify-between items-center text-left font-bold text-[14px] text-neutral-900 hover:text-black cursor-pointer group border-none bg-transparent"
-                            type="button"
-                          >
-                            <span>{faq.q}</span>
-                            <svg 
-                              className={`w-4 h-4 text-neutral-400 group-hover:text-black transition-transform duration-200 shrink-0 ${isOpen ? 'rotate-90' : ''}`} 
-                              fill="none" 
-                              stroke="currentColor" 
-                              strokeWidth="2.5" 
-                              viewBox="0 0 24 24"
-                            >
-                              <path strokeLinecap="round" strokeLinejoin="round" d="m9 5 7 7-7 7"/>
-                            </svg>
-                          </button>
-                          <div className={`transition-all duration-300 overflow-hidden ${
-                            isOpen ? 'max-h-40 pb-4' : 'max-h-0'
-                          }`}>
-                            <p className="text-[13.5px] text-neutral-600 leading-relaxed font-normal">
-                              {faq.a}
-                            </p>
-                          </div>
+                  <div className="divide-y divide-neutral-200 border-t border-b border-neutral-200 mt-3 select-none">
+                    {savankoFAQs.map((faq, idx) => (
+                      <details key={idx} className="group py-4 [&_summary::-webkit-details-marker]:hidden">
+                        <summary className="flex justify-between items-center font-bold text-[13.5px] text-black cursor-pointer list-none hover:text-neutral-800 transition-colors focus:outline-none">
+                          <span>{faq.q}</span>
+                          <svg className="w-4.5 h-4.5 text-neutral-400 group-open:rotate-180 transition-transform duration-250" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"/>
+                          </svg>
+                        </summary>
+                        <div className="pt-3 text-[13px] text-neutral-600 leading-relaxed font-normal">
+                          {faq.a}
                         </div>
-                      );
-                    })}
+                      </details>
+                    ))}
                   </div>
                 </div>
 
-                {/* Offer Terms & Conditions List (Imported from Sarvaank) */}
+                {/* Offer Terms & Conditions List */}
                 <div className="mt-6 pt-6 border-t border-neutral-100">
                   <div className="border border-neutral-200 bg-neutral-50/30 rounded-xl p-5 flex flex-col gap-4">
                     <span className="text-[12.5px] font-extrabold text-neutral-500 uppercase tracking-wider select-none">
@@ -1173,42 +1272,6 @@ export function VendorsView({ vendors }: VendorsViewProps) {
             {/* Right Column: Sticky Sidebar (col-span-1) */}
             <div className="lg:col-span-1 flex flex-col gap-6 lg:sticky lg:top-24 h-fit pb-8">
               
-              {/* Card 1: Partner Information & CTA */}
-              <div className="border border-neutral-200 bg-white rounded-xl p-5 flex flex-col gap-5 shadow-sm">
-                
-                {/* Primary CTA button */}
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleOpenForm(selectedVendor);
-                  }}
-                  className="bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold rounded-lg transition-all duration-200 py-3 px-4 text-[14px] w-full text-center border-none shadow-sm cursor-pointer"
-                >
-                  Request Introduction
-                </button>
-
-                {/* Quick Facts List */}
-                <div className="flex flex-col gap-3.5 pt-4 border-t border-neutral-100">
-                  <span className="text-[12px] font-extrabold text-neutral-400 uppercase tracking-wider select-none">
-                    Partner Details
-                  </span>
-                  <div className="flex flex-col gap-4">
-                    {quickFacts.map((fact, idx) => (
-                      <div key={idx} className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-neutral-50 flex items-center justify-center border border-neutral-100 shrink-0 select-none">
-                          {fact.icon}
-                        </div>
-                        <div className="min-w-0">
-                          <span className="block text-[11px] text-neutral-400 font-bold uppercase tracking-wider leading-none select-none">{fact.label}</span>
-                          <span className="block text-[13.5px] text-neutral-900 font-extrabold mt-1 leading-none">{fact.val}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-              </div>
-
               {/* Card 2: Managing Partner Info */}
               <div className="border border-neutral-200 bg-white rounded-xl p-5 flex flex-col gap-4 shadow-sm">
                 <span className="text-[12px] font-extrabold text-neutral-400 uppercase tracking-wider select-none">
@@ -1253,56 +1316,6 @@ export function VendorsView({ vendors }: VendorsViewProps) {
                 </div>
               </div>
 
-              {/* Card 3: Ecosystem Benefits & PDF Download */}
-              <div className="border border-neutral-200 bg-white rounded-xl p-5 flex flex-col gap-4 shadow-sm">
-                <span className="text-[12px] font-extrabold text-neutral-400 uppercase tracking-wider select-none">
-                  Ecosystem Benefits
-                </span>
-
-                <div className="flex flex-col gap-3.5">
-                  {[
-                    { title: 'Free Consultation', desc: 'Free initial 30-minute scoping and cap table audit session.' },
-                    { title: 'Preferred Pricing', desc: '20% discount on first fundraising or ESOP pool mandate.' },
-                    { title: 'Priority Dispatch', desc: 'Direct escalation line with SLA response under 4 hours.' }
-                  ].map((ben, idx) => (
-                    <div key={idx} className="flex gap-2">
-                      <svg className="w-4 h-4 text-rose-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
-                        <path d="M20 6 9 17l-5-5" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                      <div>
-                        <span className="text-[13px] font-extrabold text-neutral-900 block">{ben.title}</span>
-                        <p className="text-[12px] text-neutral-500 mt-0.5 font-normal leading-relaxed">{ben.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* PDF Download Attachment inside card */}
-                <div className="pt-4 border-t border-neutral-100 flex flex-col gap-2">
-                  <span className="text-[11px] font-extrabold text-neutral-400 uppercase tracking-wider block select-none">
-                    Ecosystem Attachment
-                  </span>
-                  <a
-                    href="file:///Users/kapil/Downloads/Sarvaank%20Associates%20Profile%20(April%202026).pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2.5 p-2.5 border border-neutral-200 hover:border-neutral-350 bg-neutral-50/50 hover:bg-neutral-50 rounded-lg transition-all text-left group select-none"
-                  >
-                    <div className="w-9 h-9 rounded bg-rose-100 flex items-center justify-center text-rose-600 shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
-                        <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-                      </svg>
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <span className="block font-bold text-[12.5px] text-neutral-900 truncate group-hover:underline">Sarvaank Profile.pdf</span>
-                      <span className="block text-[11px] text-neutral-400 font-medium">14.5 KB • View Profile</span>
-                    </div>
-                  </a>
-                </div>
-
-              </div>
-
             </div>
 
           </div>
@@ -1320,7 +1333,7 @@ export function VendorsView({ vendors }: VendorsViewProps) {
             {selectedCaseStudy && (
               <>
                 <ModalHeader className="border-b border-neutral-100 pb-4">
-                  <ModalTitle className="text-[17px] font-extrabold text-neutral-950 flex items-center gap-2.5">
+                  <ModalTitle className="text-[17px] font-extrabold text-neutral-955 flex items-center gap-2.5">
                     <CompanyLogo name={selectedCaseStudy.name} size="sm" className="!w-6 !h-6 bg-white border border-neutral-100 p-0.5 rounded shadow-sm shrink-0" />
                     <span>{selectedCaseStudy.name} Case Study</span>
                   </ModalTitle>
@@ -1369,7 +1382,7 @@ export function VendorsView({ vendors }: VendorsViewProps) {
         <Modal open={showAllVCs} onOpenChange={setShowAllVCs}>
           <ModalContent className="max-w-xl border border-neutral-200 bg-white text-neutral-900 rounded-2xl p-6">
             <ModalHeader className="border-b border-neutral-100 pb-4">
-              <ModalTitle className="text-[17px] font-extrabold text-neutral-950">
+              <ModalTitle className="text-[17px] font-extrabold text-neutral-955">
                 Endorsing Venture Capital Funds
               </ModalTitle>
               <ModalDescription className="text-neutral-500 text-[13px] mt-1 font-normal">
