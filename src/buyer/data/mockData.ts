@@ -408,6 +408,20 @@ export const mockVendors: Vendor[] = [
     typicalEngagement: 'VC Hub Member Offer: 30-min free initial consultation and preferential pricing on professional fees.'
   },
   {
+    id: 'vendor-savanko',
+    name: 'Savanko Partners',
+    category: 'Legal',
+    description: 'Savanko Partners is a boutique legal advisory firm specializing in fundraising, cap table compliance, ESOP setups, and corporate governance for high-growth, venture-backed startups.',
+    logoUrl: 'https://logo.clearbit.com/savankopartners.com',
+    vcTrusted: true,
+    tags: ['Fundraising', 'ESOP Setup', 'Governance', 'Compliance'],
+    rating: 5.0,
+    location: 'Bangalore, KA',
+    details: 'Savanko Partners acts as a true deal partner rather than a transactional vendor. They specialize in venture capital transactions, ESOP pool rollouts, corporate governance, and complex disputes.',
+    specialties: ['Fundraising & Transactions', 'ESOP Pool Setup', 'Corporate Governance', 'Compliance & Restructuring'],
+    typicalEngagement: 'VC Hub Member Offer: Free Initial Consultation & 20% discount on first fundraising or ESOP rollout mandate.'
+  },
+  {
     id: 'vendor-obvious',
     name: 'Obvious',
     category: 'Design',
