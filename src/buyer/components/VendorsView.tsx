@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter, Badge, SearchInput, Input, FormField, Textarea, Modal, ModalContent, ModalHeader, ModalTitle, ModalDescription, ModalBody, ModalFooter, useToast } from '../../design-system/components';
 import { Vendor, VendorCategory } from '../types';
 import { CompanyLogo } from './CompanyLogo';
+// @ts-ignore
+import siddharthAvatar from './siddharth_avatar.png';
 
 interface FAQ {
   q: string;
@@ -560,18 +562,16 @@ export function VendorsView({ vendors }: VendorsViewProps) {
       )},
       { label: 'Team Size', val: `${extended.teamSize || 22} Experts`, icon: (
         <svg className="w-4 h-4 text-neutral-450 shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 0 0-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 0 1 5.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857"/>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M23 21v-2a4 4 0 0 0-3-3.87" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M16 3.13a4 4 0 0 1 0 7.75" />
         </svg>
       )},
       { label: 'Location', val: 'Bangalore & Delhi', icon: (
         <svg className="w-4 h-4 text-neutral-450 shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 0 1-2.827 0l-4.244-4.243a8 8 0 1 1 11.314 0z"/>
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-        </svg>
-      )},
-      { label: 'Engagement Model', val: 'Milestone / Retainer', icon: (
-        <svg className="w-4 h-4 text-neutral-450 shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
         </svg>
       )}
     ];
@@ -655,16 +655,14 @@ export function VendorsView({ vendors }: VendorsViewProps) {
     ];
 
     const portfolioCompanies = [
-      { name: 'SaaSFlow', ind: 'SaaS', logo: 'https://logo.clearbit.com/saasflow.com' },
-      { name: 'APIStack', ind: 'SaaS', logo: 'https://logo.clearbit.com/apistack.com' },
-      { name: 'FintechHub', ind: 'Fintech', logo: 'https://logo.clearbit.com/fintechhub.com' },
-      { name: 'PayFlow', ind: 'Fintech', logo: 'https://logo.clearbit.com/payflow.com' },
-      { name: 'ClimateScale', ind: 'Climate', logo: 'https://logo.clearbit.com/climatescale.com' },
-      { name: 'SunGrid', ind: 'Climate', logo: 'https://logo.clearbit.com/sungrid.com' },
-      { name: 'ConsumerStack', ind: 'Consumer', logo: 'https://logo.clearbit.com/consumerstack.com' },
-      { name: 'DirectBrand', ind: 'Consumer', logo: 'https://logo.clearbit.com/directbrand.com' },
-      { name: 'HealthSync', ind: 'Healthcare', logo: 'https://logo.clearbit.com/healthsync.com' },
-      { name: 'CarePath', ind: 'Healthcare', logo: 'https://logo.clearbit.com/carepath.com' }
+      { name: 'GalaxEye Space', ind: 'SpaceTech', logo: 'https://logo.clearbit.com/galaxeye.space' },
+      { name: 'Snapmint', ind: 'Fintech/BNPL', logo: 'https://logo.clearbit.com/snapmint.com' },
+      { name: 'CapGrid', ind: 'B2B Supply Chain', logo: 'https://logo.clearbit.com/capgrid.in' },
+      { name: 'Alyve Health', ind: 'Healthtech', logo: 'https://logo.clearbit.com/alyve.health' },
+      { name: 'Propelld', ind: 'Fintech/Lending', logo: 'https://logo.clearbit.com/propelld.com' },
+      { name: 'Cogos', ind: 'Logistics Tech', logo: 'https://logo.clearbit.com/cogos.co' },
+      { name: 'Navadhan', ind: 'Microfinance', logo: 'https://logo.clearbit.com/navadhan.com' },
+      { name: 'Goila Butter Chicken', ind: 'F&B/Retail', logo: 'https://logo.clearbit.com/goila.com' }
     ];
 
     const savankoFAQs = [
@@ -729,7 +727,6 @@ export function VendorsView({ vendors }: VendorsViewProps) {
                 Back to Directory
               </button>
             </div>
-
             {/* Logo, Title & Category Header row */}
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-4 min-w-0">
@@ -749,12 +746,12 @@ export function VendorsView({ vendors }: VendorsViewProps) {
                       {selectedVendor.name}
                     </h1>
                     
-                    {/* Section 1: Verified Partner Badge */}
-                    <span className="inline-flex items-center gap-0.5 px-2.5 py-0.5 text-[10.5px] font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-150 rounded-full shrink-0 select-none">
-                      <svg className="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    {/* Recommended: Savanko Partners Badge */}
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 text-[10.5px] font-extrabold bg-red-50 text-[#C8102E] border border-red-200 rounded-full shrink-0 select-none">
+                      <svg className="w-3.5 h-3.5 text-[#C8102E] shrink-0 animate-pulse" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499c.174-.383.72-.383.894 0l1.834 4.024 4.31.39c.42.038.587.58.268.87l-3.23 2.928.94 4.254c.092.417-.37.753-.728.529l-3.793-2.383-3.793 2.383c-.358.224-.82-.112-.728-.529l.94-4.254-3.23-2.928c-.319-.29-.153-.832.268-.87l4.31-.39 1.834-4.024Z" />
                       </svg>
-                      <span>Verified Ecosystem Partner</span>
+                      <span>Recommended: Savanko Partners</span>
                     </span>
                     
                     {isCompact && (
@@ -767,55 +764,61 @@ export function VendorsView({ vendors }: VendorsViewProps) {
                     )}
                   </div>
                   {!isCompact && (
-                    <p className="font-medium text-neutral-600 truncate mt-1.5 text-[13px] transition-all duration-300">
-                      Legal Advisory & Cap Table Compliance
-                    </p>
+                    <div className="flex items-center gap-3 mt-1.5 flex-wrap text-[13px] text-neutral-500 font-medium">
+                      <span>Legal Advisory & Cap Table Compliance</span>
+                      <span className="text-neutral-300 select-none">•</span>
+                      <a
+                        href="https://savankopartners.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 hover:text-neutral-900 transition-colors underline font-bold"
+                      >
+                        <span>Visit Website</span>
+                        <svg className="w-3.5 h-3.5 text-neutral-400 shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </a>
+                    </div>
                   )}
                 </div>
               </div>
 
-              {/* Compact Request Introduction button on the right when isCompact is true */}
-              {isCompact && (
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleOpenForm(selectedVendor);
-                  }}
-                  className="bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold rounded-lg transition-all duration-200 py-2.5 px-4 text-[13px] shrink-0 border-none shadow-sm cursor-pointer"
-                >
-                  Request Introduction
-                </button>
-              )}
+              {/* Request Introduction button on the right (above divider line) */}
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleOpenForm(selectedVendor);
+                }}
+                className={`bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold rounded-lg transition-all duration-200 shrink-0 border-none shadow-sm cursor-pointer ${
+                  isCompact ? 'py-2.5 px-4 text-[13px]' : 'py-3 px-6 text-[14px]'
+                }`}
+              >
+                Request Introduction
+              </button>
             </div>
 
-            {/* Quick Facts and Primary CTA row under a divider when !isCompact */}
+            {/* Quick Facts row under a divider when !isCompact */}
             {!isCompact && (
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-4 border-t border-neutral-100 mt-2">
+              <div className="pt-4 border-t border-neutral-100 mt-2">
                 {/* Horizontal Quick Facts List */}
-                <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+                <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
                   {quickFacts.map((fact, idx) => (
-                    <div key={idx} className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-lg bg-neutral-50 flex items-center justify-center border border-neutral-100 shrink-0 select-none">
-                        {fact.icon}
+                    <React.Fragment key={idx}>
+                      {idx > 0 && (
+                        <div className="hidden sm:block w-px h-8 bg-neutral-200 self-center" />
+                      )}
+                      <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-lg bg-neutral-50 flex items-center justify-center border border-neutral-100 shrink-0 select-none">
+                          {fact.icon}
+                        </div>
+                        <div className="min-w-0">
+                          <span className="block text-[10px] text-neutral-450 font-bold uppercase tracking-wider leading-none select-none">{fact.label}</span>
+                          <span className="block text-[13.5px] text-neutral-900 font-extrabold mt-1 leading-none">{fact.val}</span>
+                        </div>
                       </div>
-                      <div className="min-w-0">
-                        <span className="block text-[10px] text-neutral-400 font-bold uppercase tracking-wider leading-none select-none">{fact.label}</span>
-                        <span className="block text-[13px] text-neutral-900 font-extrabold mt-1 leading-none">{fact.val}</span>
-                      </div>
-                    </div>
+                    </React.Fragment>
                   ))}
                 </div>
-                
-                {/* Primary CTA button */}
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleOpenForm(selectedVendor);
-                  }}
-                  className="bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold rounded-lg transition-all duration-200 py-3 px-6 text-[14px] shadow-sm cursor-pointer border-none shrink-0"
-                >
-                  Request Introduction
-                </button>
               </div>
             )}
 
@@ -855,472 +858,512 @@ export function VendorsView({ vendors }: VendorsViewProps) {
           </div>
         </div>
 
-        {/* Content Container (Grid Layout) */}
-        <div className="max-w-6xl mx-auto w-full px-6 py-8 bg-white">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        {/* Main Body Content (Two-Column Layout: Left for main content, Right for Sticky Sidebar) */}
+        <div 
+          className="max-w-6xl mx-auto w-full px-6 py-8 flex flex-col lg:flex-row gap-8 items-start bg-white transition-all duration-300"
+          style={{ paddingTop: isCompact ? 'calc(2rem + 125px)' : '2rem' }}
+        >
+          
+          {/* Left Column (Main Content Area) */}
+          <div className="flex-1 min-w-0 flex flex-col gap-8">
             
-            {/* Left Column (col-span-2) */}
-            <div className="lg:col-span-2 flex flex-col gap-8">
-              
-              {/* Relocated Ecosystem Benefits & PDF Download Card */}
-              <div className="border border-neutral-200 bg-neutral-50/20 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-stretch gap-6 shadow-sm">
-                {/* Left side: Ecosystem Benefits Grid */}
-                <div className="flex-1 flex flex-col gap-4">
-                  <div className="flex items-center gap-2">
-                    <svg className="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                      <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                    <span className="text-[14px] font-black text-neutral-900 uppercase tracking-wider select-none">
-                      Exclusive Ecosystem Benefits
-                    </span>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {[
-                      { title: 'Free Consultation', desc: 'Free initial 30-minute scoping and cap table audit session.' },
-                      { title: 'Preferred Pricing', desc: '20% discount on first fundraising or ESOP pool mandate.' },
-                      { title: 'Priority Dispatch', desc: 'Direct escalation line with SLA response under 4 hours.' }
-                    ].map((ben, idx) => (
-                      <div key={idx} className="flex gap-2">
-                        <svg className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
-                          <path d="M20 6 9 17l-5-5" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                        <div>
-                          <span className="text-[13px] font-extrabold text-neutral-900 block">{ben.title}</span>
-                          <p className="text-[12px] text-neutral-600 mt-1 font-normal leading-relaxed">{ben.desc}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Vertical Divider */}
-                <div className="hidden md:block w-px bg-neutral-200 self-stretch my-2" />
-
-                {/* Right side: PDF Download Attachment */}
-                <div className="md:w-64 flex flex-col gap-2 justify-center shrink-0">
-                  <span className="text-[11px] font-extrabold text-neutral-400 uppercase tracking-wider block select-none">
-                    Ecosystem Attachment
-                  </span>
-                  <a
-                    href="file:///Users/kapil/Downloads/Sarvaank%20Associates%20Profile%20(April%202026).pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2.5 p-3 border border-neutral-200 hover:border-neutral-350 bg-white hover:bg-neutral-50 rounded-xl transition-all text-left group select-none shadow-sm"
-                  >
-                    <div className="w-9 h-9 rounded bg-rose-100 flex items-center justify-center text-rose-600 shrink-0">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
-                        <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-                      </svg>
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <span className="block font-bold text-[12.5px] text-neutral-900 truncate group-hover:underline">Sarvaank Profile.pdf</span>
-                      <span className="block text-[11px] text-neutral-400 font-medium mt-0.5">14.5 KB • View Profile</span>
-                    </div>
-                  </a>
-                </div>
+            {/* Section 2: Why Recommended Block */}
+            <div id="recommendation-sec" className="pb-8 border-b border-neutral-100 flex flex-col gap-6 scroll-mt-[125px]">
+              <div>
+                <h2 className="text-[20px] font-black text-neutral-955 leading-snug">
+                  Why Accel Recommends Savanko Partners
+                </h2>
+                <p className="text-[13.5px] text-neutral-600 mt-2 font-normal leading-relaxed">
+                  Savanko Partners is a boutique legal advisory firm specializing in fundraising, cap table compliance, ESOP setups, and corporate governance for high-growth, venture-backed startups.
+                </p>
               </div>
 
-              {/* Section 2: Why Recommended Block */}
-              <div id="recommendation-sec" className="pb-8 border-b border-neutral-100 flex flex-col gap-6 scroll-mt-[125px]">
-                <div>
-                  <h2 className="text-[20px] font-black text-neutral-955 leading-snug">
-                    Why Accel Recommends Savanko Partners
-                  </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                {[
+                  { 
+                    title: 'Trusted by 12+ Venture Funds', 
+                    desc: 'Pre-vetted relationship network across India\'s largest institutional funds.',
+                    icon: (
+                      <svg className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.005 9.005 0 0 0-3.243-5.332 9.005 9.005 0 0 0-3.242-1.332m3.243 6.664a9.005 9.005 0 0 1-3.243-6.664m3.243 6.664H9m6 0v-2.25C15 11.25 12.75 9 10 9H6.25M3 18.75V16.5A2.25 2.25 0 0 1 5.25 14.25h1.5m1.5-6a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0ZM21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    title: 'Supports Seed to Series A', 
+                    desc: 'Tailored legal frameworks built specifically for venture-backed lifecycles.',
+                    icon: (
+                      <svg className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    title: 'Startup-Focused Expertise', 
+                    desc: 'No corporate bloated processes; fast drafting turnaround and direct slack liaison.',
+                    icon: (
+                      <svg className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 21l8.982-2.183a9.003 9.003 0 0 0 5.195-10.428.9.9 0 0 0-1.056-.695l-4.51.902a9 9 0 0 1-8.699-3.671L8.15 4.15a.9.9 0 0 0-1.618.397L5.5 10.5M9.813 15.904 5.21 12.38M9.813 15.904l5.39-3.593m-9.993-1.43 4.603 3.593m0 0a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    title: 'Venture-Backed Experience', 
+                    desc: 'Handled over $450M in seed and equity funding rounds with zero documentation errors.',
+                    icon: (
+                      <svg className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                      </svg>
+                    )
+                  }
+                ].map((item, idx) => (
+                  <div key={idx} className="flex gap-3">
+                    {item.icon}
+                    <div>
+                      <span className="text-[14px] font-extrabold text-neutral-900 block">{item.title}</span>
+                      <p className="text-[13px] text-neutral-600 mt-1 font-normal leading-relaxed">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Firm Profile PDF Credentials (Revamped secondary bordered button) */}
+              <div className="mt-2 flex justify-start">
+                <a
+                  href="file:///Users/kapil/Downloads/Sarvaank%20Associates%20Profile%20(April%202026).pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2.5 px-4.5 py-2.5 bg-white border border-neutral-300 hover:border-black text-neutral-800 hover:text-black font-extrabold text-[13px] rounded-lg transition-colors shadow-sm select-none cursor-pointer"
+                >
+                  <svg className="w-4 h-4 text-red-650 shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/>
+                  </svg>
+                  <span>Download Credentials Brochure (PDF)</span>
+                </a>
+              </div>
+
+              {/* Success Story Highlight: VC Funds & Lending/Loan Structuring */}
+              <div className="mt-4 p-6 bg-neutral-50/50 border border-neutral-200 rounded-2xl flex flex-col gap-5">
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-150 flex items-center justify-center shrink-0">
+                    <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="text-[15.5px] font-black text-neutral-900 leading-snug">Success Story Highlight: VC Funds & Debt Transaction Advisory</h3>
+                    <p className="text-[12.5px] text-neutral-550 mt-1 font-normal leading-relaxed">
+                      Savanko Partners acts as transaction counsel for top-tier Indian VCs and structures critical debt financing/loan transactions for high-growth startups.
+                    </p>
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                  {[
-                    { title: 'Trusted by 12+ Venture Funds', desc: 'Pre-vetted relationship network across India\'s largest institutional funds.' },
-                    { title: 'Supports Seed to Series A', desc: 'Tailored legal frameworks built specifically for venture-backed lifecycles.' },
-                    { title: 'Startup-Focused Expertise', desc: 'No corporate bloated processes; fast drafting turnaround and direct slack liaison.' },
-                    { title: 'Venture-Backed Experience', desc: 'Handled over $450M in seed and equity funding rounds with zero documentation errors.' }
-                  ].map((item, idx) => (
-                    <div key={idx} className="flex gap-3">
-                      <svg className="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7"/>
-                      </svg>
-                      <div>
-                        <span className="text-[14px] font-extrabold text-neutral-900 block">{item.title}</span>
-                        <p className="text-[13px] text-neutral-600 mt-1 font-normal leading-relaxed">{item.desc}</p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-neutral-200">
+                  {/* Left sub-column: VC Funds Worked With */}
+                  <div className="flex flex-col gap-2.5">
+                    <span className="text-[11px] font-bold text-neutral-450 uppercase tracking-widest select-none">
+                      VC Funds Collaborated With
+                    </span>
+                    <div className="flex flex-wrap gap-1.5 mt-1">
+                      {['Peak XV', 'Accel India', 'Elevation Capital', 'Matrix Partners India', 'Speciale Invest', 'Anicut Capital', 'Axilor Ventures', 'GVFL'].map((fund, idx) => (
+                        <span key={idx} className="px-2.5 py-1 bg-[#F0F4F8] border border-[#D9E2EC] text-[#1E3A8A] font-extrabold text-[11.5px] rounded-lg">
+                          {fund}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Right sub-column: Loan & Debt Advisory Story */}
+                  <div className="flex flex-col gap-2.5">
+                    <span className="text-[11px] font-bold text-neutral-450 uppercase tracking-widest select-none">
+                      Debt Structuring & Loan Mandates
+                    </span>
+                    <p className="text-[12.5px] text-neutral-650 leading-relaxed font-normal">
+                      Structured venture debt financing, working capital lines, and transaction legalities for lending and fintech pioneers like <span className="font-bold text-neutral-900">Navadhan Capital</span>, <span className="font-bold text-neutral-900">Propelld</span>, and <span className="font-bold text-neutral-900">Snapmint</span>. We ensure seamless loan closings with optimal founder-friendly terms.
+                    </p>
+                    <div className="bg-white border border-neutral-200 p-2.5 rounded-xl flex items-center gap-3 shadow-sm mt-1">
+                      <CompanyLogo name="Navadhan" size="sm" className="shrink-0" />
+                      <div className="min-w-0">
+                        <span className="text-[12.5px] font-extrabold text-neutral-900 block leading-tight">Navadhan Capital</span>
+                        <span className="text-[11px] text-emerald-800 font-bold mt-0.5 block leading-none">✓ Structured Debt & Investment Advisory</span>
                       </div>
                     </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Section 3: Founder Problems Solved (Outcome-based cards with icons, no outcome tags) */}
+            <div id="outcomes-sec" className="pb-8 border-b border-neutral-100 flex flex-col gap-6 scroll-mt-[125px]">
+              <div>
+                <h3 className="text-[18px] font-extrabold text-neutral-955">Founder Problems Solved</h3>
+                <p className="text-[13.5px] text-neutral-500 mt-1 font-normal">
+                  Direct outcome-based support mapped to your startup challenges.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {outcomesSolved.map((item, idx) => (
+                  <div key={idx} className="border border-neutral-200 bg-white p-5 rounded-xl flex flex-col gap-2.5 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="flex items-center gap-2">
+                      {item.icon}
+                      <span className="text-[15px] font-black text-neutral-900">{item.title}</span>
+                    </div>
+                    <p className="text-[13.5px] text-neutral-700 leading-relaxed font-normal">
+                      {item.outcome}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Combined Section 4: Fund Types */}
+              <div className="mt-6 pt-6 border-t border-neutral-100 flex flex-col gap-4">
+                <div>
+                  <h4 className="text-[15px] font-black text-neutral-900">Supported Startup Stages</h4>
+                </div>
+
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {['Idea', 'Pre-Seed', 'Seed', 'Series A', 'Growth'].map((stage, idx) => (
+                    <span key={idx} className="px-3 py-1.5 bg-neutral-50 border border-neutral-200 text-neutral-700 font-bold text-[12.5px] rounded-lg select-none">
+                      {stage}
+                    </span>
                   ))}
                 </div>
               </div>
+            </div>
 
-              {/* Section 3: Founder Problems Solved (Outcome-based cards with icons, no outcome tags) */}
-              <div id="outcomes-sec" className="pb-8 border-b border-neutral-100 flex flex-col gap-6 scroll-mt-[125px]">
+            {/* Section 6: Track Record */}
+            <div id="proof-sec" className="pb-8 border-b border-neutral-100 flex flex-col gap-4 scroll-mt-[125px]">
+              <div>
+                <h3 className="text-[17px] font-bold text-neutral-900">Track Record</h3>
+                <p className="text-[13px] text-neutral-500 mt-1 font-normal">
+                  Proven outcomes across the venture ecosystem.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-2">
+                {statsMetrics.map((stat, idx) => (
+                  <div key={idx} className="bg-neutral-50/50 border border-neutral-200 rounded-xl p-4 flex flex-col justify-center gap-1 shadow-sm">
+                    <span className="text-[24px] font-black text-black leading-none select-none">{stat.val}</span>
+                    <span className="text-[12px] text-neutral-655 font-bold mt-1 leading-normal">{stat.label}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Section 8: Founder Success Stories (Separate clickable cards) */}
+              <div className="mt-6 pt-6 border-t border-neutral-100 flex flex-col gap-4">
                 <div>
-                  <h3 className="text-[18px] font-extrabold text-neutral-955">Founder Problems Solved</h3>
-                  <p className="text-[13.5px] text-neutral-500 mt-1 font-normal">
-                    Direct outcome-based support mapped to your startup challenges.
+                  <h3 className="text-[17px] font-bold text-neutral-900">Founder Case Studies</h3>
+                  <p className="text-[13px] text-neutral-500 mt-1 font-normal">
+                    Click to view detailed, outcome-based project narratives.
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {outcomesSolved.map((item, idx) => (
-                    <div key={idx} className="border border-neutral-200 bg-white p-5 rounded-xl flex flex-col gap-2.5 shadow-sm hover:shadow-md transition-shadow">
-                      <div className="flex items-center gap-2">
-                        {item.icon}
-                        <span className="text-[15px] font-black text-neutral-900">{item.title}</span>
-                      </div>
-                      <p className="text-[13.5px] text-neutral-700 leading-relaxed font-normal">
-                        {item.outcome}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Section 4: Startup Stages Supported (No percentages) */}
-                <div className="mt-6 pt-6 border-t border-neutral-100 flex flex-col gap-4">
-                  <div>
-                    <h4 className="text-[15px] font-black text-neutral-900">Startup Stages Supported</h4>
-                    <p className="text-[13px] text-neutral-500 mt-1 font-normal">
-                      Vetted lifecycle support mapped from incorporation to growth.
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-5 gap-3 mt-2">
-                    {supportStages.map((stage, idx) => (
-                      <div key={idx} className={`p-4 border rounded-xl flex flex-col gap-2.5 transition-all text-center ${
-                        stage.highlight 
-                          ? 'border-rose-200 bg-rose-50/20 shadow-sm' 
-                          : 'border-neutral-200 bg-white'
-                      }`}>
-                        <span className={`text-[13px] font-extrabold block ${stage.highlight ? 'text-rose-600' : 'text-neutral-900'}`}>
-                          {stage.name}
-                        </span>
-                        <p className="text-[11.5px] text-neutral-500 font-normal leading-snug flex-1">
-                          {stage.desc}
-                        </p>
-                        {stage.highlight && (
-                          <span className="text-[9.5px] font-black uppercase text-rose-700 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-full self-center mt-1">
-                            Expertise
-                          </span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Section 5: Recommended By (VC Logos + View More Dialog trigger) */}
-                <div className="mt-6 pt-6 border-t border-neutral-100 flex flex-col gap-4">
-                  <div>
-                    <h4 className="text-[15px] font-black text-neutral-900">Recommended By Venture Funds</h4>
-                    <p className="text-[13px] text-neutral-500 mt-1 font-normal">
-                      Trusted by venture capital firms supporting the Indian startup ecosystem.
-                    </p>
-                  </div>
-                  <div className="flex flex-wrap items-center gap-4 mt-1">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 flex-1">
-                      {vcLogos.map((vc, idx) => (
-                        <div key={idx} className="bg-white border border-neutral-200 rounded-xl p-4 flex items-center justify-center gap-2.5 shadow-sm select-none">
-                          <CompanyLogo src={vc.logo} name={vc.name} className="!w-6 !h-6 bg-white p-0.5 rounded border border-neutral-100 shrink-0" />
-                          <span className="text-[13.5px] font-extrabold text-neutral-900">{vc.name}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <button
-                      onClick={() => setShowAllVCs(true)}
-                      className="px-4 py-3 border border-neutral-200 hover:border-neutral-400 bg-neutral-50 hover:bg-neutral-100 text-[13px] text-neutral-800 font-bold rounded-xl transition-all cursor-pointer shadow-sm select-none text-center whitespace-nowrap"
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                  {caseStudies.map((cs, idx) => (
+                    <div 
+                      key={idx} 
+                      onClick={() => setSelectedCaseStudy(cs)}
+                      className="border border-neutral-200 bg-white p-5 rounded-xl flex flex-col gap-3.5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer group"
                     >
-                      + 11 more funds
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Section 6 & 7: Expertise Coverage & Track Record */}
-              <div id="proof-sec" className="pb-8 border-b border-neutral-100 flex flex-col gap-8 scroll-mt-[125px]">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  
-                  {/* Section 6: Expertise Coverage */}
-                  <div className="flex flex-col gap-4">
-                    <div>
-                      <h3 className="text-[17px] font-bold text-neutral-955">Expertise Coverage</h3>
-                      <p className="text-[13px] text-neutral-500 mt-1 font-normal">
-                        Supported fund segments and service verticals.
+                      <div className="flex items-center gap-2.5">
+                        <CompanyLogo name={cs.name} size="sm" className="!w-6 !h-6 bg-white border border-neutral-100 p-0.5 rounded shadow-sm shrink-0" />
+                        <span className="text-[14px] font-extrabold text-neutral-900 group-hover:underline">{cs.name} Case Study</span>
+                      </div>
+                      <p className="text-[13px] text-neutral-600 line-clamp-2 font-normal leading-relaxed flex-1">
+                        {cs.summary}
                       </p>
-                    </div>
-
-                    <div className="flex flex-col gap-4 mt-2">
-                      <div className="flex flex-col gap-2">
-                        <span className="text-[12px] font-extrabold text-neutral-450 uppercase tracking-widest">Fund Types Supported</span>
-                        <div className="flex flex-wrap gap-1.5">
-                          {(extended.fundTypes || []).map((type, idx) => (
-                            <span key={idx} className="text-[12.5px] bg-[#EBF4FA] text-[#2D5DA0] font-semibold px-2.5 py-1 rounded border border-[#CDE1F0]">
-                              {type}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div className="flex flex-col gap-2 pt-3 border-t border-neutral-100">
-                        <span className="text-[12px] font-extrabold text-neutral-450 uppercase tracking-widest">Service Areas</span>
-                        <div className="flex flex-wrap gap-1.5">
-                          {['Fundraising', 'ESOP', 'Governance', 'Compliance', 'Contracts', 'Disputes'].map((area, idx) => (
-                            <span key={idx} className="text-[12.5px] bg-[#F1F8E9] text-[#558B2F] font-semibold px-2.5 py-1 rounded border border-[#DCEDC8]">
-                              {area}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Section 7: Track Record (Metrics) */}
-                  <div className="flex flex-col gap-4">
-                    <div>
-                      <h3 className="text-[17px] font-bold text-neutral-955">Track Record</h3>
-                      <p className="text-[13px] text-neutral-500 mt-1 font-normal">
-                        Proven outcomes across the venture ecosystem.
-                      </p>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4 mt-2">
-                      {statsMetrics.map((stat, idx) => (
-                        <div key={idx} className="bg-neutral-50/50 border border-neutral-200 rounded-xl p-4 flex flex-col justify-center gap-1 shadow-sm">
-                          <span className="text-[24px] font-black text-[#C8102E] leading-none select-none">{stat.val}</span>
-                          <span className="text-[12px] text-neutral-600 font-bold mt-1 leading-normal">{stat.label}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                </div>
-
-                {/* Section 8: Founder Success Stories (Separate clickable cards) */}
-                <div className="mt-6 pt-6 border-t border-neutral-100 flex flex-col gap-4">
-                  <div>
-                    <h3 className="text-[17px] font-bold text-neutral-900">Founder Case Studies</h3>
-                    <p className="text-[13px] text-neutral-500 mt-1 font-normal">
-                      Click to view detailed, outcome-based project narratives.
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                    {caseStudies.map((cs, idx) => (
-                      <div 
-                        key={idx} 
-                        onClick={() => setSelectedCaseStudy(cs)}
-                        className="border border-neutral-200 bg-white p-5 rounded-xl flex flex-col gap-3.5 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer group"
-                      >
-                        <div className="flex items-center gap-2.5">
-                          <CompanyLogo name={cs.name} size="sm" className="!w-6 !h-6 bg-white border border-neutral-100 p-0.5 rounded shadow-sm shrink-0" />
-                          <span className="text-[14px] font-extrabold text-neutral-900 group-hover:underline">{cs.name} Case Study</span>
-                        </div>
-                        <p className="text-[13px] text-neutral-600 line-clamp-2 font-normal leading-relaxed flex-1">
-                          {cs.summary}
-                        </p>
-                        <span className="text-[11.5px] font-bold text-rose-600 flex items-center gap-1 mt-1">
-                          Read Case Study &rarr;
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Section 9: Portfolio Companies (No tabs filter) */}
-                <div className="mt-6 pt-6 border-t border-neutral-100 flex flex-col gap-4">
-                  <div>
-                    <h3 className="text-[17px] font-bold text-neutral-900">Portfolio Companies</h3>
-                    <p className="text-[13px] text-neutral-500 mt-1 font-normal">
-                      Displaying ecosystem companies supported.
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mt-2">
-                    {portfolioCompanies.map((comp, idx) => (
-                      <div key={idx} className="bg-white border border-neutral-200 rounded-xl p-4 flex flex-col items-center justify-center gap-2 shadow-sm">
-                        <CompanyLogo name={comp.name} className="!w-10 !h-10 bg-white border border-neutral-100 p-0.5 rounded shadow-sm shrink-0" />
-                        <span className="text-[13px] font-bold text-neutral-900 select-none mt-1">{comp.name}</span>
-                        <span className="text-[10.5px] font-bold text-neutral-400 select-none">{comp.ind}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Section 10: Representative Transactions */}
-                <div className="mt-6 pt-6 border-t border-neutral-100 flex flex-col gap-4">
-                  <div>
-                    <h3 className="text-[17px] font-bold text-neutral-900">Representative Transactions</h3>
-                    <p className="text-[13px] text-neutral-500 mt-1 font-normal">
-                      Common mandates executed for startup teams.
-                    </p>
-                  </div>
-                  <div className="flex flex-wrap gap-2 mt-1">
-                    {['Seed Round', 'Series A', 'ESOP Rollout', 'Restructuring', 'Debt Financing', 'Bridge Notes', 'Delaware Flip'].map((chip, idx) => (
-                      <span key={idx} className="px-3.5 py-1.5 bg-neutral-50 border border-neutral-200 text-neutral-700 font-bold text-[13px] rounded-lg select-none">
-                        {chip}
+                      <span className="text-[11.5px] font-bold text-black flex items-center gap-1 mt-1 group-hover:underline">
+                        Read Case Study &rarr;
                       </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Section 11 & 12 & 13: Reviews & FAQs */}
-              <div id="engage-sec" className="py-8 flex flex-col gap-8 scroll-mt-[125px]">
-                
-                {/* Section 13: Founder Reviews */}
-                <div className="flex flex-col gap-5">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h3 className="text-[17px] font-bold text-neutral-900">Founder Reviews</h3>
-                      <p className="text-[13px] text-neutral-500 mt-1 font-normal">
-                        Verified founder satisfaction ratings.
-                      </p>
                     </div>
-                    <div className="flex items-center gap-1.5 bg-[#FF492C]/5 px-3 py-1.5 rounded-full border border-[#FF492C]/10 shrink-0">
-                      <span className="text-[#FF492C] font-black text-xs">Platform Rating</span>
-                      <span className="text-neutral-900 font-extrabold text-xs">5.0 / 5.0</span>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                    {[
-                      {
-                        author: 'Arjun Mehta',
-                        role: 'CEO',
-                        company: 'SaaSFlow',
-                        stage: 'Series A',
-                        review: 'Savanko Partners was key to our Series A. They handled diligence and SSHA negotiations smoothly, translating legal risks into plain business decisions. Highly recommended.'
-                      },
-                      {
-                        author: 'Neha Sharma',
-                        role: 'Founder',
-                        company: 'FintechHub',
-                        stage: 'Seed',
-                        review: 'Their speed on our ESOP pool setup was incredible. Handled all documentation and dilution schedules in under 10 business days. Extremely supportive team!'
-                      }
-                    ].map((rev, idx) => (
-                      <div key={idx} className="p-5 border border-neutral-200 rounded-xl bg-neutral-50/10 flex flex-col justify-between gap-3.5 shadow-sm">
-                        <div className="flex justify-between items-start flex-wrap gap-2">
-                          <div>
-                            <span className="block text-[13.5px] font-bold text-neutral-900">{rev.author}</span>
-                            <span className="block text-[11.5px] text-neutral-500 font-semibold mt-0.5">{rev.role}, {rev.company}</span>
-                          </div>
-                          <div className="flex flex-col items-end gap-1">
-                            <div className="flex text-amber-400 select-none">
-                              {Array.from({ length: 5 }).map((_, i) => (
-                                <svg key={i} className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-                                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                                </svg>
-                              ))}
-                            </div>
-                            <span className="text-[10px] font-extrabold text-emerald-800 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full select-none shrink-0">
-                              ✓ {rev.stage} Verified
-                            </span>
-                          </div>
-                        </div>
-
-                        <p className="text-[13px] text-neutral-700 leading-relaxed font-normal italic mt-2 flex-1">
-                          "{rev.review}"
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Section 14: FAQ (Accordions - Native HTML details/summary matching Deals page style) */}
-                <div className="mt-6 pt-6 border-t border-neutral-100 flex flex-col gap-4">
-                  <div>
-                    <h3 className="text-[17px] font-bold text-neutral-900">Frequently Asked Questions</h3>
-                    <p className="text-[13px] text-neutral-500 mt-1 font-normal">
-                      Direct operational details regarding kickoff, engagement, and pricing.
-                    </p>
-                  </div>
-
-                  <div className="divide-y divide-neutral-200 border-t border-b border-neutral-200 mt-3 select-none">
-                    {savankoFAQs.map((faq, idx) => (
-                      <details key={idx} className="group py-4 [&_summary::-webkit-details-marker]:hidden">
-                        <summary className="flex justify-between items-center font-bold text-[13.5px] text-black cursor-pointer list-none hover:text-neutral-800 transition-colors focus:outline-none">
-                          <span>{faq.q}</span>
-                          <svg className="w-4.5 h-4.5 text-neutral-400 group-open:rotate-180 transition-transform duration-250" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"/>
-                          </svg>
-                        </summary>
-                        <div className="pt-3 text-[13px] text-neutral-600 leading-relaxed font-normal">
-                          {faq.a}
-                        </div>
-                      </details>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Offer Terms & Conditions List */}
-                <div className="mt-6 pt-6 border-t border-neutral-100">
-                  <div className="border border-neutral-200 bg-neutral-50/30 rounded-xl p-5 flex flex-col gap-4">
-                    <span className="text-[12.5px] font-extrabold text-neutral-500 uppercase tracking-wider select-none">
-                      Offer Terms & Validity Conditions
-                    </span>
-                    <ol className="list-decimal pl-5 flex flex-col gap-2.5 text-[13px] text-neutral-700 leading-relaxed font-normal">
-                      {validityConditions.map((condition, idx) => (
-                        <li key={idx}>
-                          {condition}
-                        </li>
-                      ))}
-                    </ol>
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
-
-            {/* Right Column: Sticky Sidebar (col-span-1) */}
-            <div className="lg:col-span-1 flex flex-col gap-6 lg:sticky lg:top-24 h-fit pb-8">
-              
-              {/* Card 2: Managing Partner Info */}
-              <div className="border border-neutral-200 bg-white rounded-xl p-5 flex flex-col gap-4 shadow-sm">
-                <span className="text-[12px] font-extrabold text-neutral-400 uppercase tracking-wider select-none">
-                  Managing Partner
-                </span>
-                
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-[#E1ECF7] border border-[#B0C8E2] text-[#2D5DA0] font-black flex items-center justify-center shrink-0 text-[18px] select-none">
-                    S
-                  </div>
-                  <div className="min-w-0">
-                    <h4 className="text-[15px] font-extrabold text-neutral-900 leading-tight truncate">Siddharth Savanko</h4>
-                    <span className="text-[12px] text-neutral-550 font-medium block mt-0.5">Managing Partner • 14+ Yrs Exp</span>
-                  </div>
-                </div>
-
-                <p className="text-[13px] text-neutral-600 leading-relaxed font-normal mt-1">
-                  Siddharth has over 14 years of transaction experience advising top-tier Indian startups on cap table optimizations and venture rounds.
-                </p>
-
-                <div className="flex flex-wrap gap-1.5 mt-1 select-none">
-                  {['Fundraising', 'ESOP Sprints', 'Governance', 'Contracts'].map((spec, idx) => (
-                    <span key={idx} className="text-[11px] bg-[#E1ECF7] text-[#2D5DA0] border border-[#B0C8E2]/60 font-bold px-2 py-0.5 rounded-full">
-                      {spec}
-                    </span>
                   ))}
                 </div>
-
-                <div className="pt-4 border-t border-neutral-100 flex flex-col gap-2.5">
-                  <a
-                    href="mailto:siddharth@savankopartners.com"
-                    className="w-full inline-flex items-center justify-center gap-2 py-2.5 bg-neutral-950 hover:bg-neutral-800 text-white text-[13px] font-bold rounded-lg transition-colors shadow-sm select-none border-none cursor-pointer"
-                  >
-                    <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                      <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-                    </svg>
-                    <span>Message Partner</span>
-                  </a>
-                  <div className="text-[11.5px] text-neutral-500 font-normal leading-normal text-center select-none">
-                    Direct desk: +91 98765 43210
-                  </div>
-                </div>
               </div>
 
+              {/* Section 9: Portfolio Companies (No tabs filter) */}
+              <div className="mt-6 pt-6 border-t border-neutral-100 flex flex-col gap-4">
+                <div>
+                  <h3 className="text-[17px] font-bold text-neutral-900">Portfolio Companies</h3>
+                  <p className="text-[13px] text-neutral-500 mt-1 font-normal">
+                    Displaying ecosystem companies supported.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mt-2">
+                  {portfolioCompanies.map((comp, idx) => (
+                    <div key={idx} className="bg-white border border-neutral-200 rounded-xl p-4 flex flex-col items-center justify-center gap-2 shadow-sm">
+                      <CompanyLogo name={comp.name} src={comp.logo} className="!w-10 !h-10 bg-white border border-neutral-100 p-0.5 rounded shadow-sm shrink-0" />
+                      <span className="text-[13px] font-bold text-neutral-900 select-none mt-1">{comp.name}</span>
+                      <span className="text-[10.5px] font-bold text-neutral-450 select-none">{comp.ind}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
 
           </div>
 
-          {/* Section 16: Terms & Conditions */}
+          {/* Right Column (Sticky Sidebar with Managing Partner Details) */}
+          <div 
+            className="w-full lg:w-[340px] shrink-0 flex flex-col gap-6 lg:sticky h-fit transition-all duration-300"
+            style={{ top: isCompact ? '145px' : '240px' }}
+          >
+            
+            {/* Contact Card */}
+            <div className="border border-neutral-200 bg-white rounded-xl p-5 flex flex-col gap-4 shadow-sm">
+              
+              <div className="flex items-center gap-3.5">
+                <div className="w-12 h-12 rounded-full overflow-hidden border border-neutral-300 shrink-0 select-none bg-neutral-100 flex items-center justify-center">
+                  <img src={siddharthAvatar} alt="Siddharth Savanko" className="w-full h-full object-cover animate-fadeIn" />
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1.5">
+                    <h4 className="text-[15px] font-extrabold text-neutral-900 leading-tight">Siddharth Savanko</h4>
+                    <a
+                      href="https://www.linkedin.com/company/savanko-partners"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-neutral-400 hover:text-[#0A66C2] transition-colors inline-flex shrink-0"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                      </svg>
+                    </a>
+                  </div>
+                  <span className="text-[11.5px] text-neutral-555 font-medium block mt-1">Managing Partner</span>
+                </div>
+              </div>
+
+              <p className="text-[13px] text-neutral-650 leading-relaxed font-normal mt-1">
+                Siddharth has over 14 years of transaction experience advising top-tier Indian startups on cap table optimizations and venture rounds.
+              </p>
+
+              {/* Direct Communications & Address */}
+              <div className="flex flex-col gap-3 mt-1 pt-3 border-t border-neutral-100">
+                <div className="flex flex-col gap-2 text-[13px] text-neutral-650 font-semibold">
+                  <span className="text-[11.5px] font-extrabold text-neutral-450 uppercase tracking-wider select-none">Contact Details</span>
+                  <a href="mailto:siddharth@savankopartners.com" className="inline-flex items-center gap-2 hover:text-black transition-colors break-all">
+                    <svg className="w-4 h-4 text-neutral-450 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                    </svg>
+                    <span className="underline font-bold text-neutral-850">siddharth@savankopartners.com</span>
+                  </a>
+                  <a href="tel:+919876543210" className="inline-flex items-center gap-2 hover:text-black transition-colors">
+                    <svg className="w-4 h-4 text-neutral-450 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                    </svg>
+                    <span>Direct desk: <span className="font-bold text-neutral-800">+91 98765 43210</span></span>
+                  </a>
+                </div>
+
+                <div className="flex flex-col gap-2 text-[13px] text-neutral-650 leading-relaxed font-normal pt-3 border-t border-neutral-100">
+                  <span className="text-[11.5px] font-extrabold text-neutral-450 uppercase tracking-wider select-none">Office Address</span>
+                  <div className="flex gap-2">
+                    <svg className="w-4 h-4 text-neutral-450 shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    <span>WeWork, Embassy Golf Links, Off Domlur Stage, Bengaluru 560071</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Message POC button removed to prevent competing CTA calls */}
+            </div>
+
+          </div>
+        </div>
+
+        {/* Full-width bottom sections: Offer Terms, Reviews, FAQs */}
+        <div id="engage-sec" className="max-w-6xl mx-auto w-full px-6 py-8 border-t border-neutral-200 flex flex-col gap-8 scroll-mt-[125px]">
+          
+          {/* Section 11: Ecosystem Member Offer (Revamped & Highlighted) */}
+          <div className="relative overflow-hidden border border-neutral-200 bg-gradient-to-br from-neutral-50 via-white to-neutral-50 rounded-2xl p-6 md:p-8 flex flex-col gap-6 shadow-sm">
+            {/* Top brand accent bar */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#C8102E] via-red-500 to-[#C8102E]" />
+
+            {/* Offer Header */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="flex flex-col gap-1.5">
+                <span className="text-[11.5px] font-extrabold text-[#C8102E] uppercase tracking-wider block select-none">Ecosystem Member Offer</span>
+                <h3 className="text-[19px] font-black text-neutral-900 leading-tight">Exclusive Pricing & Mandate Terms</h3>
+                <p className="text-[13px] text-neutral-550 leading-relaxed font-normal">
+                  Preferential engagement rates and complimentary advisory sessions for verified members.
+                </p>
+              </div>
+              <div className="bg-[#C8102E]/5 border border-[#C8102E]/20 text-[#C8102E] font-black text-[12px] px-3.5 py-1.5 rounded-lg shrink-0 self-start md:self-center">
+                Member Code: PRISM-SAVANKO-20
+              </div>
+            </div>
+
+            {/* Content grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-neutral-100">
+              
+              {/* Left Column: Exclusive Member Benefits */}
+              <div className="flex flex-col gap-4">
+                <span className="text-[12px] font-extrabold text-neutral-450 uppercase tracking-widest select-none block pb-1.5 border-b border-neutral-100">
+                  Exclusive Member Benefits
+                </span>
+                <div className="flex flex-col gap-3.5">
+                  {[
+                    { 
+                      title: 'Complimentary Cap Table Audit', 
+                      desc: 'Free initial 30-minute scoping and complete cap table capitalization review.',
+                      icon: (
+                        <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6a7.5 7.5 0 1 0 7.5 7.5h-7.5V6Z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0 0 13.5 3v7.5Z" />
+                        </svg>
+                      )
+                    },
+                    { 
+                      title: '20% Mandate Discount', 
+                      desc: '20% discount on professional advisory fees for your first fundraising or ESOP pool setup.',
+                      icon: (
+                        <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5M3 18.75h18M3 9h18M3 13.5h18" />
+                        </svg>
+                      )
+                    },
+                    { 
+                      title: 'Priority Support SLA', 
+                      desc: 'Direct escalation desk with guaranteed response time under 4 hours.',
+                      icon: (
+                        <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
+                        </svg>
+                      )
+                    }
+                  ].map((ben, idx) => (
+                    <div key={idx} className="flex gap-3.5 items-start p-4 rounded-xl border border-neutral-100 hover:border-neutral-200 bg-white shadow-sm transition-all">
+                      <div className="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center shrink-0">
+                        {ben.icon}
+                      </div>
+                      <div className="min-w-0">
+                        <span className="text-[13.5px] font-extrabold text-neutral-900 block leading-tight">{ben.title}</span>
+                        <p className="text-[12px] text-neutral-600 mt-1 font-normal leading-relaxed">{ben.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right Column: Validity & Conditions */}
+              <div className="flex flex-col gap-4">
+                <span className="text-[12px] font-extrabold text-neutral-450 uppercase tracking-widest select-none block pb-1.5 border-b border-neutral-100">
+                  Validity & Engagement Conditions
+                </span>
+                <div className="bg-neutral-50/50 border border-neutral-200 rounded-xl p-5 flex flex-col gap-4">
+                  <ul className="flex flex-col gap-3 pl-0 list-none text-[12.5px] text-neutral-700 font-normal leading-relaxed">
+                    {[
+                      'Exclusive to venture-backed startups in the Indian VCs ecosystem.',
+                      'Valid on all new ESOP setup and fundraising advisory mandates.',
+                      'Consultation sessions must be booked via direct introduction links.',
+                      'Discount is applicable solely on professional advisory fees (government fees and statutory charges excluded).',
+                      'Subject to conflict clearance and standard client onboarding checks.',
+                      'Preferential pricing and consultation offers are valid until March 31, 2027.'
+                    ].map((condition, idx) => (
+                      <li key={idx} className="flex items-start gap-2.5">
+                        <svg className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                          <path d="M20 6 9 17l-5-5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        <span>{condition}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          {/* Section 12: Founder Reviews */}
+          <div className="flex flex-col gap-5">
+            <div className="flex justify-between items-center">
+              <div>
+                <h3 className="text-[17px] font-bold text-neutral-900">Founder Reviews</h3>
+                <p className="text-[13px] text-neutral-555 mt-1 font-normal">
+                  Verified founder satisfaction ratings.
+                </p>
+              </div>
+              <div className="flex items-center gap-1.5 bg-[#FF492C]/5 px-3 py-1.5 rounded-full border border-[#FF492C]/10 shrink-0">
+                <span className="text-[#FF492C] font-black text-xs">Platform Rating</span>
+                <span className="text-neutral-900 font-extrabold text-xs">5.0 / 5.0</span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+              {[
+                {
+                  author: 'Arjun Mehta',
+                  role: 'CEO',
+                  company: 'SaaSFlow',
+                  stage: 'Series A',
+                  review: 'Savanko Partners was key to our Series A. They handled diligence and SSHA negotiations smoothly, translating legal risks into plain business decisions. Highly recommended.'
+                },
+                {
+                  author: 'Neha Sharma',
+                  role: 'Founder',
+                  company: 'FintechHub',
+                  stage: 'Seed',
+                  review: 'Their speed on our ESOP pool setup was incredible. Handled all documentation and dilution schedules in under 10 business days. Extremely supportive team!'
+                }
+              ].map((rev, idx) => (
+                <div key={idx} className="p-5 border border-neutral-200 rounded-xl bg-neutral-50/10 flex flex-col justify-between gap-3.5 shadow-sm">
+                  <div className="flex justify-between items-start flex-wrap gap-2">
+                    <div>
+                      <span className="block text-[13.5px] font-bold text-neutral-900">{rev.author}</span>
+                      <span className="block text-[11.5px] text-neutral-555 font-semibold mt-0.5">{rev.role}, {rev.company}</span>
+                    </div>
+                    <div className="flex flex-col items-end gap-1">
+                      <div className="flex text-amber-400 select-none">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <svg key={i} className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                          </svg>
+                        ))}
+                      </div>
+                      <span className="text-[10px] font-extrabold text-emerald-800 bg-emerald-50 border border-emerald-150 px-2 py-0.5 rounded-full select-none shrink-0">
+                        ✓ {rev.stage} Verified
+                      </span>
+                    </div>
+                  </div>
+
+                  <p className="text-[13px] text-neutral-750 leading-relaxed font-normal italic mt-2 flex-1">
+                    "{rev.review}"
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Section 13: FAQ (Accordions - Native HTML details/summary matching Deals page style) */}
+          <div className="mt-6 pt-6 border-t border-neutral-100 flex flex-col gap-4">
+            <div>
+              <h3 className="text-[17px] font-bold text-neutral-900">Frequently Asked Questions</h3>
+              <p className="text-[13px] text-neutral-555 mt-1 font-normal">
+                Direct operational details regarding kickoff, engagement, and pricing.
+              </p>
+            </div>
+
+            <div className="divide-y divide-neutral-200 border-t border-b border-neutral-200 mt-3 select-none">
+              {savankoFAQs.map((faq, idx) => (
+                <details key={idx} className="group py-4 [&_summary::-webkit-details-marker]:hidden">
+                  <summary className="flex justify-between items-center font-bold text-[13.5px] text-black cursor-pointer list-none hover:text-neutral-800 transition-colors focus:outline-none">
+                    <span>{faq.q}</span>
+                    <svg className="w-4.5 h-4.5 text-neutral-400 group-open:rotate-180 transition-transform duration-250" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"/>
+                    </svg>
+                  </summary>
+                  <div className="pt-3 text-[13px] text-neutral-600 leading-relaxed font-normal">
+                    {faq.a}
+                  </div>
+                </details>
+              ))}
+            </div>
+          </div>
+
+          {/* Section 15: facilitating disclaimer */}
           <div className="mt-8 pt-8 border-t border-neutral-100 text-[12px] text-neutral-450 font-normal leading-relaxed select-none">
             <span className="block">Introductions are facilitated by Indian VCs platform. Legal engagements and service agreements are negotiated directly between the startup founder and Savanko Partners.</span>
             <span className="block mt-1">All representations are subject to standard conflict clearances and onboarding guidelines.</span>
@@ -1358,7 +1401,7 @@ export function VendorsView({ vendors }: VendorsViewProps) {
                   </div>
 
                   <div className="flex flex-col gap-2 border-t border-neutral-100 pt-4">
-                    <span className="text-[11.5px] font-black text-[#1F8056] uppercase tracking-widest leading-none">Measurable Outcome</span>
+                    <span className="text-[11.5px] font-black text-black uppercase tracking-widest leading-none">Measurable Outcome</span>
                     <p className="text-neutral-900 font-bold leading-relaxed">
                       {selectedCaseStudy.outcome}
                     </p>
@@ -1552,7 +1595,10 @@ export function VendorsView({ vendors }: VendorsViewProps) {
           </div>
 
           {/* Flat Content List (Single column layout matching DealsView) */}
-          <div className="max-w-6xl mx-auto w-full px-6 py-8 flex flex-col gap-0 bg-white">
+          <div 
+            className="max-w-6xl mx-auto w-full px-6 py-8 flex flex-col gap-0 bg-white transition-all duration-300"
+            style={{ paddingTop: isCompact ? 'calc(2rem + 35px)' : '2rem' }}
+          >
             
             {/* Section 1: Overview & Services */}
             <div id="overview-sec" className="pb-8 border-b border-neutral-100 flex flex-col gap-4 scroll-mt-[125px]">
@@ -1967,7 +2013,7 @@ export function VendorsView({ vendors }: VendorsViewProps) {
     <div className="flex-1 flex flex-col gap-5 py-2 max-w-6xl mx-auto w-full">
       {/* Page Header */}
       <div>
-        <h1 className="text-xl font-bold text-[var(--text-primary)]">Trusted Partner Directory</h1>
+        <h1 className="text-[24px] font-bold text-[var(--text-primary)]">Trusted Partner Directory</h1>
         <p className="text-[14px] text-[var(--text-muted)] mt-1">
           Hand-picked professional agencies and service vendors vetted by Accel India. Startups receive fast-tracked engagement.
         </p>
@@ -2093,70 +2139,41 @@ export function VendorsView({ vendors }: VendorsViewProps) {
             <Card
               key={vendor.id}
               onClick={() => setSelectedVendorId(vendor.id)}
-              className="flex flex-col justify-between hover:shadow-[var(--shadow-md)] hover:-translate-y-0.5 transition-all cursor-pointer border border-[var(--border-subtle)] bg-white rounded-[12px] p-4"
+              className="flex flex-col justify-between hover:shadow-[var(--shadow-md)] hover:-translate-y-0.5 transition-all cursor-pointer border border-[var(--border-subtle)] bg-white rounded-[12px] p-5 gap-4"
             >
               {/* Card Body */}
-              <div className="flex-1 flex flex-col gap-3">
-                <div className="flex justify-between items-start gap-4">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <CompanyLogo src={vendor.logoUrl} name={vendor.name} size="lg" className="shrink-0 bg-white p-1 border border-neutral-100 shadow-sm rounded-lg" />
-                    <div className="min-w-0">
-                      <h3 className="text-[20px] font-extrabold text-[var(--text-primary)] leading-none truncate">
-                        {vendor.name}
-                      </h3>
-                      
-                      {/* Category icon + Location + Rating inline below name */}
-                      <div className="flex flex-wrap items-center gap-1.5 text-[13.5px] text-[var(--text-muted)] mt-1 select-none font-normal">
-                        <span className="flex items-center gap-0.5">
-                          {renderCategoryIcon(vendor.category)}
-                          <span>{vendor.category}</span>
-                        </span>
-                        <span>•</span>
-                        <span>{vendor.location}</span>
-                      </div>
-                    </div>
+              <div className="flex-1 flex gap-4 items-start">
+                <CompanyLogo src={vendor.logoUrl} name={vendor.name} size="lg" className="shrink-0 bg-white p-1 border border-neutral-100 shadow-sm rounded-lg" />
+                <div className="min-w-0 flex-1">
+                  <div className="flex justify-between items-start gap-2">
+                    <h3 className="text-[19px] font-extrabold text-[var(--text-primary)] leading-tight truncate">
+                      {vendor.name}
+                    </h3>
+                  </div>
+                  
+                  {/* Category & Location (No category icons) */}
+                  <div className="flex items-center gap-1.5 text-[13px] text-[var(--text-muted)] mt-1 font-semibold select-none">
+                    <span>{vendor.category}</span>
+                    <span>•</span>
+                    <span>{vendor.location}</span>
                   </div>
 
-                  <div className="flex flex-col gap-1 items-end shrink-0 text-[13px] font-normal">
-                    {vendor.vcTrusted && (
-                      <span className="text-[11px] bg-emerald-50 text-emerald-800 border border-emerald-100 font-extrabold px-2 py-0.5 rounded-full select-none">
-                        VC Trusted
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <p className="text-[14px] text-[var(--text-muted)] leading-relaxed mt-2 line-clamp-3 font-normal">
-                  {vendor.description}
-                </p>
-
-                {/* Specialties chips */}
-                <div className="flex flex-wrap gap-1 mt-1">
-                  {vendor.tags.map((tag, idx) => (
-                    <span
-                      key={idx}
-                      className="text-[13px] bg-neutral-100 text-neutral-600 font-medium px-2 py-0.5 rounded"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                  <p className="text-[13.5px] text-[var(--text-muted)] leading-relaxed mt-2.5 line-clamp-2 font-normal">
+                    {vendor.description}
+                  </p>
                 </div>
               </div>
 
               {/* Card Footer */}
-              <div className="flex justify-between items-center pt-3 border-t border-neutral-100 mt-3 shrink-0">
-                <span className="text-[13.5px] font-bold text-[var(--text-primary)]">
-                  {vendor.typicalEngagement.split('.')[0]}
-                </span>
-                
+              <div className="flex justify-end items-center pt-3 border-t border-neutral-100 mt-2 shrink-0">
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleOpenForm(vendor);
+                    setSelectedVendorId(vendor.id);
                   }}
-                  className="px-4 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold text-[13px] rounded-lg cursor-pointer transition-colors shadow-sm text-center border-none"
+                  className="px-5 py-2 bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold text-[12.5px] rounded-lg cursor-pointer transition-colors shadow-sm text-center border-none shrink-0"
                 >
-                  Contact
+                  View Details
                 </button>
               </div>
             </Card>

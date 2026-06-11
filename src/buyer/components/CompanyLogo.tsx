@@ -1,6 +1,8 @@
 import * as React from 'react';
 // @ts-ignore
 import sarvaankLogo from './sarvaank_logo.png';
+// @ts-ignore
+import savankoLogo from './savanko_logo.png';
 
 interface CompanyLogoProps {
   src?: string | null;
@@ -108,6 +110,28 @@ export function CompanyLogo({ src, name, className = '', size = 'md' }: CompanyL
       >
         <img
           src={sarvaankLogo}
+          alt={name}
+          className="w-full h-full object-contain animate-fadeIn"
+        />
+      </div>
+    );
+  }
+
+  if (name.toLowerCase().trim().includes('savanko')) {
+    // Strip out background, border, and padding overrides that cause layout conflicts
+    const cleanClassName = className
+      .replace(/\bbg-\S+/g, '')
+      .replace(/\bp-\S+/g, '')
+      .replace(/\bborder-\S+/g, '')
+      .replace(/\bborder\b/g, '')
+      .replace(/\bshadow-\S+/g, '');
+
+    return (
+      <div
+        className={`rounded-xl overflow-hidden bg-white shrink-0 flex items-center justify-center p-0.5 ${selectedSizeClass} ${cleanClassName}`}
+      >
+        <img
+          src={savankoLogo}
           alt={name}
           className="w-full h-full object-contain animate-fadeIn"
         />

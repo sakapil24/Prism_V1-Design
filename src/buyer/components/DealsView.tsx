@@ -1378,7 +1378,10 @@ export function DealsView({ deals, onClaimDeal, onAdminAdvanceStatus, initialSel
             </div>
 
             {/* Flat Content List (Single column layout) */}
-            <div className="max-w-6xl mx-auto w-full px-6 py-8 flex flex-col gap-0 bg-white">
+            <div 
+              className="max-w-6xl mx-auto w-full px-6 py-8 flex flex-col gap-0 bg-white transition-all duration-300"
+              style={{ paddingTop: isCompact ? 'calc(2rem + 35px)' : '2rem' }}
+            >
               {renderLeftColumnContent()}
               {renderReviewsAndFAQsContent()}
             </div>
