@@ -181,6 +181,7 @@ interface VendorDetailsExtended {
 
 interface VendorsViewProps {
   vendors: Vendor[];
+  onFocusedVendorChange?: (vendorId: string | null) => void;
 }
 
 const vendorFAQsMap: Record<string, FAQ[]> = {
@@ -547,7 +548,7 @@ function renderCategoryIcon(category: string) {
   }
 }
 
-export function VendorsView({ vendors }: VendorsViewProps) {
+export function VendorsView({ vendors, onFocusedVendorChange }: VendorsViewProps) {
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = React.useState('');
   const [selectedCategory, setSelectedCategory] = React.useState<VendorCategory | 'All'>('All');
@@ -579,7 +580,19 @@ export function VendorsView({ vendors }: VendorsViewProps) {
 
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      setIsCompact(scrollY > 85);
+      
+      let nextCompact = false;
+      setIsCompact(prev => {
+        if (scrollY > 140) {
+          nextCompact = true;
+          return true;
+        } else if (scrollY < 80) {
+          nextCompact = false;
+          return false;
+        }
+        nextCompact = prev;
+        return prev;
+      });
 
       const sections = selectedVendorId === 'vendor-savanko'
         ? ['recommendation-sec', 'outcomes-sec', 'proof-sec', 'engage-sec']
@@ -592,8 +605,8 @@ export function VendorsView({ vendors }: VendorsViewProps) {
             'faqs-sec'
           ];
 
-      // Choose offset corresponding to scroll position
-      const headerOffset = scrollY > 85 ? 120 : 180;
+      // Choose offset corresponding to compact state
+      const headerOffset = nextCompact ? 120 : 180;
 
       // Find which section is active
       let active = selectedVendorId === 'vendor-savanko' ? 'recommendation-sec' : 'overview-sec';
@@ -636,7 +649,17 @@ export function VendorsView({ vendors }: VendorsViewProps) {
       }
     };
   }, [selectedVendorId]);
-  
+
+  React.useEffect(() => {
+    if (onFocusedVendorChange) {
+      onFocusedVendorChange(selectedVendorId);
+    }
+  }, [selectedVendorId, onFocusedVendorChange]);
+
+  React.useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [selectedVendorId]);
+
   // Form fields
   const [subject, setSubject] = React.useState('');
   const [requirements, setRequirements] = React.useState('');
@@ -817,197 +840,218 @@ export function VendorsView({ vendors }: VendorsViewProps) {
 
     return (
       <div className="flex flex-col w-full bg-white select-none animate-fadeIn">
-        {/* Sticky Header Wrapper */}
+        {/* Sticky Header Wrapper - Dynamic height with hysteresis to prevent flickering */}
         <div className={`sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-neutral-200 transition-all duration-300 ${
-          isCompact ? 'shadow-sm pt-2.5 pb-0' : 'shadow-none py-5'
+          isCompact ? 'shadow-sm pt-3 pb-[18px]' : 'shadow-none py-5'
         }`}>
-          <div className="max-w-6xl mx-auto w-full px-6 flex flex-col transition-all duration-300" style={{ gap: isCompact ? '10px' : '16px' }}>
+          <div className="max-w-6xl mx-auto w-full px-6 flex flex-col transition-all duration-300" style={{ gap: isCompact ? '0px' : '16px' }}>
             
-            {/* Back Button - Hidden on scroll */}
-            <div className={`transition-all duration-300 ${
-              isCompact 
-                ? 'max-h-0 opacity-0 overflow-hidden pointer-events-none pb-0' 
-                : 'max-h-10 opacity-100 pb-1'
-            } flex items-center justify-between`}>
-              <button
-                onClick={() => {
-                  setSelectedVendorId(null);
-                  setSavankoFAQIndex(null);
-                }}
-                className="flex items-center gap-1.5 text-[13.5px] font-bold text-neutral-600 hover:text-black cursor-pointer group transition-colors"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="transform group-hover:-translate-x-0.5 transition-transform"
-                >
-                  <path d="m15 18-6-6 6-6" />
-                </svg>
-                Back to Directory
-              </button>
-
-              {/* Profile Toggle Switch */}
-              <div className="flex gap-1 p-0.5 bg-neutral-100 rounded-lg select-none border border-neutral-200">
-                <button
-                  onClick={() => setProfileMode('refined')}
-                  className={`px-3 py-1.5 text-[11px] font-extrabold rounded-md transition-all cursor-pointer ${
-                    profileMode === 'refined' 
-                      ? 'bg-white text-black shadow-sm' 
-                      : 'text-neutral-500 hover:text-black'
-                  }`}
-                >
-                  Refined Profile
-                </button>
-                <button
-                  onClick={() => setProfileMode('original')}
-                  className={`px-3 py-1.5 text-[11px] font-extrabold rounded-md transition-all cursor-pointer ${
-                    profileMode === 'original' 
-                      ? 'bg-white text-black shadow-sm' 
-                      : 'text-neutral-500 hover:text-black'
-                  }`}
-                >
-                  Original Profile
-                </button>
-              </div>
-            </div>
-            {/* Logo, Title & Category Header row */}
-            <div className="flex items-center justify-between gap-4">
-              <div className="flex items-center gap-4 min-w-0">
-                <CompanyLogo
-                  src={selectedVendor.logoUrl}
-                  name={selectedVendor.name}
-                  className={`shrink-0 bg-white shadow-sm rounded-xl transition-all duration-300 ${
-                    isCompact ? '!w-8 !h-8 p-0.5' : '!w-14 !h-14 p-1.5'
-                  }`}
-                  size={isCompact ? 'sm' : 'lg'}
-                />
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2.5 flex-wrap">
-                    <h1 className={`font-extrabold text-neutral-900 leading-none truncate transition-all duration-300 ${
-                      isCompact ? 'text-md md:text-lg' : 'text-xl md:text-2xl'
-                    }`}>
-                      {selectedVendor.name}
-                    </h1>
-                    
-                    
-                    {isCompact && (
-                      <span className="text-neutral-400 font-medium text-[12.5px] select-none">—</span>
-                    )}
-                    {isCompact && (
-                      <span className="text-neutral-600 font-bold text-[12.5px] truncate max-w-xs md:max-w-md">
-                        Legal Advisory
-                      </span>
-                    )}
-                  </div>
-                  {!isCompact && (
-                    <div className="flex items-center gap-3 mt-1.5 flex-wrap text-[13px] text-neutral-500 font-medium">
-                      <span>Legal Advisory & Cap Table Compliance</span>
-                      <span className="text-neutral-300 select-none">•</span>
-                      <a
-                        href="https://savankopartners.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 hover:text-neutral-900 transition-colors underline font-bold"
-                      >
-                        <span>Visit Website</span>
-                        <svg className="w-3.5 h-3.5 text-neutral-400 shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                      </a>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Request Introduction / Book a Call button */}
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (profileMode === 'refined') {
-                    window.open('https://calendly.com/savanko-partners/consultation', '_blank');
-                  } else {
-                    handleOpenForm(selectedVendor);
-                  }
-                }}
-                className={`bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold rounded-lg transition-all duration-200 shrink-0 border-none shadow-sm cursor-pointer ${
-                  isCompact ? 'py-2.5 px-4 text-[13px]' : 'py-3 px-6 text-[14px]'
-                }`}
-              >
-                {profileMode === 'refined' ? (
-                  <span className="flex items-center gap-1.5 justify-center">
-                    <span>Book a Call</span>
-                    <svg className="w-3.5 h-3.5 text-white/90 shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                    </svg>
-                  </span>
-                ) : (
-                  'Request Introduction'
-                )}
-              </button>
-            </div>
-
-            {/* Quick Facts row under a divider when !isCompact */}
+            {/* Back Button and Profile Switcher */}
             {!isCompact && (
-              <div className="pt-4 mt-2">
-                {/* Horizontal Quick Facts List */}
-                <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
-                  {quickFacts.map((fact, idx) => (
-                    <React.Fragment key={idx}>
-                    
-                      <div className="flex items-center gap-3">
-                        <div className="w-9 h-9 rounded-lg bg-neutral-50 flex items-center justify-center border border-neutral-100 shrink-0 select-none">
-                          {fact.icon}
-                        </div>
-                        <div className="min-w-0">
-                          <span className="block text-[10px] text-neutral-450 font-bold uppercase tracking-wider leading-none select-none">{fact.label}</span>
-                          <span className="block text-[13.5px] text-neutral-900 font-extrabold mt-1 leading-none">{fact.val}</span>
-                        </div>
-                      </div>
-                    </React.Fragment>
-                  ))}
+              <div className="flex items-center justify-between pb-1">
+                <button
+                  onClick={() => {
+                    setSelectedVendorId(null);
+                    setSavankoFAQIndex(null);
+                  }}
+                  className="flex items-center gap-1.5 text-[13.5px] font-bold text-neutral-600 hover:text-black cursor-pointer group transition-colors"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="transform group-hover:-translate-x-0.5 transition-transform"
+                  >
+                    <path d="m15 18-6-6 6-6" />
+                  </svg>
+                  Back
+                </button>
+
+                {/* Profile Switcher */}
+                <div className="flex gap-1 p-0.5 bg-neutral-100 rounded-lg select-none border border-neutral-200 shrink-0">
+                  <button
+                    onClick={() => setProfileMode('refined')}
+                    className={`px-3 py-1.5 text-[11px] font-extrabold rounded-md transition-all cursor-pointer ${
+                      profileMode === 'refined' 
+                        ? 'bg-white text-black shadow-sm' 
+                        : 'text-neutral-500 hover:text-black'
+                    }`}
+                  >
+                    Refined Profile
+                  </button>
+                  <button
+                    onClick={() => setProfileMode('original')}
+                    className={`px-3 py-1.5 text-[11px] font-extrabold rounded-md transition-all cursor-pointer ${
+                      profileMode === 'original' 
+                        ? 'bg-white text-black shadow-sm' 
+                        : 'text-neutral-500 hover:text-black'
+                    }`}
+                  >
+                    Original Profile
+                  </button>
                 </div>
               </div>
             )}
 
-            {/* Scroll Spy Anchor Navigation */}
-            <div className={`flex gap-6 overflow-x-auto scrollbar-none select-none transition-all duration-300 origin-top ${
-              isCompact 
-                ? 'max-h-14 opacity-100 mt-2.5 pt-2' 
-                : 'max-h-0 opacity-0 mt-0 pt-0 overflow-hidden pointer-events-none'
-            }`}>
-              {[
-                { id: 'recommendation-sec', label: 'About' },
-                { id: 'outcomes-sec', label: 'Browsers' },
-                { id: 'proof-sec', label: 'Case studies' },
-                { id: 'engage-sec', label: 'Reviews' }
-              ].map(sec => {
-                const isActive = activeSection === sec.id;
-                return (
-                  <a
-                    key={sec.id}
-                    href={`#${sec.id}`}
+            {/* Main Content Layout Block */}
+            {isCompact ? (
+              /* Compact Layout (two lines) */
+              <div className="flex flex-col gap-4 w-full">
+                {/* First line: Back button */}
+                <div className="flex items-center">
+                  <button
+                    onClick={() => {
+                      setSelectedVendorId(null);
+                      setSavankoFAQIndex(null);
+                    }}
+                    className="flex items-center gap-1.5 text-[13px] font-bold text-neutral-600 hover:text-black cursor-pointer group transition-colors shrink-0"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="13"
+                      height="13"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="transform group-hover:-translate-x-0.5 transition-transform"
+                    >
+                      <path d="m15 18-6-6 6-6" />
+                    </svg>
+                    <span>Back</span>
+                  </button>
+                </div>
+
+                {/* Second line: Logo, Name, and CTA Button */}
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3.5 min-w-0">
+                    <CompanyLogo
+                      src={selectedVendor.logoUrl}
+                      name={selectedVendor.name}
+                      className="shrink-0 bg-transparent rounded-lg !w-11 !h-11 p-0"
+                      size="md"
+                    />
+                    <div className="min-w-0 flex flex-col justify-center">
+                      <h1 className="font-extrabold text-neutral-900 text-lg md:text-xl leading-tight truncate">
+                        {selectedVendor.name}
+                      </h1>
+                      <span className="text-[12px] md:text-[13px] text-neutral-500 font-semibold mt-0.5 leading-tight truncate block">
+                        Legal Advisory & Cap Table Compliance
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="shrink-0 flex items-center">
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (profileMode === 'refined') {
+                          window.open('https://calendly.com/savanko-partners/consultation', '_blank');
+                        } else {
+                          handleOpenForm(selectedVendor);
+                        }
+                      }}
+                      className="bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold rounded-lg py-2.5 px-4 text-[13px] border-none shadow-sm cursor-pointer shrink-0"
+                    >
+                      {profileMode === 'refined' ? 'Book a Call' : 'Request Introduction'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              /* Expanded Layout (Structured Columns) */
+              <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-2">
+                {/* Left/Center Area: Brand Identity and Quick Facts */}
+                <div className="flex flex-col md:flex-row md:items-center gap-6 min-w-0 flex-1">
+                  
+                  {/* Brand Block */}
+                  <div className="flex items-center gap-4 min-w-0 shrink-0">
+                    <CompanyLogo
+                      src={selectedVendor.logoUrl}
+                      name={selectedVendor.name}
+                      className="shrink-0 bg-white shadow-sm rounded-xl !w-12 !h-12 p-1"
+                      size="lg"
+                    />
+                    <div className="min-w-0">
+                      <h1 className="font-extrabold text-neutral-900 text-xl leading-none truncate">
+                        {selectedVendor.name}
+                      </h1>
+                      <div className="flex items-center gap-3 mt-1.5 flex-wrap text-[13px] text-neutral-500 font-medium">
+                        <span>Legal Advisory & Cap Table Compliance</span>
+                        <span className="text-neutral-300 select-none">•</span>
+                        <a
+                          href="https://savankopartners.com"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 hover:text-neutral-900 transition-colors underline font-bold"
+                        >
+                          <span>Visit Website</span>
+                          <svg className="w-3.5 h-3.5 text-neutral-400 shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Vertical Divider Line */}
+                  <div className="hidden md:block h-10 w-px bg-neutral-200 self-center mx-2 shrink-0" />
+
+                  {/* Quick Facts Block (Aligned inside the header card) */}
+                  <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+                    {quickFacts.map((fact, idx) => (
+                      <div key={idx} className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-lg bg-neutral-50 flex items-center justify-center border border-neutral-100 shrink-0 text-neutral-450">
+                          {fact.icon}
+                        </div>
+                        <div>
+                          <span className="block text-[9px] text-neutral-450 font-bold uppercase tracking-wider leading-none select-none">{fact.label}</span>
+                          <span className="block text-[12.5px] text-neutral-800 font-extrabold mt-0.5 leading-none">{fact.val}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                </div>
+
+                 {/* Right Area: Interactive Controls */}
+                <div className="flex flex-wrap items-center shrink-0 lg:self-center">
+                  {/* Action CTA Button */}
+                  <button
                     onClick={(e) => {
                       e.preventDefault();
-                      document.getElementById(sec.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      if (profileMode === 'refined') {
+                        window.open('https://calendly.com/savanko-partners/consultation', '_blank');
+                      } else {
+                        handleOpenForm(selectedVendor);
+                      }
                     }}
-                    className={`relative pb-2 text-[14px] font-bold transition-all whitespace-nowrap border-b-[3px] -mb-[1px] ${
-                      isActive 
-                        ? 'text-neutral-900 font-extrabold border-neutral-900' 
-                        : 'text-neutral-500 hover:text-neutral-900 border-transparent hover:border-neutral-300'
-                    }`}
+                    className="bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold rounded-lg py-2.5 px-5.5 text-[13.5px] transition-all duration-200 border-none shadow-sm cursor-pointer shrink-0 lg:self-center"
                   >
-                    {sec.label}
-                  </a>
-                );
-              })}
-            </div>
+                    {profileMode === 'refined' ? (
+                      <span className="flex items-center gap-1.5 justify-center">
+                        <span>Book a Call</span>
+                        <svg className="w-3.5 h-3.5 text-white/90 shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                        </svg>
+                      </span>
+                    ) : (
+                      'Request Introduction'
+                    )}
+                  </button>
+                </div>
+              </div>
+            )}
+
+
 
           </div>
         </div>
@@ -1188,7 +1232,7 @@ export function VendorsView({ vendors }: VendorsViewProps) {
           </div>
 
           {/* Right Column (Sidebar Contact Card - Top scroll view only) */}
-          <div className="w-full lg:w-[340px] shrink-0 flex flex-col gap-6">
+          <div className="w-full lg:w-[340px] shrink-0 flex flex-col gap-6 lg:sticky lg:top-[160px] h-fit">
             {/* Contact Card */}
             <div className="border border-neutral-200 bg-white rounded-xl p-5 flex flex-col gap-4 shadow-sm">
               <div className="flex items-center gap-3.5">
@@ -1220,17 +1264,10 @@ export function VendorsView({ vendors }: VendorsViewProps) {
               {/* Direct Communications & Address */}
               <div className="flex flex-col gap-3 mt-1 pt-3 border-t border-neutral-100">
                 <div className="flex flex-col gap-2 text-[13px] text-neutral-650 font-semibold">
-                  <span className="text-[11.5px] font-extrabold text-neutral-450 uppercase tracking-wider select-none">Contact Details</span>
                   <a href="mailto:siddharth@savankopartners.com" className="inline-flex items-center gap-2 hover:text-black transition-colors break-all">
-                    <svg className="w-4 h-4 text-neutral-450 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-                    </svg>
                     <span className="underline font-bold text-neutral-850">siddharth@savankopartners.com</span>
                   </a>
                   <a href="tel:+919876543210" className="inline-flex items-center gap-2 hover:text-black transition-colors">
-                    <svg className="w-4 h-4 text-neutral-450 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                    </svg>
                     <span>Direct desk: <span className="font-bold text-neutral-800">+91 98765 43210</span></span>
                   </a>
                 </div>
@@ -1375,7 +1412,7 @@ export function VendorsView({ vendors }: VendorsViewProps) {
             {profileMode === 'refined' && <div className="border-t border-neutral-100" />}
 
             {/* Section 8: Founder Success Stories / Case Studies */}
-            <div className={profileMode === 'refined' ? "flex flex-col gap-6" : "mt-6 pt-6 border-t border-neutral-100 flex flex-col gap-4 scroll-mt-[125px]"} id={profileMode === 'refined' ? undefined : 'proof-sec'}>
+            <div className={profileMode === 'refined' ? "flex flex-col gap-6 scroll-mt-[125px]" : "mt-6 pt-6 border-t border-neutral-100 flex flex-col gap-4 scroll-mt-[125px]"} id={profileMode === 'refined' ? 'proof-sec' : undefined}>
               {profileMode === 'refined' ? (
                 <>
                   <div>
@@ -1828,93 +1865,105 @@ export function VendorsView({ vendors }: VendorsViewProps) {
 
       return (
         <div className="flex flex-col w-full bg-white select-none animate-fadeIn">
-          {/* Sticky Header Wrapper */}
+          {/* Sticky Header Wrapper - Dynamic height with hysteresis to prevent flickering */}
           <div className={`sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-neutral-200 transition-all duration-300 ${
             isCompact ? 'shadow-sm pt-2.5 pb-0' : 'shadow-none py-5'
           }`}>
             <div className="max-w-6xl mx-auto w-full px-6 flex flex-col transition-all duration-300" style={{ gap: isCompact ? '10px' : '16px' }}>
-              {/* Back to Directory button inside hero section - Hidden on scroll */}
-              <div className={`transition-all duration-300 ${
-                isCompact 
-                  ? 'max-h-0 opacity-0 overflow-hidden pointer-events-none pb-0' 
-                  : 'max-h-10 opacity-100 pb-1'
-              }`}>
-                <button
-                  onClick={() => {
-                    setSelectedVendorId(null);
-                    setActiveFAQIndex(null);
-                  }}
-                  className="flex items-center gap-1.5 text-[13.5px] font-bold text-neutral-600 hover:text-black cursor-pointer group transition-colors"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="transform group-hover:-translate-x-0.5 transition-transform"
+              
+              {/* Back to Directory button inside hero section */}
+              {!isCompact && (
+                <div className="pb-1">
+                  <button
+                    onClick={() => {
+                      setSelectedVendorId(null);
+                      setActiveFAQIndex(null);
+                    }}
+                    className="flex items-center gap-1.5 text-[13.5px] font-bold text-neutral-600 hover:text-black cursor-pointer group transition-colors"
                   >
-                    <path d="m15 18-6-6 6-6" />
-                  </svg>
-                  Back to Directory
-                </button>
-              </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="transform group-hover:-translate-x-0.5 transition-transform"
+                    >
+                      <path d="m15 18-6-6 6-6" />
+                    </svg>
+                    Back
+                  </button>
+                </div>
+              )}
 
               {/* Logo / Header Title Block */}
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-4 min-w-0">
-                  <CompanyLogo
-                    src={selectedVendor.logoUrl}
-                    name={selectedVendor.name}
-                    className={`shrink-0 bg-white shadow-sm rounded-xl transition-all duration-300 ${
-                      isCompact ? '!w-8 !h-8 p-0.5' : '!w-14 !h-14 p-1.5'
-                    }`}
-                    size={isCompact ? 'sm' : 'lg'}
-                  />
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2.5 flex-wrap">
-                      <h1 className={`font-extrabold text-neutral-900 leading-none truncate transition-all duration-300 ${
-                        isCompact ? 'text-md md:text-lg' : 'text-xl md:text-2xl'
-                      }`}>
+              {isCompact ? (
+                /* Compact Layout (single row) */
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <CompanyLogo
+                      src={selectedVendor.logoUrl}
+                      name={selectedVendor.name}
+                      className="shrink-0 bg-white shadow-sm rounded-xl !w-8 !h-8 p-0.5"
+                      size="sm"
+                    />
+                    <div className="min-w-0 flex items-center gap-2">
+                      <h1 className="font-extrabold text-neutral-900 text-md md:text-lg leading-none truncate">
                         {selectedVendor.name}
                       </h1>
-                      {isCompact && (
-                        <span className="text-neutral-400 font-medium text-[12.5px] select-none">—</span>
-                      )}
-                      {isCompact && (
-                        <span className="text-neutral-600 font-bold text-[12.5px] truncate max-w-xs md:max-w-md">
-                          {subtitle}
-                        </span>
-                      )}
+                      <span className="text-neutral-400 font-medium text-[12.5px] select-none">—</span>
+                      <span className="text-neutral-600 font-bold text-[12.5px] truncate">
+                        {selectedVendor.category} Agency
+                      </span>
                     </div>
-                    {!isCompact && (
-                      <p className="font-medium text-neutral-600 truncate mt-1.5 text-[13px] transition-all duration-300">
-                        {subtitle}
-                      </p>
-                    )}
                   </div>
-                </div>
 
-                <div className="shrink-0 flex items-center gap-3">
                   <button
                     onClick={() => handleOpenForm(selectedVendor)}
-                    className={`bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold rounded-lg transition-all duration-300 shadow-sm cursor-pointer border-none ${
-                      isCompact ? 'px-5 py-2 text-[13px]' : 'px-6 py-2.5 text-[14.5px]'
-                    }`}
+                    className="bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold rounded-lg py-2.5 px-4 text-[13px] border-none shadow-sm cursor-pointer shrink-0"
                   >
                     Request Consultation
                   </button>
                 </div>
-              </div>
+              ) : (
+                /* Expanded Layout */
+                <div className="flex items-center justify-between gap-4 pb-2">
+                  <div className="flex items-center gap-4 min-w-0">
+                    <CompanyLogo
+                      src={selectedVendor.logoUrl}
+                      name={selectedVendor.name}
+                      className="shrink-0 bg-white shadow-sm rounded-xl !w-12 !h-12 p-1"
+                      size="lg"
+                    />
+                    <div className="min-w-0">
+                      <h1 className="font-extrabold text-neutral-900 leading-none truncate text-xl">
+                        {selectedVendor.name}
+                      </h1>
+                      <p className="font-medium text-neutral-600 truncate mt-1.5 text-[12.5px]">
+                        {subtitle}
+                      </p>
+                    </div>
+                  </div>
 
-              {/* Navigation Bar - Shown only when scrolled (isCompact === true) */}
+                  <div className="shrink-0 flex items-center gap-3">
+                    <button
+                      onClick={() => handleOpenForm(selectedVendor)}
+                      className="bg-[#C8102E] hover:bg-[#AE0E28] text-white font-extrabold rounded-lg px-5.5 py-2.5 text-[13.5px] transition-all duration-300 shadow-sm cursor-pointer border-none"
+                    >
+                      Request Consultation
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Navigation Bar - Scroll spy tabs, hidden when !isCompact */}
               <div className={`flex gap-6 overflow-x-auto scrollbar-none select-none transition-all duration-300 origin-top ${
                 isCompact 
-                  ? 'max-h-14 opacity-100 mt-2.5 pt-2' 
+                  ? 'max-h-14 opacity-100 mt-1 pt-1' 
                   : 'max-h-0 opacity-0 mt-0 pt-0 overflow-hidden pointer-events-none'
               }`}>
                 {[
@@ -1934,9 +1983,9 @@ export function VendorsView({ vendors }: VendorsViewProps) {
                         e.preventDefault();
                         document.getElementById(sec.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                       }}
-                      className={`relative pb-2 text-[14px] font-bold transition-all whitespace-nowrap border-b-[3px] -mb-[1px] ${
+                      className={`relative pb-2.5 text-[13.5px] font-bold transition-all whitespace-nowrap border-b-[3px] -mb-[1px] ${
                         isActive 
-                          ? 'text-neutral-900 font-extrabold border-neutral-900 animate-scaleIn' 
+                          ? 'text-neutral-900 font-extrabold border-neutral-900' 
                           : 'text-neutral-500 hover:text-neutral-900 border-transparent hover:border-neutral-300'
                       }`}
                     >

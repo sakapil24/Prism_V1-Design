@@ -28,6 +28,8 @@ export default function App() {
 
   // Selected deal for drawer view in deals tab
   const [focusedDealId, setFocusedDealId] = React.useState<string | null>(null);
+  // Selected vendor for details view in vendors tab
+  const [focusedVendorId, setFocusedVendorId] = React.useState<string | null>(null);
 
   // Scroll ref for main content scroll viewport
   const mainContentRef = React.useRef<HTMLDivElement>(null);
@@ -240,11 +242,16 @@ export default function App() {
     );
   }
 
+  const isViewingDeal = currentView === 'deals' && focusedDealId !== null;
+  const isViewingVendor = currentView === 'vendors' && focusedVendorId !== null;
+  const isViewingDrilldown = isViewingDeal || isViewingVendor;
+
   return (
-    <div className="min-h-screen w-full flex flex-col bg-[var(--surface-secondary)]">
+    <div className={`min-h-screen w-full flex flex-col bg-[var(--surface-secondary)] ${isViewingDrilldown ? '' : 'pb-20 lg:pb-0'}`}>
       {/* Premium Top Navigation Bar */}
-      <header className="w-full border-b border-neutral-200 bg-white shrink-0 select-none">
-        <div className="w-full px-4 lg:px-6 h-16 flex items-center justify-between">
+      {!isViewingDrilldown && (
+        <header className="sticky top-0 z-50 w-full border-b border-neutral-200 bg-white/95 backdrop-blur shrink-0 select-none">
+          <div className="w-full px-4 lg:px-6 h-16 flex items-center justify-between">
           
           {/* Left section: Accel India Branding */}
           <div className="flex items-center gap-2.5">
@@ -274,9 +281,6 @@ export default function App() {
                   }`}
                 >
                   <span>{item.label}</span>
-                  {isActive && (
-                    <span className="absolute bottom-[-1px] left-0 right-0 h-0.5 bg-[var(--accent-primary)] rounded-full z-10" />
-                  )}
                 </button>
               );
             })}
@@ -336,32 +340,8 @@ export default function App() {
             </DropdownMenu>
           </div>
         </div>
-      </header>
-
-      {/* Sub-navigation Menu for Mobile Viewports */}
-      <div className="lg:hidden w-full border-b border-neutral-200 bg-white overflow-x-auto scrollbar-none shrink-0 select-none">
-        <div className="flex items-center gap-6 px-4 h-11 min-w-max">
-          {navItems.map((item) => {
-            const isActive = currentView === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={`relative h-full flex items-center px-1 text-[13px] font-extrabold transition-all cursor-pointer focus:outline-none ${
-                  isActive
-                    ? 'text-black font-extrabold'
-                    : 'text-neutral-500 hover:text-black font-semibold'
-                }`}
-              >
-                <span>{item.label}</span>
-                {isActive && (
-                  <span className="absolute bottom-[-1px] left-0 right-0 h-0.5 bg-[var(--accent-primary)] rounded-full z-10" />
-                )}
-              </button>
-            );
-          })}
-        </div>
-      </div>
+        </header>
+      )}
 
       {/* Main View Container */}
       <div className="flex-1 p-4 lg:p-6 bg-[var(--surface-secondary)]">
@@ -383,15 +363,42 @@ export default function App() {
             onAdminAdvanceStatus={handleAdminAdvanceStatus}
             initialSelectedDealId={focusedDealId}
             onClearFocusedDeal={() => setFocusedDealId(null)}
+            onSelectedDealIdChange={(dealId) => setFocusedDealId(dealId)}
           />
         )}
 
         {currentView === 'vendors' && (
           <VendorsView
             vendors={mockVendors}
+            onFocusedVendorChange={(vendorId) => setFocusedVendorId(vendorId)}
           />
         )}
       </div>
+
+      {/* Mobile Bottom Navigation Bar */}
+      {!isViewingDrilldown && (
+        <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur border-t border-neutral-200 shadow-[0_-2px_10px_rgba(0,0,0,0.05)] py-[18px] flex items-center justify-around select-none">
+          {navItems.map((item) => {
+            const isActive = currentView === item.id;
+            return (
+              <button
+                key={item.id}
+                onClick={() => handleNavClick(item.id)}
+                className={`flex flex-col items-center justify-center gap-1.5 w-full cursor-pointer focus:outline-none transition-all ${
+                  isActive ? 'text-[#C8102E]' : 'text-neutral-500 hover:text-neutral-900'
+                }`}
+              >
+                <div className={`transition-transform duration-200 ${isActive ? 'scale-110' : ''}`}>
+                  {item.getIcon(isActive)}
+                </div>
+                <span className={`text-[11px] tracking-wide transition-all ${isActive ? 'font-extrabold text-[#C8102E]' : 'font-bold text-neutral-500'}`}>
+                  {item.label === 'Partner Directory' ? 'Directory' : item.label}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {/* Modal Dialogs (Profile & Ledger) */}
       <StartupProfileModal

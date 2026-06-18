@@ -118,17 +118,21 @@ export function CompanyLogo({ src, name, className = '', size = 'md' }: CompanyL
   }
 
   if (name.toLowerCase().trim().includes('savanko')) {
-    // Strip out background, border, and padding overrides that cause layout conflicts
+    const useTransparent = className.includes('bg-transparent');
+    const finalBgClass = useTransparent ? 'bg-transparent' : 'bg-white';
+    const finalPaddingClass = className.includes('p-0') ? 'p-0' : 'p-0.5';
+    
+    // Strip out background, border, and padding overrides that cause layout conflicts, except transparent/p-0
     const cleanClassName = className
-      .replace(/\bbg-\S+/g, '')
-      .replace(/\bp-\S+/g, '')
+      .replace(/\bbg-(?!transparent\b)\S+/g, '')
+      .replace(/\bp-(?!0\b)\S+/g, '')
       .replace(/\bborder-\S+/g, '')
       .replace(/\bborder\b/g, '')
       .replace(/\bshadow-\S+/g, '');
 
     return (
       <div
-        className={`rounded-xl overflow-hidden bg-white shrink-0 flex items-center justify-center p-0.5 ${selectedSizeClass} ${cleanClassName}`}
+        className={`rounded-lg overflow-hidden shrink-0 flex items-center justify-center ${finalBgClass} ${finalPaddingClass} ${selectedSizeClass} ${cleanClassName}`}
       >
         <img
           src={savankoLogo}
