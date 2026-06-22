@@ -6,6 +6,7 @@ import { DealsView } from './components/DealsView';
 import { VendorsView } from './components/VendorsView';
 import { StartupProfileModal, RedemptionLedgerModal } from './components/ProfileView';
 import { CompanyLogo } from './components/CompanyLogo';
+import { GlobalSupportChat } from './components/GlobalSupportChat';
 import { Deal, ClaimAudit, Startup } from './types';
 
 export default function App() {
@@ -281,6 +282,9 @@ export default function App() {
                   }`}
                 >
                   <span>{item.label}</span>
+                  {isActive && (
+                    <span className="absolute bottom-[-1px] left-0 right-0 h-0.5 bg-[#C8102E] rounded-full z-10" />
+                  )}
                 </button>
               );
             })}
@@ -412,6 +416,13 @@ export default function App() {
         audits={audits}
         open={ledgerOpen}
         onOpenChange={setLedgerOpen}
+      />
+
+      {/* Global AI Support Assistant Chat */}
+      <GlobalSupportChat
+        startup={startup}
+        deals={deals}
+        isViewingDrilldown={isViewingDrilldown}
       />
 
       {/* Global Toast Host */}
